@@ -239,15 +239,6 @@ export default function CarForm({ car }: CarFormProps) {
             </p>
           </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="plate_number">Immatriculation</Label>
-            <Input
-              id="plate_number"
-              {...register("plate_number")}
-              placeholder="ex : AB-123-CD"
-              className="uppercase"
-            />
-          </div>
         </div>
       </section>
 
