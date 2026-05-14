@@ -96,6 +96,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                 </div>
               )}
 
+              <CarDetailsModal car={c} />
               <Link
                 href="/contact"
                 className="btn-gold w-full flex items-center justify-center gap-2 text-base py-4"
