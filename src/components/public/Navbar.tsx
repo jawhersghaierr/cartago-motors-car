@@ -40,7 +40,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
-              <Car size={16} className="text-gold-400" />
+              <Car size={16} className="text-gold-600 dark:text-gold-400" />
             </div>
             <span className="text-carbon-950 dark:text-white font-bold text-base tracking-tight">Cartago Motors</span>
           </Link>
@@ -52,7 +52,7 @@ export default function Navbar() {
                 href={l.href}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   pathname === l.href
-                    ? 'text-gold-500 bg-gold-500/10'
+                    ? 'text-gold-700 bg-gold-700/10 dark:text-gold-500 dark:bg-gold-500/10'
                     : 'text-carbon-600 hover:text-carbon-950 hover:bg-carbon-100 dark:text-carbon-300 dark:hover:text-white dark:hover:bg-white/5'
                 }`}
               >
@@ -82,7 +82,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   pathname === l.href
-                    ? 'text-gold-500 bg-gold-500/10'
+                    ? 'text-gold-700 bg-gold-700/10 dark:text-gold-500 dark:bg-gold-500/10'
                     : 'text-carbon-600 hover:text-carbon-950 hover:bg-carbon-100 dark:text-carbon-300 dark:hover:text-white dark:hover:bg-white/5'
                 }`}
               >

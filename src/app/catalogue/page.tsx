@@ -14,7 +14,7 @@ export default function CataloguePage() {
       <div className="pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
-            <p className="text-gold-500 text-sm uppercase tracking-widest font-medium mb-2">Notre sélection</p>
+            <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-2">Notre sélection</p>
             <h1 className="text-4xl font-bold text-carbon-950 dark:text-white">Catalogue</h1>
           </div>
           <CatalogueClient />

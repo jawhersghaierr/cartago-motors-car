@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Shield, Truck, Award, Car } from 'lucide-react'
+import { ArrowRight, Shield, Truck, Award } from 'lucide-react'
 import Navbar from '@/components/public/Navbar'
 import Footer from '@/components/public/Footer'
 import VoitureCard from '@/components/public/VoitureCard'
@@ -43,7 +43,7 @@ export default async function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="max-w-3xl">
-            <p className="text-gold-500 text-sm uppercase tracking-widest font-medium mb-4 animate-fadeUp-1">
+            <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-4 animate-fadeUp-1">
               {settings.hero_tagline}
             </p>
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-6 animate-fadeUp-2">
@@ -85,10 +85,10 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <p className="text-gold-500 text-sm uppercase tracking-widest font-medium mb-2">Sélection du moment</p>
+                <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-2">Sélection du moment</p>
                 <h2 className="text-3xl font-bold text-carbon-950 dark:text-white">Véhicules disponibles</h2>
               </div>
-              <Link href="/catalogue" className="hidden sm:flex items-center gap-2 text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">
+              <Link href="/catalogue" className="hidden sm:flex items-center gap-2 text-gold-700 dark:text-gold-500 hover:text-gold-800 dark:hover:text-gold-400 text-sm font-medium transition-colors">
                 Voir tout <ArrowRight size={14} />
               </Link>
             </div>
@@ -108,14 +108,14 @@ export default async function HomePage() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <p className="text-gold-500 text-sm uppercase tracking-widest font-medium mb-3">Pourquoi nous choisir</p>
+            <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-3">Pourquoi nous choisir</p>
             <h2 className="text-3xl font-bold text-carbon-950 dark:text-white">L'excellence à chaque étape</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {features.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="glass rounded-2xl p-8 hover:border-gold-500/20 transition-all">
                 <div className="w-11 h-11 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-5">
-                  <Icon size={20} className="text-gold-400" />
+                  <Icon size={20} className="text-gold-600 dark:text-gold-400" />
                 </div>
                 <h3 className="text-carbon-950 dark:text-white font-semibold text-lg mb-3">{title}</h3>
                 <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">{desc}</p>

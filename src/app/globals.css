@@ -33,7 +33,16 @@
 }
 
 /* ── Vitrine publique ── */
+
+/* Mode clair : dégradé doré foncé, sobre sur fond blanc */
 .text-gold-gradient {
+  background: linear-gradient(135deg, #8f5014 0%, #b97015 50%, #8f5014 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* Mode sombre : dégradé lumineux */
+.dark .text-gold-gradient {
   background: linear-gradient(135deg, #d4921a 0%, #ecc44b 50%, #d4921a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -52,16 +61,32 @@
 }
 
 .btn-gold {
-  @apply bg-gradient-to-r from-gold-600 to-gold-400 text-black font-semibold
+  @apply bg-gradient-to-r from-gold-700 to-gold-500 text-white font-semibold
     px-6 py-3 rounded-lg transition-all duration-200
-    hover:from-gold-500 hover:to-gold-300
+    hover:from-gold-600 hover:to-gold-400
     active:scale-[0.98] disabled:opacity-50;
+}
+.dark .btn-gold {
+  --tw-gradient-from: #b97015;
+  --tw-gradient-to: #e5ac28;
+  color: #000;
+}
+.dark .btn-gold:hover {
+  --tw-gradient-from: #d4921a;
+  --tw-gradient-to: #ecc44b;
 }
 
 .btn-outline-gold {
-  @apply border border-gold-500 text-gold-400 font-semibold
+  @apply border border-gold-700 text-gold-700 font-semibold
     px-6 py-3 rounded-lg transition-all duration-200
-    hover:bg-gold-500/10 active:scale-[0.98];
+    hover:bg-gold-700/10 active:scale-[0.98];
+}
+.dark .btn-outline-gold {
+  border-color: #d4921a;
+  color: #e5ac28;
+}
+.dark .btn-outline-gold:hover {
+  background-color: rgba(212,146,26,0.10);
 }
 
 @keyframes fadeUp {

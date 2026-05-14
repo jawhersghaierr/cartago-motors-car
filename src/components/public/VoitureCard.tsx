@@ -12,7 +12,7 @@ export default function VoitureCard({ car }: VoitureCardProps) {
   return (
     <Link
       href={`/voiture/${car.id}`}
-      className="group block bg-white dark:bg-carbon-900 rounded-2xl border border-carbon-200 dark:border-white/5 overflow-hidden hover:border-gold-500/40 dark:hover:border-gold-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-none"
+      className="group block bg-white dark:bg-carbon-900 rounded-2xl border border-carbon-200 dark:border-white/5 overflow-hidden hover:border-gold-600/50 dark:hover:border-gold-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-none"
     >
       <div className="relative aspect-video bg-carbon-100 dark:bg-carbon-800 overflow-hidden">
         {car.images[0] ? (
@@ -66,7 +66,7 @@ export default function VoitureCard({ car }: VoitureCardProps) {
 
         <div className="flex items-center justify-between">
           {car.price ? (
-            <p className="text-gold-500 dark:text-gold-400 font-bold text-xl">{formatPrice(car.price)}</p>
+            <p className="text-gold-700 dark:text-gold-400 font-bold text-xl">{formatPrice(car.price)}</p>
           ) : (
             <p className="text-carbon-400 text-sm italic">Prix sur demande</p>
           )}

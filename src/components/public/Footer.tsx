@@ -13,7 +13,7 @@ export default async function Footer() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
-              <Car size={16} className="text-gold-400" />
+              <Car size={16} className="text-gold-600 dark:text-gold-400" />
             </div>
             <span className="text-carbon-950 dark:text-white font-bold">{settings.company_name}</span>
           </Link>
@@ -23,25 +23,25 @@ export default async function Footer() {
             <div className="flex flex-wrap items-center justify-center gap-5">
               {settings.phone && (
                 <a href={`tel:${settings.phone}`} className="flex items-center gap-1.5 text-carbon-500 hover:text-carbon-900 dark:hover:text-white text-sm transition-colors">
-                  <Phone size={13} className="text-gold-500/70" />
+                  <Phone size={13} className="text-gold-700/70 dark:text-gold-500/70" />
                   {settings.phone}
                 </a>
               )}
               {settings.whatsapp && (
                 <a href={`https://wa.me/${settings.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-carbon-500 hover:text-carbon-900 dark:hover:text-white text-sm transition-colors">
-                  <MessageCircle size={13} className="text-gold-500/70" />
+                  <MessageCircle size={13} className="text-gold-700/70 dark:text-gold-500/70" />
                   WhatsApp
                 </a>
               )}
               {settings.email && (
                 <a href={`mailto:${settings.email}`} className="flex items-center gap-1.5 text-carbon-500 hover:text-carbon-900 dark:hover:text-white text-sm transition-colors">
-                  <Mail size={13} className="text-gold-500/70" />
+                  <Mail size={13} className="text-gold-700/70 dark:text-gold-500/70" />
                   {settings.email}
                 </a>
               )}
               {settings.address && (
                 <span className="flex items-center gap-1.5 text-carbon-500 dark:text-carbon-500 text-sm">
-                  <MapPin size={13} className="text-gold-500/70" />
+                  <MapPin size={13} className="text-gold-700/70 dark:text-gold-500/70" />
                   {settings.address}
                 </span>
               )}

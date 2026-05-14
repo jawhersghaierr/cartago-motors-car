@@ -61,7 +61,7 @@ export default function CatalogueClient() {
       {/* Filtres */}
       <div className="bg-white dark:bg-carbon-900/60 border border-carbon-200 dark:border-white/5 rounded-2xl p-5 mb-8">
         <div className="flex items-center gap-2 mb-4">
-          <SlidersHorizontal size={15} className="text-gold-500" />
+          <SlidersHorizontal size={15} className="text-gold-700 dark:text-gold-500" />
           <span className="text-carbon-950 dark:text-white text-sm font-medium">Filtres</span>
           {hasFilters && (
             <button onClick={clearFilters} className="ml-auto flex items-center gap-1 text-carbon-500 hover:text-carbon-950 dark:text-carbon-400 dark:hover:text-white text-xs transition-colors">
@@ -115,7 +115,7 @@ export default function CatalogueClient() {
         <div className="py-24 text-center">
           <p className="text-carbon-500 dark:text-carbon-400 text-lg">Aucun véhicule ne correspond à votre recherche</p>
           {hasFilters && (
-            <button onClick={clearFilters} className="mt-4 text-gold-500 hover:text-gold-400 text-sm transition-colors">
+            <button onClick={clearFilters} className="mt-4 text-gold-700 dark:text-gold-500 hover:text-gold-800 dark:hover:text-gold-400 text-sm transition-colors">
               Effacer les filtres
             </button>
           )}
