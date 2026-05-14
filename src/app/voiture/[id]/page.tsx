@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft, Fuel, Settings, Zap, Palette, Hash, Car, FileText } from 'lucide-react'
-import Navbar from '@/components/public/Navbar'
+import NavbarWrapper from '@/components/public/NavbarWrapper'
 import Footer from '@/components/public/Footer'
 import ImageGallery from '@/components/public/ImageGallery'
 import CarDetailsModal from '@/components/public/CarDetailsModal'
@@ -36,7 +36,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-carbon-950 text-carbon-950 dark:text-white">
-      <Navbar />
+      <NavbarWrapper />
       <div className="pt-24 pb-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
