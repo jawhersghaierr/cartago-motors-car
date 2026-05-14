@@ -195,7 +195,7 @@ export default async function HomePage() {
 
       {/* Google Reviews */}
       {settings.google_review_url && (
-        <section className="py-20 bg-carbon-100/60 dark:bg-carbon-900/40">
+        <section className="pt-20 pb-10 bg-carbon-100/60 dark:bg-carbon-900/40">
           <div className="max-w-2xl mx-auto px-4 text-center">
             <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-3">
               Avis clients
@@ -245,7 +245,7 @@ export default async function HomePage() {
       )}
 
       {/* CTA */}
-      <section className="py-24 bg-carbon-100/60 dark:bg-carbon-900/40">
+      <section className="py-12 bg-carbon-100/60 dark:bg-carbon-900/40">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold text-carbon-950 dark:text-white mb-4">
             Prêt à trouver votre{" "}
