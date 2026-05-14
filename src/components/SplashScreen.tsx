@@ -16,9 +16,12 @@ export default function SplashScreen({ logoUrl, companyName = 'Cartago Motors' }
   const [typed, setTyped] = useState(0)
 
   useEffect(() => {
+    if (sessionStorage.getItem('splash_shown')) return
+
     const theme = document.documentElement.getAttribute('data-theme')
     setBg(theme === 'dark' ? '#111111' : '#ffffff')
     setShow(true)
+    sessionStorage.setItem('splash_shown', '1')
 
     let i = 0
     const typeInterval = setInterval(() => {
