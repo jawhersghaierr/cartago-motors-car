@@ -426,6 +426,25 @@ export default function CarForm({ car }: CarFormProps) {
         </div>
       </section>
 
+      {/* ── Données VIN supplémentaires ── */}
+      {vinExtra.length > 0 && (
+        <section className="bg-white rounded-xl border border-blue-100 shadow-sm">
+          <div className="px-6 py-4 border-b border-blue-100 flex items-center gap-2">
+            <Wand2 size={15} className="text-blue-500" />
+            <h2 className="font-semibold text-slate-800">Données VIN supplémentaires</h2>
+            <span className="ml-auto text-xs text-slate-400">{vinExtra.length} champs</span>
+          </div>
+          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {vinExtra.map((item) => (
+              <div key={item.label} className="bg-slate-50 rounded-lg px-3 py-2.5 border border-slate-100">
+                <p className="text-xs text-slate-400 mb-0.5">{item.label}</p>
+                <p className="text-sm font-medium text-slate-800 truncate">{item.value}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       <Separator />
 
       {/* ── Actions ── */}
