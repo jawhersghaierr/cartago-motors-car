@@ -97,13 +97,15 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                 </div>
               )}
 
-              <CarDetailsModal car={c} />
-              <Link
-                href="/contact"
-                className="btn-gold w-full flex items-center justify-center gap-2 text-base py-4"
-              >
-                Demander un devis pour ce véhicule
-              </Link>
+              <div className="flex flex-col gap-3 mt-6">
+                <Link
+                  href="/contact"
+                  className="btn-gold w-full flex items-center justify-center gap-2 text-base py-4"
+                >
+                  Demander un devis pour ce véhicule
+                </Link>
+                <CarDetailsModal car={c} />
+              </div>
               <p className="text-carbon-400 dark:text-carbon-600 text-xs text-center mt-3">
                 Ajouté le {formatDate(c.created_at)}
               </p>

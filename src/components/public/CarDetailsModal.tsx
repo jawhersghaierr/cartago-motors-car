@@ -42,7 +42,7 @@ export default function CarDetailsModal({ car }: Props) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="w-full flex items-center justify-center gap-2 border border-carbon-200 dark:border-white/10 text-carbon-600 dark:text-carbon-300 hover:text-carbon-950 dark:hover:text-white hover:border-carbon-400 dark:hover:border-white/30 rounded-xl py-3 text-sm font-medium transition-all"
+        className="w-full flex items-center justify-center gap-2 bg-carbon-100 dark:bg-white/5 hover:bg-carbon-200 dark:hover:bg-white/10 border border-carbon-200 dark:border-white/10 text-carbon-700 dark:text-carbon-300 rounded-xl py-3.5 text-sm font-medium transition-all"
       >
         <Info size={15} />
         Voir tous les détails
