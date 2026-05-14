@@ -59,6 +59,8 @@ export default function CarForm({ car }: CarFormProps) {
           mileage: car.mileage ?? undefined,
           color: car.color ?? "",
           price: car.price ?? undefined,
+          price_ht: car.price_ht ?? undefined,
+          price_ttc: car.price_ttc ?? undefined,
           status: car.status,
           images: car.images,
           description: car.description ?? "",
@@ -398,17 +400,32 @@ export default function CarForm({ car }: CarFormProps) {
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="price">Prix (€)</Label>
+            <Label htmlFor="price_ht">Prix HT (€)</Label>
             <Input
-              id="price"
+              id="price_ht"
               type="number"
-              {...register("price")}
-              placeholder="ex : 25000"
+              {...register("price_ht")}
+              placeholder="ex : 20000"
               min={0}
               step={100}
             />
-            {errors.price && (
-              <p className="text-xs text-destructive">{errors.price.message}</p>
+            {errors.price_ht && (
+              <p className="text-xs text-destructive">{errors.price_ht.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="price_ttc">Prix TTC (€)</Label>
+            <Input
+              id="price_ttc"
+              type="number"
+              {...register("price_ttc")}
+              placeholder="ex : 24000"
+              min={0}
+              step={100}
+            />
+            {errors.price_ttc && (
+              <p className="text-xs text-destructive">{errors.price_ttc.message}</p>
             )}
           </div>
         </div>

@@ -70,9 +70,21 @@ export default function VoitureCard({ car }: VoitureCardProps) {
           )}
         </div>
 
-        <div className="flex items-center justify-between">
-          {car.price ? (
-            <p className="text-gold-700 dark:text-gold-400 font-bold text-xl">{formatPrice(car.price)}</p>
+        <div>
+          {(car.price_ttc || car.price) ? (
+            <div>
+              <div className="flex items-baseline gap-1.5">
+                <p className="text-gold-700 dark:text-gold-400 font-bold text-xl">
+                  {formatPrice(car.price_ttc ?? car.price!)}
+                </p>
+                {car.price_ttc && <span className="text-xs text-carbon-400 dark:text-carbon-500">TTC</span>}
+              </div>
+              {car.price_ht && (
+                <p className="text-xs text-carbon-400 dark:text-carbon-500 mt-0.5">
+                  {formatPrice(car.price_ht)} HT
+                </p>
+              )}
+            </div>
           ) : (
             <p className="text-carbon-400 text-sm italic">Prix sur demande</p>
           )}

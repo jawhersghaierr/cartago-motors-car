@@ -86,11 +86,23 @@ export default function CarDetailsModal({ car }: Props) {
 
             <div className="p-6 space-y-6">
               {/* Prix */}
-              {car.price && (
-                <div>
-                  <p className="text-3xl font-bold text-gold-gradient">
-                    {formatPrice(car.price)}
-                  </p>
+              {(car.price_ttc || car.price_ht || car.price) && (
+                <div className="flex items-center gap-4 flex-wrap">
+                  {car.price_ttc && (
+                    <div>
+                      <p className="text-3xl font-bold text-gold-gradient">{formatPrice(car.price_ttc)}</p>
+                      <p className="text-xs text-carbon-400 dark:text-carbon-500 mt-0.5">Prix TTC</p>
+                    </div>
+                  )}
+                  {car.price_ht && (
+                    <div>
+                      <p className="text-2xl font-semibold text-carbon-700 dark:text-carbon-300">{formatPrice(car.price_ht)}</p>
+                      <p className="text-xs text-carbon-400 dark:text-carbon-500 mt-0.5">Prix HT</p>
+                    </div>
+                  )}
+                  {!car.price_ttc && !car.price_ht && car.price && (
+                    <p className="text-3xl font-bold text-gold-gradient">{formatPrice(car.price)}</p>
+                  )}
                 </div>
               )}
 

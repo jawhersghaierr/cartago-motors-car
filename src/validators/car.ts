@@ -29,6 +29,8 @@ export const createCarSchema = z.object({
   mileage: nullablePositiveInt,
   color: nullableString,
   price: nullablePositiveNumber,
+  price_ht: nullablePositiveNumber,
+  price_ttc: nullablePositiveNumber,
   status: z.enum(['available', 'reserved', 'sold']).default('available'),
   images: z.array(z.string()).default([]),
   description: nullableString,

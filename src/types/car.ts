@@ -16,6 +16,8 @@ export interface Car {
   mileage: number | null
   color: string | null
   price: number | null
+  price_ht: number | null
+  price_ttc: number | null
   status: CarStatus
   images: string[]
   description: string | null

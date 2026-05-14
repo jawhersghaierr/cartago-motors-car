@@ -71,10 +71,22 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                 </span>
               </div>
 
-              {c.price && (
-                <p className="text-4xl font-bold text-gold-gradient mt-4 mb-6">
-                  {formatPrice(c.price)}
-                </p>
+              {(c.price_ttc || c.price_ht || c.price) && (
+                <div className="mt-4 mb-6">
+                  {c.price_ttc ? (
+                    <div className="flex items-baseline gap-3 flex-wrap">
+                      <p className="text-4xl font-bold text-gold-gradient">{formatPrice(c.price_ttc)}</p>
+                      <span className="text-sm font-medium text-carbon-400 dark:text-carbon-500">TTC</span>
+                    </div>
+                  ) : c.price ? (
+                    <p className="text-4xl font-bold text-gold-gradient">{formatPrice(c.price)}</p>
+                  ) : null}
+                  {c.price_ht && (
+                    <p className="text-sm text-carbon-500 dark:text-carbon-400 mt-1">
+                      {formatPrice(c.price_ht)} <span className="text-carbon-400 dark:text-carbon-500">HT</span>
+                    </p>
+                  )}
+                </div>
               )}
 
               {/* Specs */}
