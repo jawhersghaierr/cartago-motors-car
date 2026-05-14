@@ -82,6 +82,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                     {STATUS_LABELS[c.status]}
                   </span>
                 </div>
+              </div>
 
               {(c.price_ttc || c.price_ht || c.price) && (
                 <div className="mt-4 mb-6">
