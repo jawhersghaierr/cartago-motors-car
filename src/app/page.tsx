@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Shield, Truck, Award } from "lucide-react";
 import Navbar from "@/components/public/Navbar";
+import BrandMarquee from "@/components/public/BrandMarquee";
 import FlagText from "@/components/FlagText";
 import Footer from "@/components/public/Footer";
 import VoitureCard from "@/components/public/VoitureCard";
@@ -157,6 +158,8 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      <BrandMarquee />
 
       {/* Features */}
       <section className="py-24">
