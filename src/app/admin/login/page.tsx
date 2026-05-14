@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, User, Eye, EyeOff } from "lucide-react";
-// tet
+
 export default function AdminLoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ username: "", password: "" });
