@@ -67,16 +67,34 @@ export default function CatalogueClient() {
     <div>
       {/* Filtres */}
       <div className="bg-white dark:bg-carbon-900/60 border border-carbon-200 dark:border-white/5 rounded-2xl p-5 mb-8">
-        <div className="flex items-center gap-2 mb-4">
+        <button
+          className="flex items-center gap-2 w-full sm:cursor-default"
+          onClick={() => setFiltersOpen(o => !o)}
+        >
           <SlidersHorizontal size={15} className="text-gold-700 dark:text-gold-500" />
           <span className="text-carbon-950 dark:text-white text-sm font-medium">Filtres</span>
           {hasFilters && (
-            <button onClick={clearFilters} className="ml-auto flex items-center gap-1 text-carbon-500 hover:text-carbon-950 dark:text-carbon-400 dark:hover:text-white text-xs transition-colors">
-              <X size={12} /> Effacer
-            </button>
+            <span className="ml-1 w-2 h-2 rounded-full bg-gold-500 inline-block" />
           )}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <ChevronDown
+            size={15}
+            className={`ml-auto text-carbon-400 transition-transform sm:hidden ${filtersOpen ? 'rotate-180' : ''}`}
+          />
+          {hasFilters && (
+            <span
+              onClick={e => { e.stopPropagation(); clearFilters() }}
+              className="hidden sm:flex ml-auto items-center gap-1 text-carbon-500 hover:text-carbon-950 dark:text-carbon-400 dark:hover:text-white text-xs transition-colors cursor-pointer"
+            >
+              <X size={12} /> Effacer
+            </span>
+          )}
+        </button>
+        {hasFilters && filtersOpen && (
+          <button onClick={clearFilters} className="sm:hidden mt-3 flex items-center gap-1 text-carbon-500 text-xs">
+            <X size={12} /> Effacer les filtres
+          </button>
+        )}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 overflow-hidden transition-all sm:!max-h-none sm:!mt-4 ${filtersOpen ? 'max-h-[500px] mt-4' : 'max-h-0 sm:max-h-none'}`}>
           <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-carbon-400 dark:text-carbon-600" />
             <input
