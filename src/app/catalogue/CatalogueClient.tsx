@@ -35,6 +35,7 @@ export default function CatalogueClient() {
 
       const from = (page - 1) * limit
       const { data, count, error } = await query
+        .order('status', { ascending: true })
         .order('created_at', { ascending: false })
         .range(from, from + limit - 1)
 

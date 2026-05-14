@@ -28,23 +28,23 @@ export default function VoitureCard({ car }: VoitureCardProps) {
             <Car size={40} className="text-carbon-300 dark:text-carbon-700" />
           </div>
         )}
-        <div className="absolute top-3 right-3">
-          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+      </div>
+
+      <div className="p-5">
+        <div className="flex items-start justify-between gap-2 mb-1">
+          <h3 className="text-carbon-950 dark:text-white font-semibold text-lg leading-tight">
+            {car.brand} {car.model}
+          </h3>
+          <span className={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full border ${
             car.status === 'available'
-              ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30'
+              ? 'bg-emerald-500/20 text-emerald-500 border-emerald-500/30'
               : car.status === 'reserved'
-              ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30'
-              : 'bg-red-500/20 text-red-500 border border-red-500/30'
+              ? 'bg-amber-500/20 text-amber-500 border-amber-500/30'
+              : 'bg-red-500/20 text-red-500 border-red-500/30'
           }`}>
             {car.status === 'available' ? 'Disponible' : car.status === 'reserved' ? 'Réservé' : 'Vendu'}
           </span>
         </div>
-      </div>
-
-      <div className="p-5">
-        <h3 className="text-carbon-950 dark:text-white font-semibold text-lg leading-tight mb-1">
-          {car.brand} {car.model}
-        </h3>
         <p className="text-carbon-500 text-sm mb-4">{car.year}</p>
 
         <div className="flex items-center gap-4 text-carbon-500 dark:text-carbon-400 text-xs mb-4">
