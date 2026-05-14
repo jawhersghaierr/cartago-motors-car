@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Car, Fuel, Settings, Zap, Gauge, BarChart2, Check, Heart } from 'lucide-react'
+import { Car, Fuel, Settings, Zap, Gauge, BarChart2, Check, Heart, Share2 } from 'lucide-react'
 import type { Car as CarType } from '@/types/car'
 import { formatPrice } from '@/lib/utils'
 import { useCompare } from '@/context/CompareContext'
