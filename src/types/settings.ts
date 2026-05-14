@@ -14,6 +14,9 @@ export interface SiteSettings {
   stat_pays: string | null
   stat_clients: string | null
   logo_url: string | null
+  google_review_url: string | null
+  google_rating: string | null
+  google_review_count: string | null
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
@@ -32,4 +35,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   stat_pays: '3',
   stat_clients: '200+',
   logo_url: null,
+  google_review_url: null,
+  google_rating: null,
+  google_review_count: null,
 }

@@ -187,6 +187,44 @@ export default function SettingsForm({ initial }: Props) {
         </div>
       </section>
 
+      {/* Section Google Avis */}
+      <section className="bg-white rounded-xl border border-slate-200 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 mb-5 pb-3 border-b border-slate-100">
+          Avis Google
+        </h2>
+        <div className="space-y-4">
+          <div>
+            <label className={labelCls}>Lien de la fiche Google (pour laisser un avis)</label>
+            <input
+              className={inputCls}
+              value={values.google_review_url ?? ''}
+              onChange={e => set('google_review_url', e.target.value)}
+              placeholder="https://g.page/r/votre-fiche/review"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>Note moyenne (ex : 4.8)</label>
+              <input
+                className={inputCls}
+                value={values.google_rating ?? ''}
+                onChange={e => set('google_rating', e.target.value)}
+                placeholder="4.8"
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Nombre d'avis (ex : 124)</label>
+              <input
+                className={inputCls}
+                value={values.google_review_count ?? ''}
+                onChange={e => set('google_review_count', e.target.value)}
+                placeholder="124"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Section Réseaux sociaux */}
       <section className="bg-white rounded-xl border border-slate-200 p-6">
         <h2 className="text-sm font-semibold text-slate-900 mb-5 pb-3 border-b border-slate-100">
