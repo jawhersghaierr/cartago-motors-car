@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
-export default function AdminRootPage() {
-  redirect('/admin/voitures')
+export default function AdminPage() {
+  redirect('/admin/cars')
 }
