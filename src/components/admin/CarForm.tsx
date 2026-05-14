@@ -30,6 +30,7 @@ interface CarFormProps {
 export default function CarForm({ car }: CarFormProps) {
   const router = useRouter();
   const [decodingVin, setDecodingVin] = useState(false);
+  const [vinExtra, setVinExtra] = useState<{ label: string; value: string }[]>([]);
   const isEditing = !!car;
 
   const {
@@ -124,28 +125,28 @@ export default function CarForm({ car }: CarFormProps) {
         filled++;
       }
 
-      // Champs déjà mappés — exclus de la description
+      // Champs déjà mappés — exclus des détails supplémentaires
       const MAPPED_LABELS = [
         'make', 'model', 'model year', 'fuel type - primary', 'fuel type',
-        'engine model', 'displacement (l)', 'engine',
+        'engine (full)', 'engine model', 'displacement (l)', 'engine',
         'transmission style', 'transmission',
         'engine power (hp)', 'maximum net power (hp)', 'power (hp)',
         'engine power (kw)', 'maximum net power (kw)',
         'exterior color', 'color',
       ]
       if (Array.isArray(data.raw)) {
-        const lines = data.raw
+        const extras = data.raw
           .filter((item: { label: string; value: unknown }) =>
             item.value !== null &&
             item.value !== undefined &&
             String(item.value).trim() !== '' &&
             !MAPPED_LABELS.includes(item.label.toLowerCase())
           )
-          .map((item: { label: string; value: unknown }) => `${item.label}: ${item.value}`)
-        if (lines.length > 0) {
-          setValue("description", lines.join('\n'), { shouldValidate: true });
-          filled++;
-        }
+          .map((item: { label: string; value: unknown }) => ({
+            label: item.label,
+            value: String(item.value),
+          }))
+        setVinExtra(extras);
       }
 
       if (filled > 0) {
@@ -193,6 +194,63 @@ export default function CarForm({ car }: CarFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-10">
+      {/* ── VIN & Plaque ── */}
+      <section className="bg-white rounded-xl border shadow-sm">
+        <div className="px-6 py-4 border-b">
+          <h2 className="font-semibold text-slate-800">
+            Numéros d'identification
+          </h2>
+        </div>
+        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="vin">VIN</Label>
+            <div className="flex gap-2">
+              <Input
+                id="vin"
+                {...register("vin")}
+                placeholder="17 caractères"
+                maxLength={17}
+                className="font-mono tracking-widest uppercase"
+                onInput={(e) => {
+                  const t = e.currentTarget;
+                  t.value = t.value.toUpperCase();
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="shrink-0 gap-1.5"
+                disabled={
+                  decodingVin || !vinValue || vinValue.trim().length !== 17
+                }
+                onClick={decodeVin}
+              >
+                {decodingVin ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : (
+                  <Wand2 size={14} />
+                )}
+                Décoder
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Décodage automatique via API
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="plate_number">Immatriculation</Label>
+            <Input
+              id="plate_number"
+              {...register("plate_number")}
+              placeholder="ex : AB-123-CD"
+              className="uppercase"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* ── Identification ── */}
       <section className="bg-white rounded-xl border shadow-sm">
         <div className="px-6 py-4 border-b">
@@ -252,63 +310,6 @@ export default function CarForm({ car }: CarFormProps) {
               <option value="reserved">Réservé</option>
               <option value="sold">Vendu</option>
             </select>
-          </div>
-        </div>
-      </section>
-
-      {/* ── VIN & Plaque ── */}
-      <section className="bg-white rounded-xl border shadow-sm">
-        <div className="px-6 py-4 border-b">
-          <h2 className="font-semibold text-slate-800">
-            Numéros d'identification
-          </h2>
-        </div>
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="vin">VIN</Label>
-            <div className="flex gap-2">
-              <Input
-                id="vin"
-                {...register("vin")}
-                placeholder="17 caractères"
-                maxLength={17}
-                className="font-mono tracking-widest uppercase"
-                onInput={(e) => {
-                  const t = e.currentTarget;
-                  t.value = t.value.toUpperCase();
-                }}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="shrink-0 gap-1.5"
-                disabled={
-                  decodingVin || !vinValue || vinValue.trim().length !== 17
-                }
-                onClick={decodeVin}
-              >
-                {decodingVin ? (
-                  <Loader2 size={14} className="animate-spin" />
-                ) : (
-                  <Wand2 size={14} />
-                )}
-                Décoder
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Décodage automatique via API
-            </p>
-          </div>
-
-          <div className="space-y-1.5">
-            <Label htmlFor="plate_number">Immatriculation</Label>
-            <Input
-              id="plate_number"
-              {...register("plate_number")}
-              placeholder="ex : AB-123-CD"
-              className="uppercase"
-            />
           </div>
         </div>
       </section>

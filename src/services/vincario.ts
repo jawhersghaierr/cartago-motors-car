@@ -137,7 +137,7 @@ export async function decodeVin(vin: string): Promise<VincarioResult> {
     model: get('Model'),
     modelYear: parsedYear && !isNaN(parsedYear) ? parsedYear : null,
     fuelType: mapFuel(get('Fuel Type - Primary') ?? get('Fuel Type')),
-    engine: get('Engine Model') ?? get('Displacement (L)') ?? get('Engine'),
+    engine: get('Engine (full)') ?? get('Engine Model') ?? get('Displacement (L)') ?? get('Engine'),
     transmission: mapTransmission(get('Transmission Style') ?? get('Transmission')),
     horsepower,
     color: get('Exterior Color') ?? get('Color'),
