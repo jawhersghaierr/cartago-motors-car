@@ -124,6 +124,30 @@ export default function CarForm({ car }: CarFormProps) {
         filled++;
       }
 
+      // Champs déjà mappés — exclus de la description
+      const MAPPED_LABELS = [
+        'make', 'model', 'model year', 'fuel type - primary', 'fuel type',
+        'engine model', 'displacement (l)', 'engine',
+        'transmission style', 'transmission',
+        'engine power (hp)', 'maximum net power (hp)', 'power (hp)',
+        'engine power (kw)', 'maximum net power (kw)',
+        'exterior color', 'color',
+      ]
+      if (Array.isArray(data.raw)) {
+        const lines = data.raw
+          .filter((item: { label: string; value: unknown }) =>
+            item.value !== null &&
+            item.value !== undefined &&
+            String(item.value).trim() !== '' &&
+            !MAPPED_LABELS.includes(item.label.toLowerCase())
+          )
+          .map((item: { label: string; value: unknown }) => `${item.label}: ${item.value}`)
+        if (lines.length > 0) {
+          setValue("description", lines.join('\n'), { shouldValidate: true });
+          filled++;
+        }
+      }
+
       if (filled > 0) {
         toast.success(
           `${filled} champ${filled > 1 ? "s" : ""} pré-rempli${filled > 1 ? "s" : ""} via VIN`,
