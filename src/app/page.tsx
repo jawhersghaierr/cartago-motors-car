@@ -195,7 +195,7 @@ export default async function HomePage() {
 
       {/* Google Reviews */}
       {settings.google_review_url && (
-        <section className="py-10 bg-carbon-100/60 dark:bg-carbon-900/40">
+        <section className="pt-10 pb-4 bg-carbon-100/60 dark:bg-carbon-900/40">
           <div className="max-w-2xl mx-auto px-4 text-center">
             <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-3">
               Avis clients
