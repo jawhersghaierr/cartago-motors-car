@@ -1,3 +1,4 @@
+import React from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft, Fuel, Settings, Zap, Palette, Hash, Car, FileText } from 'lucide-react'

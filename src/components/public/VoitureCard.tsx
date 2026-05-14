@@ -1,14 +1,20 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
-import { Car, Fuel, Settings, Zap, Gauge } from 'lucide-react'
+import { Car, Fuel, Settings, Zap, Gauge, BarChart2, Check } from 'lucide-react'
 import type { Car as CarType } from '@/types/car'
 import { formatPrice } from '@/lib/utils'
+import { useCompare } from '@/context/CompareContext'
 
 interface VoitureCardProps {
   car: CarType
 }
 
 export default function VoitureCard({ car }: VoitureCardProps) {
+  const { toggle, isSelected } = useCompare()
+  const selected = isSelected(car.id)
+
   return (
     <Link
       href={`/voiture/${car.id}`}
@@ -28,6 +34,34 @@ export default function VoitureCard({ car }: VoitureCardProps) {
             <Car size={40} className="text-carbon-300 dark:text-carbon-700" />
           </div>
         )}
+
+        {/* Compare toggle button */}
+        <button
+          type="button"
+          onClick={e => {
+            e.preventDefault()
+            e.stopPropagation()
+            toggle(car.id)
+          }}
+          aria-label={selected ? 'Retirer de la comparaison' : 'Ajouter à la comparaison'}
+          className={`absolute top-2 left-2 z-10 flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-all duration-200 shadow-md ${
+            selected
+              ? 'bg-gold-600 border-gold-500 text-white'
+              : 'bg-white/90 dark:bg-carbon-900/90 border-carbon-200 dark:border-white/10 text-carbon-600 dark:text-carbon-300 hover:bg-gold-50 dark:hover:bg-gold-500/10 hover:border-gold-400 dark:hover:border-gold-500/40 hover:text-gold-700 dark:hover:text-gold-400'
+          }`}
+        >
+          {selected ? (
+            <>
+              <Check size={12} />
+              Comparer
+            </>
+          ) : (
+            <>
+              <BarChart2 size={12} />
+              Comparer
+            </>
+          )}
+        </button>
       </div>
 
       <div className="p-5">
