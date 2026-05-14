@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { supabaseClient } from '@/lib/supabase-client'
 import type { Car } from '@/types/car'
-import { FUEL_TYPES, TRANSMISSION_TYPES } from '@/types/car'
+import { FUEL_TYPES, TRANSMISSION_TYPES, CAR_BRANDS } from '@/types/car'
 import VoitureCard from '@/components/public/VoitureCard'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -13,8 +13,10 @@ export default function CatalogueClient() {
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [brand, setBrand] = useState('')
   const [fuel, setFuel] = useState('')
   const [transmission, setTransmission] = useState('')
+  const [minPrice, setMinPrice] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
   const [status, setStatus] = useState('')
   const [page, setPage] = useState(1)
@@ -28,10 +30,12 @@ export default function CatalogueClient() {
         .select('*', { count: 'exact' })
 
       if (search) query = query.or(`brand.ilike.%${search}%,model.ilike.%${search}%`)
+      if (brand) query = query.eq('brand', brand)
       if (fuel) query = query.eq('fuel', fuel)
       if (transmission) query = query.eq('transmission', transmission)
       if (status) query = query.eq('status', status)
-      if (maxPrice) query = query.or(`price_ttc.lte.${Number(maxPrice)},and(price_ttc.is.null,price.lte.${Number(maxPrice)})`)
+      if (minPrice) query = query.gte('price_ttc', Number(minPrice))
+      if (maxPrice) query = query.lte('price_ttc', Number(maxPrice))
 
       const from = (page - 1) * limit
       const { data, count, error } = await query
@@ -45,14 +49,14 @@ export default function CatalogueClient() {
     } finally {
       setLoading(false)
     }
-  }, [search, fuel, transmission, maxPrice, status, page])
+  }, [search, brand, fuel, transmission, minPrice, maxPrice, status, page])
 
   useEffect(() => { fetchCars() }, [fetchCars])
-  useEffect(() => { setPage(1) }, [search, fuel, transmission, maxPrice, status])
+  useEffect(() => { setPage(1) }, [search, brand, fuel, transmission, minPrice, maxPrice, status])
 
-  const hasFilters = search || fuel || transmission || maxPrice || status
+  const hasFilters = search || brand || fuel || transmission || minPrice || maxPrice || status
   function clearFilters() {
-    setSearch(''); setFuel(''); setTransmission(''); setMaxPrice(''); setStatus('')
+    setSearch(''); setBrand(''); setFuel(''); setTransmission(''); setMinPrice(''); setMaxPrice(''); setStatus('')
   }
 
   const totalPages = Math.ceil(total / limit)
@@ -71,16 +75,20 @@ export default function CatalogueClient() {
             </button>
           )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-carbon-400 dark:text-carbon-600" />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Marque, modèle…"
+              placeholder="Rechercher…"
               className={`${inputClass} pl-8 w-full`}
             />
           </div>
+          <select value={brand} onChange={e => setBrand(e.target.value)} className={`${inputClass} w-full`}>
+            <option value="">Toutes marques</option>
+            {CAR_BRANDS.map(b => <option key={b} value={b}>{b}</option>)}
+          </select>
           <select value={fuel} onChange={e => setFuel(e.target.value)} className={`${inputClass} w-full`}>
             <option value="">Tous carburants</option>
             {FUEL_TYPES.map(f => <option key={f} value={f}>{f}</option>)}
@@ -95,6 +103,14 @@ export default function CatalogueClient() {
             <option value="reserved">Réservé</option>
             <option value="sold">Vendu</option>
           </select>
+          <input
+            type="number"
+            value={minPrice}
+            onChange={e => setMinPrice(e.target.value)}
+            placeholder="Prix min (€)"
+            className={`${inputClass} w-full`}
+            min={0}
+          />
           <input
             type="number"
             value={maxPrice}

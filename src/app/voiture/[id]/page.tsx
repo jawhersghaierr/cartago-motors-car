@@ -5,6 +5,7 @@ import NavbarWrapper from '@/components/public/NavbarWrapper'
 import Footer from '@/components/public/Footer'
 import ImageGallery from '@/components/public/ImageGallery'
 import CarDetailsModal from '@/components/public/CarDetailsModal'
+import ShareButton from '@/components/public/ShareButton'
 import { supabase } from '@/lib/supabase'
 import { getSettings } from '@/services/settings'
 import type { Car as CarType } from '@/types/car'
@@ -66,16 +67,18 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                   <h1 className="text-3xl font-bold text-carbon-950 dark:text-white">{c.brand} {c.model}</h1>
                   <p className="text-carbon-500 dark:text-carbon-400 mt-1">{c.year}</p>
                 </div>
-                <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${
-                  c.status === 'available'
-                    ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
-                    : c.status === 'reserved'
-                    ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-                    : 'bg-red-500/20 text-red-400 border-red-500/30'
-                }`}>
-                  {STATUS_LABELS[c.status]}
-                </span>
-              </div>
+                <div className="flex items-center gap-2">
+                  <ShareButton brand={c.brand} model={c.model} year={c.year} />
+                  <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${
+                    c.status === 'available'
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                      : c.status === 'reserved'
+                      ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+                      : 'bg-red-500/20 text-red-400 border-red-500/30'
+                  }`}>
+                    {STATUS_LABELS[c.status]}
+                  </span>
+                </div>
 
               {(c.price_ttc || c.price_ht || c.price) && (
                 <div className="mt-4 mb-6">
