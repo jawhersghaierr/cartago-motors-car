@@ -11,6 +11,8 @@ export interface SiteSettings {
   facebook_url: string | null
   instagram_url: string | null
   tiktok_url: string | null
+  stat_pays: string | null
+  stat_clients: string | null
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
@@ -26,4 +28,6 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   facebook_url: null,
   instagram_url: null,
   tiktok_url: null,
+  stat_pays: '3',
+  stat_clients: '200+',
 }
