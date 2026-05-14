@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { Car } from 'lucide-react'
 
 interface Props {
@@ -31,13 +30,11 @@ export default function SplashScreen({ logoUrl, companyName = 'Cartago Motors' }
         style={{ transform: fadeOut ? 'scale(1.05)' : 'scale(1)' }}
       >
         {logoUrl ? (
-          <Image
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             src={logoUrl}
             alt={companyName}
-            width={280}
-            height={120}
-            className="w-56 h-auto object-contain"
-            priority
+            style={{ width: 220, height: 'auto', objectFit: 'contain' }}
           />
         ) : (
           <>
