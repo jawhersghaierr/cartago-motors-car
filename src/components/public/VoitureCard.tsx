@@ -2,10 +2,11 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Car, Fuel, Settings, Zap, Gauge, BarChart2, Check } from 'lucide-react'
+import { Car, Fuel, Settings, Zap, Gauge, BarChart2, Check, Heart } from 'lucide-react'
 import type { Car as CarType } from '@/types/car'
 import { formatPrice } from '@/lib/utils'
 import { useCompare } from '@/context/CompareContext'
+import { useFavorites } from '@/context/FavoritesContext'
 
 interface VoitureCardProps {
   car: CarType
@@ -14,6 +15,8 @@ interface VoitureCardProps {
 export default function VoitureCard({ car }: VoitureCardProps) {
   const { toggle, isSelected } = useCompare()
   const selected = isSelected(car.id)
+  const { toggle: toggleFav, isFavorite } = useFavorites()
+  const favorited = isFavorite(car.id)
 
   return (
     <Link
@@ -34,6 +37,24 @@ export default function VoitureCard({ car }: VoitureCardProps) {
             <Car size={40} className="text-carbon-300 dark:text-carbon-700" />
           </div>
         )}
+
+        {/* Favorite toggle button */}
+        <button
+          type="button"
+          onClick={e => {
+            e.preventDefault()
+            e.stopPropagation()
+            toggleFav(car.id)
+          }}
+          aria-label={favorited ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+          className={`absolute top-2 right-2 z-10 w-8 h-8 flex items-center justify-center rounded-full border transition-all duration-200 shadow-md ${
+            favorited
+              ? 'bg-red-500 border-red-400 text-white'
+              : 'bg-white/80 dark:bg-carbon-900/80 border-carbon-200 dark:border-white/10 text-carbon-400 dark:text-carbon-500 hover:bg-white dark:hover:bg-carbon-900 hover:text-red-500 dark:hover:text-red-400'
+          }`}
+        >
+          <Heart size={14} fill={favorited ? 'currentColor' : 'none'} />
+        </button>
 
         {/* Compare toggle button */}
         <button

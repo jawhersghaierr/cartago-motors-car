@@ -8,6 +8,7 @@ import SplashScreen from '@/components/SplashScreen'
 import { getSettings } from '@/services/settings'
 import { CompareProvider } from '@/context/CompareContext'
 import CompareBar from '@/components/public/CompareBar'
+import { FavoritesProvider } from '@/context/FavoritesContext'
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings()
@@ -27,13 +28,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="fr" suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider>
-          <CompareProvider>
-            <SplashScreen logoUrl={settings.logo_url} companyName={settings.company_name} />
-            {children}
-            <Toaster position="top-right" richColors closeButton />
-            <FloatingWhatsApp number={settings.whatsapp} />
-            <CompareBar />
-          </CompareProvider>
+          <FavoritesProvider>
+            <CompareProvider>
+              <SplashScreen logoUrl={settings.logo_url} companyName={settings.company_name} />
+              {children}
+              <Toaster position="top-right" richColors closeButton />
+              <FloatingWhatsApp number={settings.whatsapp} />
+              <CompareBar />
+            </CompareProvider>
+          </FavoritesProvider>
         </ThemeProvider>
       </body>
     </html>

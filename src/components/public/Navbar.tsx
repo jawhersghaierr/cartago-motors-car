@@ -4,8 +4,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Menu, X, Car, Sun, Moon } from 'lucide-react'
+import { Menu, X, Car, Sun, Moon, Heart } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { useFavorites } from '@/context/FavoritesContext'
 
 const links = [
   { href: '/', label: 'Accueil' },
@@ -39,6 +40,7 @@ interface NavbarProps {
 export default function Navbar({ logoUrl, companyName = 'Cartago Motors' }: NavbarProps) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const { favorites } = useFavorites()
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-carbon-950/90 backdrop-blur-md border-b border-carbon-200 dark:border-white/5">

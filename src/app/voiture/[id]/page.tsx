@@ -7,6 +7,7 @@ import Footer from '@/components/public/Footer'
 import ImageGallery from '@/components/public/ImageGallery'
 import CarDetailsModal from '@/components/public/CarDetailsModal'
 import ShareButton from '@/components/public/ShareButton'
+import FavoriteButton from '@/components/public/FavoriteButton'
 import { supabase } from '@/lib/supabase'
 import { getSettings } from '@/services/settings'
 import type { Car as CarType } from '@/types/car'
@@ -71,6 +72,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                   <p className="text-carbon-500 dark:text-carbon-400 mt-1">{c.year}</p>
                 </div>
                 <div className="flex items-center gap-2">
+                  <FavoriteButton carId={c.id} />
                   <ShareButton brand={c.brand} model={c.model} year={c.year} />
                   <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${
                     c.status === 'available'
