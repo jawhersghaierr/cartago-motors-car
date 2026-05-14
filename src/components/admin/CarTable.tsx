@@ -112,8 +112,59 @@ export default function CarTable() {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-xl border overflow-hidden shadow-sm">
+      {/* Mobile cards */}
+      <div className="md:hidden space-y-2">
+        {loading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-20 w-full rounded-xl" />
+          ))
+        ) : cars.length === 0 ? (
+          <div className="py-16 text-center bg-white rounded-xl border">
+            <CarIcon size={36} className="mx-auto text-slate-200 mb-3" />
+            <p className="text-slate-500 font-medium">Aucune voiture trouvée</p>
+          </div>
+        ) : cars.map(car => (
+          <div key={car.id} className="bg-white rounded-xl border shadow-sm p-3 flex items-center gap-3">
+            <div className="w-16 h-11 rounded-lg overflow-hidden bg-slate-100 shrink-0 flex items-center justify-center border border-slate-100">
+              {car.images[0] ? (
+                <Image src={car.images[0]} alt={`${car.brand} ${car.model}`} width={64} height={44} className="object-cover w-full h-full" />
+              ) : (
+                <CarIcon size={16} className="text-slate-300" />
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-slate-900 text-sm truncate">{car.brand} {car.model}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[car.status]}`}>
+                  {STATUS_LABELS[car.status]}
+                </span>
+                <span className="text-xs text-slate-400">{car.year}</span>
+                {(car.price_ttc ?? car.price) != null && (
+                  <span className="text-xs font-semibold text-slate-700">{formatPrice(car.price_ttc ?? car.price!)}</span>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-1 shrink-0">
+              <Link href={`/admin/cars/${car.id}/edit`}>
+                <Button variant="outline" size="icon" className="h-9 w-9">
+                  <Pencil size={14} />
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-9 w-9 text-red-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200"
+                onClick={() => setDeleteId(car.id)}
+              >
+                <Trash2 size={14} />
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop table */}
+      <div className="hidden md:block bg-white rounded-xl border overflow-hidden shadow-sm">
         {loading ? (
           <div className="p-4 space-y-3">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -142,21 +193,11 @@ export default function CarTable() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-slate-50">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Véhicule
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">
-                  Technique
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden lg:table-cell">
-                  Prix
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden xl:table-cell">
-                  Ajouté le
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Statut
-                </th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Véhicule</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">Technique</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Prix</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden xl:table-cell">Ajouté le</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Statut</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -167,13 +208,7 @@ export default function CarTable() {
                     <div className="flex items-center gap-3">
                       <div className="w-16 h-11 rounded-lg overflow-hidden bg-slate-100 shrink-0 flex items-center justify-center border border-slate-100">
                         {car.images[0] ? (
-                          <Image
-                            src={car.images[0]}
-                            alt={`${car.brand} ${car.model}`}
-                            width={64}
-                            height={44}
-                            className="object-cover w-full h-full"
-                          />
+                          <Image src={car.images[0]} alt={`${car.brand} ${car.model}`} width={64} height={44} className="object-cover w-full h-full" />
                         ) : (
                           <CarIcon size={16} className="text-slate-300" />
                         )}
@@ -198,16 +233,14 @@ export default function CarTable() {
                       <p className="text-slate-300">—</p>
                     )}
                   </td>
-                  <td className="px-4 py-3 hidden xl:table-cell text-slate-400 text-xs">
-                    {formatDate(car.created_at)}
-                  </td>
+                  <td className="px-4 py-3 hidden xl:table-cell text-slate-400 text-xs">{formatDate(car.created_at)}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[car.status]}`}>
                       {STATUS_LABELS[car.status]}
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-0.5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-end gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Link href={`/admin/cars/${car.id}/edit`}>
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-slate-900">
                           <Pencil size={14} />
