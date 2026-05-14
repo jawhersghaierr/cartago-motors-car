@@ -108,20 +108,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-2xl">
-            {[
-              { value: nbDispo.toString(), label: 'Véhicules disponibles' },
-              { value: nbVendus > 0 ? `${nbVendus}+` : '0', label: 'Véhicules exportés' },
-              { value: settings.stat_pays ?? '3', label: 'Pays desservis' },
-              { value: settings.stat_clients ?? '200+', label: 'Clients satisfaits' },
-            ].map((s) => (
-              <div key={s.label}>
-                <p className="text-4xl font-bold text-gold-gradient">{s.value}</p>
-                <p className="text-carbon-500 dark:text-carbon-400 text-sm mt-1">{s.label}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -261,6 +247,25 @@ export default async function HomePage() {
           >
             Nous contacter <ArrowRight size={18} />
           </Link>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="py-12 border-t border-carbon-200/60 dark:border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-3xl mx-auto">
+            {[
+              { value: nbDispo.toString(), label: 'Véhicules disponibles' },
+              { value: nbVendus > 0 ? `${nbVendus}+` : '0', label: 'Véhicules exportés' },
+              { value: settings.stat_pays ?? '3', label: 'Pays desservis' },
+              { value: settings.stat_clients ?? '200+', label: 'Clients satisfaits' },
+            ].map((s) => (
+              <div key={s.label} className="text-center">
+                <p className="text-4xl font-bold text-gold-gradient">{s.value}</p>
+                <p className="text-carbon-500 dark:text-carbon-400 text-sm mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
