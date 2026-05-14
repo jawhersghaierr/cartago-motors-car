@@ -21,6 +21,7 @@ export default function CatalogueClient() {
   const [status, setStatus] = useState('')
   const [page, setPage] = useState(1)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [sort, setSort] = useState('recent')
   const limit = 12
 
   const fetchCars = useCallback(async () => {
@@ -39,10 +40,13 @@ export default function CatalogueClient() {
       if (maxPrice) query = query.lte('price_ttc', Number(maxPrice))
 
       const from = (page - 1) * limit
-      const { data, count, error } = await query
-        .order('status', { ascending: true })
-        .order('created_at', { ascending: false })
-        .range(from, from + limit - 1)
+      let ordered = query.order('status', { ascending: true })
+      if (sort === 'recent')      ordered = ordered.order('created_at', { ascending: false })
+      else if (sort === 'price_asc')  ordered = ordered.order('price_ttc', { ascending: true, nullsFirst: false })
+      else if (sort === 'price_desc') ordered = ordered.order('price_ttc', { ascending: false, nullsFirst: false })
+      else if (sort === 'mileage')    ordered = ordered.order('mileage', { ascending: true, nullsFirst: false })
+
+      const { data, count, error } = await ordered.range(from, from + limit - 1)
 
       if (error) throw error
       setCars((data ?? []) as Car[])
@@ -50,10 +54,10 @@ export default function CatalogueClient() {
     } finally {
       setLoading(false)
     }
-  }, [search, brand, fuel, transmission, minPrice, maxPrice, status, page])
+  }, [search, brand, fuel, transmission, minPrice, maxPrice, status, page, sort])
 
   useEffect(() => { fetchCars() }, [fetchCars])
-  useEffect(() => { setPage(1) }, [search, brand, fuel, transmission, minPrice, maxPrice, status])
+  useEffect(() => { setPage(1) }, [search, brand, fuel, transmission, minPrice, maxPrice, status, sort])
 
   const hasFilters = search || brand || fuel || transmission || minPrice || maxPrice || status
   function clearFilters() {
@@ -141,10 +145,22 @@ export default function CatalogueClient() {
         </div>
       </div>
 
-      {/* Résultats */}
-      <p className="text-carbon-500 dark:text-carbon-400 text-sm mb-5">
-        {loading ? '…' : `${total} véhicule${total > 1 ? 's' : ''} trouvé${total > 1 ? 's' : ''}`}
-      </p>
+      {/* Résultats + Tri */}
+      <div className="flex items-center justify-between mb-5">
+        <p className="text-carbon-500 dark:text-carbon-400 text-sm">
+          {loading ? '…' : `${total} véhicule${total > 1 ? 's' : ''} trouvé${total > 1 ? 's' : ''}`}
+        </p>
+        <select
+          value={sort}
+          onChange={e => setSort(e.target.value)}
+          className={`${inputClass} text-xs`}
+        >
+          <option value="recent">Plus récent</option>
+          <option value="price_asc">Prix croissant</option>
+          <option value="price_desc">Prix décroissant</option>
+          <option value="mileage">Kilométrage</option>
+        </select>
+      </div>
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
