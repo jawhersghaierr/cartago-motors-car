@@ -154,7 +154,7 @@ export default function CarForm({ car }: CarFormProps) {
           }))
         setVinExtra(extras);
         // Sauvegarder tout en base sous forme {label: value}
-        const asRecord = Object.fromEntries(extras.map(e => [e.label, e.value]))
+        const asRecord = Object.fromEntries(extras.map((e: { label: string; value: string }) => [e.label, e.value]))
         setValue("vincario_data", asRecord);
       }
 
