@@ -1,5 +1,5 @@
 import { Phone, MessageCircle, Mail, MapPin } from 'lucide-react'
-import Navbar from '@/components/public/Navbar'
+import NavbarWrapper from '@/components/public/NavbarWrapper'
 import Footer from '@/components/public/Footer'
 import { getSettings } from '@/services/settings'
 import ContactForm from './ContactForm'
@@ -18,7 +18,7 @@ export default async function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-carbon-950 text-carbon-950 dark:text-white">
-      <Navbar />
+      <NavbarWrapper />
       <div className="pt-24 pb-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="mb-10 text-center">

@@ -1,4 +1,4 @@
-import Navbar from '@/components/public/Navbar'
+import NavbarWrapper from '@/components/public/NavbarWrapper'
 import Footer from '@/components/public/Footer'
 import CatalogueClient from './CatalogueClient'
 
@@ -10,7 +10,7 @@ export const metadata = {
 export default function CataloguePage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-carbon-950 text-carbon-950 dark:text-white">
-      <Navbar />
+      <NavbarWrapper />
       <div className="pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">

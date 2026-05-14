@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Menu, X, Car, Sun, Moon } from 'lucide-react'
@@ -30,7 +31,12 @@ function ThemeToggle() {
   )
 }
 
-export default function Navbar() {
+interface NavbarProps {
+  logoUrl?: string | null
+  companyName?: string
+}
+
+export default function Navbar({ logoUrl, companyName = 'Cartago Motors' }: NavbarProps) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -39,10 +45,16 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
-              <Car size={16} className="text-gold-600 dark:text-gold-400" />
-            </div>
-            <span className="text-carbon-950 dark:text-white font-bold text-base tracking-tight">Cartago Motors</span>
+            {logoUrl ? (
+              <Image src={logoUrl} alt={companyName} width={120} height={40} className="h-9 w-auto object-contain" />
+            ) : (
+              <>
+                <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
+                  <Car size={16} className="text-gold-600 dark:text-gold-400" />
+                </div>
+                <span className="text-carbon-950 dark:text-white font-bold text-base tracking-tight">{companyName}</span>
+              </>
+            )}
           </Link>
 
           <div className="hidden md:flex items-center gap-1">

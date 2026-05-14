@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Car, Phone, MessageCircle, Mail, MapPin } from "lucide-react";
 import { getSettings } from "@/services/settings";
 import FlagText from "@/components/FlagText";
@@ -13,12 +14,18 @@ export default async function Footer() {
           {/* Logo + Réseaux sociaux groupés à gauche */}
           <div className="flex flex-col items-center md:items-start gap-3 shrink-0">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
-                <Car size={16} className="text-gold-600 dark:text-gold-400" />
-              </div>
-              <span className="text-carbon-950 dark:text-white font-bold">
-                {settings.company_name}
-              </span>
+              {settings.logo_url ? (
+                <Image src={settings.logo_url} alt={settings.company_name} width={120} height={40} className="h-9 w-auto object-contain" />
+              ) : (
+                <>
+                  <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
+                    <Car size={16} className="text-gold-600 dark:text-gold-400" />
+                  </div>
+                  <span className="text-carbon-950 dark:text-white font-bold">
+                    {settings.company_name}
+                  </span>
+                </>
+              )}
             </Link>
             {/* Réseaux sociaux */}
             <div className="flex items-center gap-2.5">
