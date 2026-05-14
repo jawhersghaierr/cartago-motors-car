@@ -42,7 +42,7 @@
   background-clip: text;
 }
 /* Mode sombre : dégradé lumineux */
-.dark .text-gold-gradient {
+[data-theme="dark"].text-gold-gradient {
   background: linear-gradient(135deg, #d4921a 0%, #ecc44b 50%, #d4921a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -55,7 +55,7 @@
   border: 1px solid rgba(0,0,0,0.06);
 }
 
-.dark .glass {
+[data-theme="dark"].glass {
   background: rgba(255,255,255,0.03);
   border-color: rgba(255,255,255,0.06);
 }
@@ -66,12 +66,12 @@
     hover:from-gold-600 hover:to-gold-400
     active:scale-[0.98] disabled:opacity-50;
 }
-.dark .btn-gold {
+[data-theme="dark"].btn-gold {
   --tw-gradient-from: #b97015;
   --tw-gradient-to: #e5ac28;
   color: #000;
 }
-.dark .btn-gold:hover {
+[data-theme="dark"].btn-gold:hover {
   --tw-gradient-from: #d4921a;
   --tw-gradient-to: #ecc44b;
 }
@@ -81,11 +81,11 @@
     px-6 py-3 rounded-lg transition-all duration-200
     hover:bg-gold-700/10 active:scale-[0.98];
 }
-.dark .btn-outline-gold {
+[data-theme="dark"].btn-outline-gold {
   border-color: #d4921a;
   color: #e5ac28;
 }
-.dark .btn-outline-gold:hover {
+[data-theme="dark"].btn-outline-gold:hover {
   background-color: rgba(212,146,26,0.10);
 }
 
