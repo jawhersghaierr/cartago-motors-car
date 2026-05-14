@@ -13,9 +13,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${settings.company_name} — Voitures Premium Export`,
     description: "Spécialiste export de véhicules premium vers la Tunisie, l'Algérie et le Maroc.",
-    icons: settings.logo_url
-      ? { icon: settings.logo_url, apple: settings.logo_url }
-      : { icon: '/favicon.svg' },
+    icons: {
+      icon: settings.logo_url || '/logo.png',
+      apple: settings.logo_url || '/logo.png',
+    },
   }
 }
 
