@@ -62,6 +62,7 @@ export default function CarForm({ car }: CarFormProps) {
           status: car.status,
           images: car.images,
           description: car.description ?? "",
+          vincario_data: car.vincario_data ?? null,
         }
       : {
           brand: "",
