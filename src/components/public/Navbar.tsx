@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes'
 import { useFavorites } from '@/context/FavoritesContext'
 
 const links = [
-  { href: '/', label: 'Accueil' },
+  { href: '/home', label: 'Accueil' },
   { href: '/catalogue', label: 'Catalogue' },
   { href: '/contact', label: 'Contact' },
 ]

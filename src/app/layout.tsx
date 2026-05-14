@@ -4,7 +4,6 @@ import './globals.css'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import FloatingWhatsApp from '@/components/public/FloatingWhatsApp'
-import SplashScreen from '@/components/SplashScreen'
 import { getSettings } from '@/services/settings'
 import { CompareProvider } from '@/context/CompareContext'
 import CompareBar from '@/components/public/CompareBar'
@@ -30,7 +29,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider>
           <FavoritesProvider>
             <CompareProvider>
-              <SplashScreen logoUrl={settings.logo_url} companyName={settings.company_name} />
               {children}
               <Toaster position="top-right" richColors closeButton />
               <FloatingWhatsApp number={settings.whatsapp} />
