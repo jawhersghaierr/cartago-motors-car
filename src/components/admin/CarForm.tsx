@@ -115,6 +115,14 @@ export default function CarForm({ car }: CarFormProps) {
         setValue("transmission", data.transmission, { shouldValidate: true });
         filled++;
       }
+      if (data.horsepower) {
+        setValue("horsepower", data.horsepower, { shouldValidate: true });
+        filled++;
+      }
+      if (data.color) {
+        setValue("color", data.color, { shouldValidate: true });
+        filled++;
+      }
 
       if (filled > 0) {
         toast.success(

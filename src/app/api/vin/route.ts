@@ -23,7 +23,10 @@ export async function GET(request: NextRequest) {
       fuel: result.fuelType,
       engine: result.engine,
       transmission: result.transmission,
+      horsepower: result.horsepower,
+      color: result.color,
       makeLogo: result.makeLogo,
+      raw: result.raw,
     })
   } catch (error) {
     console.error('[GET /api/vin]', error)

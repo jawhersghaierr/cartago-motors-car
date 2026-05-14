@@ -29,6 +29,8 @@ export interface VincarioResult {
   fuelType: string | null
   engine: string | null
   transmission: string | null
+  horsepower: number | null
+  color: string | null
   body: string | null
   plantCountry: string | null
   makeLogo: string | null
@@ -117,6 +119,18 @@ export async function decodeVin(vin: string): Promise<VincarioResult> {
   const yearRaw = get('Model Year')
   const parsedYear = yearRaw ? parseInt(yearRaw, 10) : null
 
+  // Horsepower — Vincario peut retourner en HP ou kW
+  let horsepower: number | null = null
+  const hpRaw = get('Engine Power (HP)') ?? get('Maximum Net Power (HP)') ?? get('Power (HP)')
+  const kwRaw = get('Engine Power (kW)') ?? get('Maximum Net Power (kW)')
+  if (hpRaw) {
+    const hp = parseInt(hpRaw, 10)
+    if (!isNaN(hp)) horsepower = hp
+  } else if (kwRaw) {
+    const kw = parseFloat(kwRaw)
+    if (!isNaN(kw)) horsepower = Math.round(kw * 1.35962)
+  }
+
   return {
     vin: data.vin ?? cleanVin,
     make: get('Make'),
@@ -125,6 +139,8 @@ export async function decodeVin(vin: string): Promise<VincarioResult> {
     fuelType: mapFuel(get('Fuel Type - Primary') ?? get('Fuel Type')),
     engine: get('Engine Model') ?? get('Displacement (L)') ?? get('Engine'),
     transmission: mapTransmission(get('Transmission Style') ?? get('Transmission')),
+    horsepower,
+    color: get('Exterior Color') ?? get('Color'),
     body: get('Body Class') ?? get('Body Style'),
     plantCountry: get('Plant Country'),
     makeLogo: data.make_logo ?? null,
