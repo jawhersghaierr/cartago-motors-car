@@ -123,6 +123,23 @@ export default function CarDetailsModal({ car }: Props) {
                 </div>
               )}
 
+              {/* Données Vincario supplémentaires */}
+              {car.vincario_data && Object.keys(car.vincario_data).length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-carbon-400 dark:text-carbon-500 uppercase tracking-wider mb-3">
+                    Données techniques complètes
+                  </h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    {Object.entries(car.vincario_data).map(([label, value]) => (
+                      <div key={label} className="bg-carbon-50 dark:bg-carbon-800 rounded-lg px-3 py-2 border border-carbon-100 dark:border-white/5">
+                        <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-0.5">{label}</p>
+                        <p className="text-xs font-medium text-carbon-800 dark:text-carbon-200 break-words">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Meta */}
               <div className="pt-2 border-t border-carbon-100 dark:border-white/5">
                 <p className="text-carbon-400 dark:text-carbon-600 text-xs">

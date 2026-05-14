@@ -30,7 +30,11 @@ interface CarFormProps {
 export default function CarForm({ car }: CarFormProps) {
   const router = useRouter();
   const [decodingVin, setDecodingVin] = useState(false);
-  const [vinExtra, setVinExtra] = useState<{ label: string; value: string }[]>([]);
+  const [vinExtra, setVinExtra] = useState<{ label: string; value: string }[]>(
+    car?.vincario_data
+      ? Object.entries(car.vincario_data).map(([label, value]) => ({ label, value }))
+      : []
+  );
   const isEditing = !!car;
 
   const {
@@ -147,6 +151,9 @@ export default function CarForm({ car }: CarFormProps) {
             value: String(item.value),
           }))
         setVinExtra(extras);
+        // Sauvegarder tout en base sous forme {label: value}
+        const asRecord = Object.fromEntries(extras.map(e => [e.label, e.value]))
+        setValue("vincario_data", asRecord);
       }
 
       if (filled > 0) {

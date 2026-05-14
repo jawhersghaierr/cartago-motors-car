@@ -18,6 +18,7 @@ export interface Car {
   status: CarStatus
   images: string[]
   description: string | null
+  vincario_data: Record<string, string> | null
   created_at: string
   updated_at: string
 }

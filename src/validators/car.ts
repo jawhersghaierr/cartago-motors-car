@@ -31,6 +31,7 @@ export const createCarSchema = z.object({
   status: z.enum(['available', 'reserved', 'sold']).default('available'),
   images: z.array(z.string()).default([]),
   description: nullableString,
+  vincario_data: z.record(z.string(), z.string()).nullable().optional().transform(v => v ?? null),
 })
 
 export const updateCarSchema = createCarSchema.partial()
