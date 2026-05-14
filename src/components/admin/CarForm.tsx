@@ -407,7 +407,7 @@ export default function CarForm({ car }: CarFormProps) {
               {...register("price_ht")}
               placeholder="ex : 20000"
               min={0}
-              step={100}
+              step={1}
             />
             {errors.price_ht && (
               <p className="text-xs text-destructive">{errors.price_ht.message}</p>
@@ -422,7 +422,7 @@ export default function CarForm({ car }: CarFormProps) {
               {...register("price_ttc")}
               placeholder="ex : 24000"
               min={0}
-              step={100}
+              step={1}
             />
             {errors.price_ttc && (
               <p className="text-xs text-destructive">{errors.price_ttc.message}</p>
