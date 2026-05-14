@@ -38,23 +38,38 @@ export default function VoitureCard({ car }: VoitureCardProps) {
           </div>
         )}
 
-        {/* Favorite toggle button */}
-        <button
-          type="button"
-          onClick={e => {
-            e.preventDefault()
-            e.stopPropagation()
-            toggleFav(car.id)
-          }}
-          aria-label={favorited ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-          className={`absolute top-2 right-2 z-10 w-8 h-8 flex items-center justify-center rounded-full border transition-all duration-200 shadow-md ${
-            favorited
-              ? 'bg-red-500 border-red-400 text-white'
-              : 'bg-white/80 dark:bg-carbon-900/80 border-carbon-200 dark:border-white/10 text-carbon-400 dark:text-carbon-500 hover:bg-white dark:hover:bg-carbon-900 hover:text-red-500 dark:hover:text-red-400'
-          }`}
-        >
-          <Heart size={14} fill={favorited ? 'currentColor' : 'none'} />
-        </button>
+        {/* Favorite + Share buttons */}
+        <div className="absolute top-2 right-2 z-10 flex items-center gap-1">
+          <button
+            type="button"
+            onClick={e => {
+              e.preventDefault()
+              e.stopPropagation()
+              const url = `${window.location.origin}/voiture/${car.id}`
+              navigator.clipboard.writeText(url)
+            }}
+            aria-label="Copier le lien"
+            className="w-8 h-8 flex items-center justify-center rounded-full border bg-white/80 dark:bg-carbon-900/80 border-carbon-200 dark:border-white/10 text-carbon-400 dark:text-carbon-500 hover:bg-white dark:hover:bg-carbon-900 hover:text-gold-600 dark:hover:text-gold-400 transition-all duration-200 shadow-md"
+          >
+            <Share2 size={13} />
+          </button>
+          <button
+            type="button"
+            onClick={e => {
+              e.preventDefault()
+              e.stopPropagation()
+              toggleFav(car.id)
+            }}
+            aria-label={favorited ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+            className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all duration-200 shadow-md ${
+              favorited
+                ? 'bg-red-500 border-red-400 text-white'
+                : 'bg-white/80 dark:bg-carbon-900/80 border-carbon-200 dark:border-white/10 text-carbon-400 dark:text-carbon-500 hover:bg-white dark:hover:bg-carbon-900 hover:text-red-500 dark:hover:text-red-400'
+            }`}
+          >
+            <Heart size={14} fill={favorited ? 'currentColor' : 'none'} />
+          </button>
+        </div>
 
         {/* Compare toggle button */}
         <button
