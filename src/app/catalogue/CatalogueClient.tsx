@@ -129,7 +129,7 @@ export default function CatalogueClient() {
         <p className="text-carbon-500 dark:text-carbon-400 text-sm">
           {loading ? '…' : `${total} véhicule${total > 1 ? 's' : ''} trouvé${total > 1 ? 's' : ''}`}
         </p>
-        <div className="flex items-center gap-1 bg-white dark:bg-carbon-900 border border-carbon-200 dark:border-carbon-800 rounded-lg p-1">
+        <div className="hidden sm:flex items-center gap-1 bg-white dark:bg-carbon-900 border border-carbon-200 dark:border-carbon-800 rounded-lg p-1">
           <button
             onClick={() => setView('grid')}
             aria-label="Vue grille"
