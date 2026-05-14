@@ -13,6 +13,7 @@ export interface SiteSettings {
   tiktok_url: string | null
   stat_pays: string | null
   stat_clients: string | null
+  logo_url: string | null
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
@@ -30,4 +31,5 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   tiktok_url: null,
   stat_pays: '3',
   stat_clients: '200+',
+  logo_url: null,
 }

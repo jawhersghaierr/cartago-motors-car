@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { SiteSettings } from '@/types/settings'
+import LogoUpload from '@/components/admin/LogoUpload'
 
 interface Props {
   initial: SiteSettings
@@ -42,6 +43,17 @@ export default function SettingsForm({ initial }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl">
+
+      {/* Section Logo */}
+      <section className="bg-white rounded-xl border border-slate-200 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 mb-5 pb-3 border-b border-slate-100">
+          Logo
+        </h2>
+        <LogoUpload
+          value={values.logo_url ?? null}
+          onChange={url => setValues(v => ({ ...v, logo_url: url }))}
+        />
+      </section>
 
       {/* Section Vitrine */}
       <section className="bg-white rounded-xl border border-slate-200 p-6">
