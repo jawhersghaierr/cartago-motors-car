@@ -26,6 +26,7 @@ export const createCarSchema = z.object({
   engine: nullableString,
   transmission: z.enum(['Manuelle', 'Automatique', 'Semi-automatique']),
   horsepower: nullablePositiveInt,
+  mileage: nullablePositiveInt,
   color: nullableString,
   price: nullablePositiveNumber,
   status: z.enum(['available', 'reserved', 'sold']).default('available'),

@@ -26,6 +26,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
   const specs = [
     { icon: Fuel, label: 'Carburant', value: c.fuel },
     { icon: Settings, label: 'Transmission', value: c.transmission },
+    c.mileage ? { icon: FileText, label: 'Kilométrage', value: `${c.mileage.toLocaleString('fr-FR')} km` } : null,
     c.horsepower ? { icon: Zap, label: 'Puissance', value: `${c.horsepower} ch` } : null,
     c.engine ? { icon: Car, label: 'Moteur', value: c.engine } : null,
     c.color ? { icon: Palette, label: 'Couleur', value: c.color } : null,

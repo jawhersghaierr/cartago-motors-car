@@ -30,6 +30,7 @@ export default function CarDetailsModal({ car }: Props) {
     { icon: Calendar, label: 'Année', value: String(car.year) },
     { icon: Fuel, label: 'Carburant', value: car.fuel },
     { icon: Settings, label: 'Transmission', value: car.transmission },
+    car.mileage ? { icon: FileText, label: 'Kilométrage', value: `${car.mileage.toLocaleString('fr-FR')} km` } : null,
     car.horsepower ? { icon: Zap, label: 'Puissance', value: `${car.horsepower} ch` } : null,
     car.engine ? { icon: Car, label: 'Moteur', value: car.engine } : null,
     car.color ? { icon: Palette, label: 'Couleur', value: car.color } : null,

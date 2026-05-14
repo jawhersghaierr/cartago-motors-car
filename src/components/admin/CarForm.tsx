@@ -56,6 +56,7 @@ export default function CarForm({ car }: CarFormProps) {
           engine: car.engine ?? "",
           transmission: car.transmission,
           horsepower: car.horsepower ?? undefined,
+          mileage: car.mileage ?? undefined,
           color: car.color ?? "",
           price: car.price ?? undefined,
           status: car.status,
@@ -367,6 +368,22 @@ export default function CarForm({ car }: CarFormProps) {
             {errors.horsepower && (
               <p className="text-xs text-destructive">
                 {errors.horsepower.message}
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="mileage">Kilométrage (km)</Label>
+            <Input
+              id="mileage"
+              type="number"
+              {...register("mileage")}
+              placeholder="ex : 45000"
+              min={0}
+            />
+            {errors.mileage && (
+              <p className="text-xs text-destructive">
+                {errors.mileage.message}
               </p>
             )}
           </div>

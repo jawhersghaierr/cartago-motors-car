@@ -13,6 +13,7 @@ export interface Car {
   engine: string | null
   transmission: TransmissionType
   horsepower: number | null
+  mileage: number | null
   color: string | null
   price: number | null
   status: CarStatus
