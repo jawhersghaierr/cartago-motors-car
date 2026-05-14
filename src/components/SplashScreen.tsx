@@ -25,8 +25,6 @@ export default function SplashScreen({ logoUrl, companyName = 'Cartago Motors' }
 
   if (!show) return null
 
-  const src = logoUrl || '/logo.png'
-
   return (
     <div style={{
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
@@ -38,7 +36,7 @@ export default function SplashScreen({ logoUrl, companyName = 'Cartago Motors' }
     }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={src}
+        src="/logo.png"
         alt={companyName}
         style={{ maxWidth: '60vw', maxHeight: '30vh', objectFit: 'contain', display: 'block' }}
       />
