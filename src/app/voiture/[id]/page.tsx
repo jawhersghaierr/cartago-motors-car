@@ -6,6 +6,7 @@ import NavbarWrapper from '@/components/public/NavbarWrapper'
 import Footer from '@/components/public/Footer'
 import ImageGallery from '@/components/public/ImageGallery'
 import CarDetailsModal from '@/components/public/CarDetailsModal'
+import CarContactModal from '@/components/public/CarContactModal'
 import ShareButton from '@/components/public/ShareButton'
 import FavoriteButton from '@/components/public/FavoriteButton'
 import { supabase } from '@/lib/supabase'
@@ -133,12 +134,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                     Contacter sur WhatsApp
                   </a>
                 )}
-                <Link
-                  href="/contact"
-                  className="btn-outline-gold w-full flex items-center justify-center gap-2 text-base py-4"
-                >
-                  Demander un devis pour ce véhicule
-                </Link>
+                <CarContactModal brand={c.brand} model={c.model} year={c.year} />
               </div>
 
               <p className="text-carbon-400 dark:text-carbon-600 text-xs text-center mt-3">
