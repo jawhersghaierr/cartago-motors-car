@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, Shield, Truck, Award } from 'lucide-react'
 import Navbar from '@/components/public/Navbar'
+import FlagText from '@/components/FlagText'
 import Footer from '@/components/public/Footer'
 import VoitureCard from '@/components/public/VoitureCard'
 import { supabase } from '@/lib/supabase'
