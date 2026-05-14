@@ -8,9 +8,15 @@ import FloatingWhatsApp from '@/components/public/FloatingWhatsApp'
 import SplashScreen from '@/components/SplashScreen'
 import { getSettings } from '@/services/settings'
 
-export const metadata: Metadata = {
-  title: 'Cartago Motors — Voitures Premium Export',
-  description: 'Spécialiste export de véhicules premium vers la Tunisie, l\'Algérie et le Maroc.',
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings()
+  return {
+    title: `${settings.company_name} — Voitures Premium Export`,
+    description: "Spécialiste export de véhicules premium vers la Tunisie, l'Algérie et le Maroc.",
+    icons: settings.logo_url
+      ? { icon: settings.logo_url, apple: settings.logo_url }
+      : { icon: '/favicon.svg' },
+  }
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
