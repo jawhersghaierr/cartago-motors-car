@@ -11,6 +11,7 @@ import { useFavorites } from '@/context/FavoritesContext'
 const links = [
   { href: '/home', label: 'Accueil' },
   { href: '/catalogue', label: 'Catalogue' },
+  { href: '/a-propos', label: 'À propos' },
   { href: '/contact', label: 'Contact' },
 ]
 
