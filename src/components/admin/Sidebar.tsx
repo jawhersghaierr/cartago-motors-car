@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Car, LogOut } from 'lucide-react'
+import { Car, LogOut, Settings } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function Sidebar() {
@@ -45,6 +45,17 @@ export default function Sidebar() {
         >
           <Car size={17} />
           Voitures
+        </Link>
+        <Link
+          href="/admin/settings"
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+            pathname.startsWith('/admin/settings')
+              ? 'bg-white/10 text-white'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
+          }`}
+        >
+          <Settings size={17} />
+          Paramètres
         </Link>
       </nav>
 

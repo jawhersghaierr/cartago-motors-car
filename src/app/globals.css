@@ -28,10 +28,48 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+  * { @apply border-border; }
+  body { @apply antialiased; }
 }
+
+/* ── Vitrine publique ── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #d4921a 0%, #ecc44b 50%, #d4921a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.dark .glass {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.06);
+}
+
+.btn-gold {
+  @apply bg-gradient-to-r from-gold-600 to-gold-400 text-black font-semibold
+    px-6 py-3 rounded-lg transition-all duration-200
+    hover:from-gold-500 hover:to-gold-300
+    active:scale-[0.98] disabled:opacity-50;
+}
+
+.btn-outline-gold {
+  @apply border border-gold-500 text-gold-400 font-semibold
+    px-6 py-3 rounded-lg transition-all duration-200
+    hover:bg-gold-500/10 active:scale-[0.98];
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeUp   { animation: fadeUp 0.7s ease-out forwards; }
+.animate-fadeUp-1 { animation: fadeUp 0.7s ease-out 0.1s both; }
+.animate-fadeUp-2 { animation: fadeUp 0.7s ease-out 0.2s both; }
+.animate-fadeUp-3 { animation: fadeUp 0.7s ease-out 0.3s both; }
+.animate-fadeUp-4 { animation: fadeUp 0.7s ease-out 0.4s both; }
