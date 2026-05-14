@@ -7,7 +7,7 @@ const OPERATION = 'decode'
 
 export interface VincarioDecodeItem {
   label: string
-  value: string | null
+  value: string | number | boolean | null
   id?: number
 }
 
@@ -40,7 +40,9 @@ export interface VincarioResult {
 export function getDecodeValue(items: VincarioDecodeItem[], label: string): string | null {
   const item = items.find(i => i.label.toLowerCase() === label.toLowerCase())
   const val = item?.value
-  return val && val.trim() !== '' ? val.trim() : null
+  if (val === null || val === undefined) return null
+  const str = String(val).trim()
+  return str !== '' ? str : null
 }
 
 export function buildControlSum(vin: string, apiKey: string, secretKey: string): string {
