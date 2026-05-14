@@ -171,6 +171,15 @@ export default function SettingsForm({ initial }: Props) {
               placeholder="https://instagram.com/cartagomotors"
             />
           </div>
+          <div>
+            <label className={labelCls}>TikTok</label>
+            <input
+              className={inputCls}
+              value={values.tiktok_url ?? ''}
+              onChange={e => set('tiktok_url', e.target.value)}
+              placeholder="https://tiktok.com/@cartagomotors"
+            />
+          </div>
         </div>
       </section>
 
