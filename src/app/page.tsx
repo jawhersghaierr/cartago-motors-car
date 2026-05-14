@@ -81,7 +81,7 @@ export default async function HomePage() {
             <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-4 animate-fadeUp-1">
               {settings.hero_tagline}
             </p>
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-6 animate-fadeUp-2">
+            <h1 className="text-3xl lg:text-5xl font-bold leading-tight mb-6 animate-fadeUp-2">
               <span className="text-gold-gradient">{settings.hero_title}</span>
             </h1>
             <p className="text-carbon-600 dark:text-carbon-300 text-lg leading-relaxed mb-8 max-w-xl animate-fadeUp-3">
