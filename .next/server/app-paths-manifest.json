@@ -1,0 +1,8 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js",
+  "/api/decode-vehicle/route": "app/api/decode-vehicle/route.js",
+  "/api/public/settings/route": "app/api/public/settings/route.js",
+  "/admin/voitures/page": "app/admin/voitures/page.js",
+  "/admin/voitures/nouveau/page": "app/admin/voitures/nouveau/page.js"
+}
