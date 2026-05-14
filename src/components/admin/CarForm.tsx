@@ -227,9 +227,8 @@ export default function CarForm({ car }: CarFormProps) {
               />
               <Button
                 type="button"
-                variant="outline"
                 size="sm"
-                className="shrink-0 gap-1.5"
+                className="shrink-0 gap-1.5 bg-slate-900 hover:bg-slate-700 text-white border-0"
                 disabled={
                   decodingVin || !vinValue || vinValue.trim().length !== 17
                 }
