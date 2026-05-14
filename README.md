@@ -1,215 +1,115 @@
-# 🚗 AutoExport Maghreb
+# Cartago Motors
 
-Plateforme premium de vente et d'export de véhicules vers la **Tunisie**, l'**Algérie** et le **Maroc**.
-
----
-
-## ✨ Fonctionnalités
-
-### Site public
-
-- **Accueil** premium avec hero section, statistiques, destinations, témoignages
-- **Catalogue** avec filtres avancés (marque, carburant, boîte, prix, kilométrage, pays)
-- **Détail véhicule** avec galerie photos, specs, formulaire de devis intégré, WhatsApp CTA
-- **Page contact** formulaire de devis complet
-
-### Administration
-
-- **Dashboard** — statistiques temps réel, demandes récentes, valeur du stock
-- **Voitures** — CRUD complet, upload multi-photos, statuts (disponible/réservé/vendu)
-- **Clients** — gestion des demandes, modification de statut, notes internes
-- **Fournisseurs** — gestion des partenaires Europe
+Plateforme web pour un concessionnaire automobile spécialisé dans l'export vers le Maghreb. Construite avec Next.js 14, Supabase et Tailwind CSS.
 
 ---
 
-## 🛠 Stack Technique
+## Stack technique
 
-| Couche          | Technologie             |
-| --------------- | ----------------------- |
-| Frontend        | Next.js 14 (App Router) |
-| Styling         | Tailwind CSS            |
-| Base de données | SQLite (better-sqlite3) |
-| Auth            | JWT (jose) + cookies    |
-| Upload          | API Route multipart     |
-| Icons           | Lucide React            |
-| Notifications   | React Hot Toast         |
+| Couche | Technologie |
+|--------|-------------|
+| Framework | Next.js 14 (App Router) |
+| Base de données | Supabase (PostgreSQL) |
+| Styles | Tailwind CSS |
+| Auth | JWT (jose) + cookies |
+| Email | Resend |
+| Upload | Supabase Storage |
+| Icons | Lucide React |
+| Notifications | Sonner |
 
 ---
 
-## 🚀 Installation & Lancement
+## Pages publiques
 
-### Prérequis
+| Route | Description |
+|-------|-------------|
+| `/home` | Page d'accueil |
+| `/catalogue` | Liste des voitures avec filtres et tri |
+| `/voiture/[id]` | Fiche détaillée d'un véhicule |
+| `/comparer` | Comparateur de véhicules |
+| `/favoris` | Voitures sauvegardées (localStorage) |
+| `/contact` | Formulaire de contact |
+| `/a-propos` | Page à propos |
 
-- Node.js ≥ 18.17
-- npm ≥ 9
+## Interface admin
 
-### 1. Cloner et installer
+| Route | Description |
+|-------|-------------|
+| `/admin/login` | Connexion admin |
+| `/admin` | Dashboard |
+| `/admin/cars` | Gestion du parc automobile |
+| `/admin/cars/new` | Ajouter un véhicule |
+| `/admin/cars/[id]/edit` | Modifier un véhicule |
+| `/admin/settings` | Paramètres (logo, coordonnées, réseaux sociaux) |
+
+---
+
+## Installation
 
 ```bash
-# Installer les dépendances
+git clone <repo>
+cd cartago-motors-car
 npm install
-
-# Initialiser la base de données
-npm run db:init
-
-# Peupler avec des données d'exemple
-npm run seed
-```
-
-### 2. Configuration
-
-Copiez `.env.local` et adaptez si nécessaire :
-
-```bash
-cp .env.local .env.local
-# Modifiez JWT_SECRET en production !
-```
-
-### 3. Lancer en développement
-
-```bash
+cp .env.local.example .env.local
+# Remplir les variables dans .env.local
 npm run dev
 ```
 
-Ouvrez [http://localhost:3000](http://localhost:3000)
+---
 
-### 4. Build production
+## Variables d'environnement
+
+```env
+# Authentification admin
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=your_password
+JWT_SECRET=your_jwt_secret_change_in_production
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# App
+NEXT_PUBLIC_BASE_URL=https://your-domain.com
+
+# WhatsApp (bouton flottant)
+NEXT_PUBLIC_WHATSAPP=+21698000000
+
+# Resend (envoi d'emails de contact)
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxx
+```
+
+---
+
+## Fonctionnalités
+
+- Catalogue avec filtres (marque, carburant, transmission, prix, statut) et tri
+- Accordéon de filtres sur mobile
+- Fiche voiture avec galerie photos, specs, bouton WhatsApp et formulaire "Je suis intéressé"
+- Emails envoyés via Resend vers l'adresse configurée dans les paramètres admin
+- Comparateur jusqu'à 3 véhicules
+- Favoris persistants via localStorage
+- Mode sombre / clair
+- Interface admin complète avec upload d'images
+
+---
+
+## Configuration email (Resend)
+
+1. Crée un compte sur [resend.com](https://resend.com)
+2. Génère une clé API et ajoute-la dans `.env.local` : `RESEND_API_KEY=re_...`
+3. Dans `/admin/settings`, renseigne l'adresse email destinataire des messages
+4. (Optionnel) Vérifie ton domaine sur Resend pour envoyer depuis ta propre adresse
+
+> En mode test, les emails partent depuis `onboarding@resend.dev`.
+
+---
+
+## Déploiement (Vercel)
 
 ```bash
-npm run build
-npm start
-```
-
----
-
-## 🔐 Accès Administration
-
-| URL                   | Description       |
-| --------------------- | ----------------- |
-| `/admin/login`        | Connexion admin   |
-| `/admin/dashboard`    | Tableau de bord   |
-| `/admin/voitures`     | Gestion véhicules |
-| `/admin/clients`      | Demandes clients  |
-| `/admin/fournisseurs` | Fournisseurs      |
-
-**Identifiants par défaut** (après seed) :
-
-```
-Utilisateur : admin
-Mot de passe : Admin@2024!
-```
-
-⚠️ **Changez ces identifiants en production** via la base de données.
-
----
-
-## 📁 Structure du Projet
-
-```
-AutoExport/
-├── src/
-│   ├── app/
-│   │   ├── api/                    # API Routes (Next.js)
-│   │   │   ├── auth/               # Login / Logout
-│   │   │   ├── voitures/           # CRUD véhicules
-│   │   │   ├── fournisseurs/       # CRUD fournisseurs
-│   │   │   ├── clients/            # CRUD demandes
-│   │   │   ├── dashboard/          # Stats dashboard
-│   │   │   └── upload/             # Upload photos
-│   │   ├── admin/                  # Pages admin (protégées)
-│   │   │   ├── login/
-│   │   │   ├── dashboard/
-│   │   │   ├── voitures/
-│   │   │   ├── clients/
-│   │   │   └── fournisseurs/
-│   │   ├── catalogue/              # Page catalogue public
-│   │   ├── voiture/[id]/           # Détail véhicule
-│   │   ├── contact/                # Formulaire contact
-│   │   ├── layout.tsx              # Layout racine
-│   │   └── page.tsx                # Page d'accueil
-│   ├── components/
-│   │   ├── admin/
-│   │   │   ├── VoitureForm.tsx     # Formulaire voiture
-│   │   │   └── FournisseurForm.tsx # Formulaire fournisseur
-│   │   └── public/
-│   │       ├── Navbar.tsx          # Navigation publique
-│   │       ├── Footer.tsx          # Pied de page
-│   │       └── VoitureCard.tsx     # Carte véhicule
-│   ├── lib/
-│   │   ├── db.ts                   # Singleton SQLite
-│   │   ├── auth.ts                 # JWT helpers
-│   │   └── utils.ts                # Fonctions utilitaires
-│   ├── types/
-│   │   └── index.ts                # Types TypeScript
-│   └── middleware.ts               # Protection routes admin
-├── scripts/
-│   ├── initDb.js                   # Création des tables
-│   └── seed.js                     # Données d'exemple
-├── data/                           # SQLite DB (auto-créé)
-├── public/
-│   └── uploads/voitures/           # Photos uploadées
-└── .env.local                      # Variables d'environnement
-```
-
----
-
-## 🗄 Schéma Base de Données
-
-### `voitures`
-
-| Champ            | Type    | Description                   |
-| ---------------- | ------- | ----------------------------- |
-| marque, modele   | TEXT    | Identification                |
-| annee, prix      | INTEGER | Année et prix en euros        |
-| kilometrage      | INTEGER | Kilométrage en km             |
-| carburant        | TEXT    | Essence/Diesel/Hybride/GPL/EV |
-| boite            | TEXT    | Manuelle/Automatique/Semi     |
-| pays_destination | TEXT    | Tunisie,Algérie,Maroc (CSV)   |
-| statut           | TEXT    | disponible/réservé/vendu      |
-| photos           | JSON    | Array de chemins de photos    |
-
-### `clients`
-
-| Champ          | Type | Description                              |
-| -------------- | ---- | ---------------------------------------- |
-| statut         | TEXT | nouveau/contacté/en_négociation/finalisé |
-| notes_internes | TEXT | Notes admin privées                      |
-
----
-
-## 🎨 Design System
-
-- **Fond** : `#111111` (carbon-950)
-- **Accent** : `#d4921a` (gold-500) → doré premium
-- **Police titre** : Playfair Display (serif élégant)
-- **Police corps** : DM Sans (sans-serif moderne)
-
----
-
-## 🌍 Déploiement
-
-### Vercel (recommandé)
-
-```bash
-npm i -g vercel
 vercel --prod
 ```
 
-> Note : SQLite n'est pas persistant sur Vercel. En production, migrez vers PostgreSQL (Neon, Supabase) et remplacez `better-sqlite3` par `pg` ou Prisma.
-
-### VPS / Serveur dédié
-
-```bash
-npm run build
-pm2 start npm --name "AutoExport" -- start
-```
-
----
-
-## 📞 Support
-
-Pour toute question : contact@AutoExport.com
-
----
-
-_AutoExport Maghreb — Votre spécialiste export automobile vers le Maghreb_ 🇹🇳🇩🇿🇲🇦
+Ajoute toutes les variables d'environnement dans le dashboard Vercel avant le déploiement.
