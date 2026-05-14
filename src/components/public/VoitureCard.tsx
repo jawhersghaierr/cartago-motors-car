@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Car, Fuel, Settings, Zap } from 'lucide-react'
+import { Car, Fuel, Settings, Zap, Gauge } from 'lucide-react'
 import type { Car as CarType } from '@/types/car'
 import { formatPrice } from '@/lib/utils'
 
@@ -60,6 +60,12 @@ export default function VoitureCard({ car }: VoitureCardProps) {
             <span className="flex items-center gap-1.5">
               <Zap size={13} />
               {car.horsepower} ch
+            </span>
+          )}
+          {car.mileage && (
+            <span className="flex items-center gap-1.5">
+              <Gauge size={13} />
+              {car.mileage.toLocaleString('fr-FR')} km
             </span>
           )}
         </div>
