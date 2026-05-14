@@ -51,7 +51,7 @@ export default async function HomePage() {
               <span className="text-gold-gradient">{settings.hero_title}</span>
             </h1>
             <p className="text-carbon-600 dark:text-carbon-300 text-lg leading-relaxed mb-8 max-w-xl animate-fadeUp-3">
-              {settings.hero_description}
+              <FlagText text={settings.hero_description} />
             </p>
             <div className="flex flex-col sm:flex-row gap-4 animate-fadeUp-4">
               <Link href="/catalogue" className="btn-gold inline-flex items-center justify-center gap-2">
