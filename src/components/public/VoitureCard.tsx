@@ -7,6 +7,7 @@ import type { Car as CarType } from '@/types/car'
 import { formatPrice } from '@/lib/utils'
 import { useCompare } from '@/context/CompareContext'
 import { useFavorites } from '@/context/FavoritesContext'
+import { useState } from 'react'
 
 interface VoitureCardProps {
   car: CarType
@@ -17,6 +18,28 @@ export default function VoitureCard({ car }: VoitureCardProps) {
   const selected = isSelected(car.id)
   const { toggle: toggleFav, isFavorite } = useFavorites()
   const favorited = isFavorite(car.id)
+  const [copied, setCopied] = useState(false)
+
+  function handleShare(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    const url = `${window.location.origin}/voiture/${car.id}`
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      })
+    } else {
+      const ta = document.createElement('textarea')
+      ta.value = url
+      document.body.appendChild(ta)
+      ta.select()
+      document.execCommand('copy')
+      document.body.removeChild(ta)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
 
   return (
     <Link
@@ -42,16 +65,15 @@ export default function VoitureCard({ car }: VoitureCardProps) {
         <div className="absolute top-2 right-2 z-10 flex items-center gap-1">
           <button
             type="button"
-            onClick={e => {
-              e.preventDefault()
-              e.stopPropagation()
-              const url = `${window.location.origin}/voiture/${car.id}`
-              navigator.clipboard.writeText(url)
-            }}
+            onClick={handleShare}
             aria-label="Copier le lien"
-            className="w-8 h-8 flex items-center justify-center rounded-full border bg-white/80 dark:bg-carbon-900/80 border-carbon-200 dark:border-white/10 text-carbon-400 dark:text-carbon-500 hover:bg-white dark:hover:bg-carbon-900 hover:text-gold-600 dark:hover:text-gold-400 transition-all duration-200 shadow-md"
+            className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all duration-200 shadow-md ${
+              copied
+                ? 'bg-emerald-500 border-emerald-400 text-white'
+                : 'bg-white/80 dark:bg-carbon-900/80 border-carbon-200 dark:border-white/10 text-carbon-400 dark:text-carbon-500 hover:bg-white dark:hover:bg-carbon-900 hover:text-gold-600 dark:hover:text-gold-400'
+            }`}
           >
-            <Share2 size={13} />
+            {copied ? <Check size={13} /> : <Share2 size={13} />}
           </button>
           <button
             type="button"
