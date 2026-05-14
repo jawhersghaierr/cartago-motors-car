@@ -8,14 +8,14 @@ export default async function Footer() {
   const settings = await getSettings();
 
   return (
-    <footer className="bg-gray-50 dark:bg-carbon-950 border-t border-carbon-200 dark:border-white/5 pt-12">
+    <footer className="bg-gray-50 dark:bg-carbon-950 border-t border-carbon-200 dark:border-white/5 pt-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo + Réseaux sociaux groupés à gauche */}
           <div className="flex flex-col items-center md:items-start gap-3 shrink-0">
             <Link href="/" className="flex items-center gap-2.5">
               {settings.logo_url ? (
-                <Image src={settings.logo_url} alt={settings.company_name} width={120} height={40} className="h-28 w-auto object-contain" />
+                <Image src={settings.logo_url} alt={settings.company_name} width={120} height={40} className="h-14 w-auto object-contain" />
               ) : (
                 <>
                   <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
@@ -125,7 +125,7 @@ export default async function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="mt-4 pt-3 border-t border-carbon-200 dark:border-white/5">
+        <div className="mt-3 pt-3 border-t border-carbon-200 dark:border-white/5">
           <p className="text-carbon-400 dark:text-carbon-600 text-sm text-center">
             © {new Date().getFullYear()} {settings.company_name}. Tous droits
             réservés.
