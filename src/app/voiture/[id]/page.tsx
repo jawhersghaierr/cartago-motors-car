@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, Fuel, Settings, Zap, Palette, Hash, Car, FileText } from 'lucide-react'
 import Navbar from '@/components/public/Navbar'
 import Footer from '@/components/public/Footer'
+import ImageGallery from '@/components/public/ImageGallery'
 import { supabase } from '@/lib/supabase'
 import type { Car as CarType } from '@/types/car'
 import { STATUS_LABELS } from '@/types/car'
@@ -48,31 +48,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
           <div className="grid lg:grid-cols-2 gap-10">
             {/* Photos */}
             <div>
-              <div className="relative aspect-video rounded-2xl overflow-hidden bg-carbon-100 dark:bg-carbon-900 mb-3">
-                {c.images[0] ? (
-                  <Image
-                    src={c.images[0]}
-                    alt={`${c.brand} ${c.model}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Car size={60} className="text-carbon-300 dark:text-carbon-700" />
-                  </div>
-                )}
-              </div>
-              {c.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
-                  {c.images.slice(1, 5).map((img, i) => (
-                    <div key={i} className="relative aspect-video rounded-lg overflow-hidden bg-carbon-100 dark:bg-carbon-900">
-                      <Image src={img} alt={`Photo ${i + 2}`} fill className="object-cover" sizes="25vw" />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <ImageGallery images={c.images} alt={`${c.brand} ${c.model}`} />
             </div>
 
             {/* Infos */}
