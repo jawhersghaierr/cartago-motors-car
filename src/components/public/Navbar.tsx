@@ -73,6 +73,14 @@ export default function Navbar({ logoUrl, companyName = 'Cartago Motors' }: Navb
                 {l.label}
               </Link>
             ))}
+            <Link href="/favoris" className="relative p-2 rounded-lg text-carbon-500 hover:text-red-500 hover:bg-red-500/10 dark:text-carbon-400 dark:hover:text-red-400 transition-colors">
+              <Heart size={18} />
+              {favorites.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {favorites.length}
+                </span>
+              )}
+            </Link>
             <ThemeToggle />
           </div>
 
