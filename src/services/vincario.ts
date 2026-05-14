@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto'
+
 const API_BASE = 'https://api.vincario.com/3.2'
 const OPERATION = 'decode'
 
@@ -41,12 +43,9 @@ export function getDecodeValue(items: VincarioDecodeItem[], label: string): stri
   return val && val.trim() !== '' ? val.trim() : null
 }
 
-export async function buildControlSum(vin: string, apiKey: string, secretKey: string): Promise<string> {
+export function buildControlSum(vin: string, apiKey: string, secretKey: string): string {
   const input = `${vin}|${OPERATION}|${apiKey}|${secretKey}`
-  const encoder = new TextEncoder()
-  const hashBuffer = await globalThis.crypto.subtle.digest('SHA-1', encoder.encode(input))
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 10)
+  return createHash('sha1').update(input).digest('hex').substring(0, 10)
 }
 
 // ---------- Mappings ----------
@@ -91,7 +90,7 @@ export async function decodeVin(vin: string): Promise<VincarioResult> {
   }
 
   const cleanVin = vin.trim().toUpperCase()
-  const controlSum = await buildControlSum(cleanVin, apiKey, secretKey)
+  const controlSum = buildControlSum(cleanVin, apiKey, secretKey)
   const url = `${API_BASE}/${apiKey}/${controlSum}/${OPERATION}/${cleanVin}.json`
   console.log('[Vincario] calling:', url)
 
