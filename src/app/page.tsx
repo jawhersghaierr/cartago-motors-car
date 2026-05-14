@@ -61,7 +61,7 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-carbon-950 text-carbon-950 dark:text-white">
-      <Navbar />
+      <Navbar logoUrl={settings.logo_url} companyName={settings.company_name} />
 
       {/* Hero */}
       <section className="relative min-h-screen flex items-center pt-16">
