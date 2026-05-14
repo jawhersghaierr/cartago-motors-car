@@ -1,5 +1,12 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
+interface Props {
+  logoUrl?: string | null
+  companyName?: string
+}
+
 const MESSAGE = 'Bienvenue chez Cartago Motors'
 
 export default function SplashScreen({ logoUrl, companyName = 'Cartago Motors' }: Props) {
