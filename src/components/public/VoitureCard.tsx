@@ -75,7 +75,7 @@ export default function VoitureCard({ car }: VoitureCardProps) {
             (car.price_ht || car.price_ttc) ? (
               <div className="flex items-baseline gap-4 flex-wrap">
                 {car.price_ht && (
-                  <p className="text-base font-bold text-carbon-700 dark:text-carbon-300">
+                  <p className="text-lg font-bold text-gold-700 dark:text-gold-400">
                     {formatPrice(car.price_ht)}<span className="text-xs font-semibold text-carbon-400 dark:text-carbon-500 ml-1">HT</span>
                   </p>
                 )}

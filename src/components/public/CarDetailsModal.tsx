@@ -91,7 +91,7 @@ export default function CarDetailsModal({ car }: Props) {
                   {(car.price_ht || car.price_ttc) ? (
                     <div className="flex items-baseline gap-6 flex-wrap">
                       {car.price_ht && (
-                        <p className="text-2xl font-bold text-carbon-700 dark:text-carbon-200">
+                        <p className="text-3xl font-bold text-gold-gradient">
                           {formatPrice(car.price_ht)}<span className="text-sm font-semibold text-carbon-400 dark:text-carbon-500 ml-1.5">HT</span>
                         </p>
                       )}
