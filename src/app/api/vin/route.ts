@@ -28,7 +28,9 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('[GET /api/vin]', error)
     const message = error instanceof Error ? error.message : 'Erreur lors du décodage VIN'
-    const status = message.includes('manquant') ? 400
+    console.error('[GET /api/vin] error:', message)
+    const status = message === 'ENV_MISSING' ? 500
+      : message.includes('manquant') ? 400
       : message.includes('non reconnu') ? 404
       : message.includes('Quota') ? 402
       : 502

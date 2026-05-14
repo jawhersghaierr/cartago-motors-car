@@ -85,8 +85,10 @@ export async function decodeVin(vin: string): Promise<VincarioResult> {
   const apiKey = process.env.VINCARIO_API_KEY
   const secretKey = process.env.VINCARIO_SECRET_KEY
 
+  console.log('[Vincario] env:', { apiKey: apiKey ? 'OK' : 'MISSING', secretKey: secretKey ? 'OK' : 'MISSING' })
+
   if (!apiKey || !secretKey) {
-    throw new Error('VINCARIO_API_KEY ou VINCARIO_SECRET_KEY non configurés')
+    throw new Error('ENV_MISSING')
   }
 
   const cleanVin = vin.trim().toUpperCase()
