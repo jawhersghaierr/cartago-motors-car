@@ -189,8 +189,11 @@ export default function CarTable() {
                     {car.horsepower && <p className="text-slate-400 text-xs">{car.horsepower} ch</p>}
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell">
-                    {car.price != null ? (
-                      <p className="font-semibold text-slate-900">{formatPrice(car.price)}</p>
+                    {(car.price_ttc ?? car.price) != null ? (
+                      <div>
+                        <p className="font-semibold text-slate-900">{formatPrice(car.price_ttc ?? car.price!)}</p>
+                        {car.price_ttc && <p className="text-xs text-slate-400">TTC</p>}
+                      </div>
                     ) : (
                       <p className="text-slate-300">—</p>
                     )}
@@ -204,7 +207,7 @@ export default function CarTable() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-end gap-0.5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                       <Link href={`/admin/cars/${car.id}/edit`}>
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-slate-900">
                           <Pencil size={14} />
