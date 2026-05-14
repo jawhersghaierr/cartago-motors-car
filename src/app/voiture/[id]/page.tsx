@@ -47,6 +47,13 @@ export default async function VoiturePage({ params }: { params: { id: string } }
             Retour au catalogue
           </Link>
 
+          {c.description && (
+            <div className="mb-8 bg-white dark:bg-carbon-900 rounded-xl border border-carbon-200 dark:border-white/5 p-5">
+              <h2 className="text-carbon-950 dark:text-white font-semibold mb-2">Description</h2>
+              <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">{c.description}</p>
+            </div>
+          )}
+
           <div className="grid lg:grid-cols-2 gap-10">
             {/* Photos */}
             <div>
@@ -105,14 +112,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                 ))}
               </div>
 
-              {c.description && (
-                <div className="mb-6">
-                  <h2 className="text-carbon-950 dark:text-white font-semibold mb-2">Description</h2>
-                  <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">{c.description}</p>
-                </div>
-              )}
-
-              <div className="flex flex-col gap-3 mt-6">
+<div className="flex flex-col gap-3 mt-6">
                 <CarDetailsModal car={c} />
                 {settings.whatsapp && (
                   <a
