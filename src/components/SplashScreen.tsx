@@ -9,6 +9,7 @@ interface Props {
 }
 
 export default function SplashScreen({ logoUrl, companyName = 'Cartago Motors' }: Props) {
+  const src = logoUrl || '/logo.png'
   const [visible, setVisible] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
   const [imgLoaded, setImgLoaded] = useState(false)
@@ -38,10 +39,10 @@ export default function SplashScreen({ logoUrl, companyName = 'Cartago Motors' }
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-        {logoUrl ? (
+        {src ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={logoUrl}
+            src={src}
             alt={companyName}
             onLoad={() => setImgLoaded(true)}
             style={{
