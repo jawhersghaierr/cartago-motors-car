@@ -68,7 +68,7 @@ export default async function HomePage() {
       </div>
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center pt-16">
+      <section className="relative flex items-center pt-6">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-50 to-gray-100 dark:from-carbon-950 dark:via-carbon-950 dark:to-carbon-900" />
           <div
