@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Search, SlidersHorizontal, X } from 'lucide-react'
+import { Search, SlidersHorizontal, X, LayoutGrid, List } from 'lucide-react'
 import { supabaseClient } from '@/lib/supabase-client'
 import type { Car } from '@/types/car'
 import { FUEL_TYPES, TRANSMISSION_TYPES, CAR_BRANDS } from '@/types/car'
 import VoitureCard from '@/components/public/VoitureCard'
+import VoitureListItem from '@/components/public/VoitureListItem'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export default function CatalogueClient() {
@@ -20,6 +21,7 @@ export default function CatalogueClient() {
   const [maxPrice, setMaxPrice] = useState('')
   const [status, setStatus] = useState('')
   const [page, setPage] = useState(1)
+  const [view, setView] = useState<'grid' | 'list'>('grid')
   const limit = 12
 
   const fetchCars = useCallback(async () => {
@@ -127,12 +129,28 @@ export default function CatalogueClient() {
         <p className="text-carbon-500 dark:text-carbon-400 text-sm">
           {loading ? '…' : `${total} véhicule${total > 1 ? 's' : ''} trouvé${total > 1 ? 's' : ''}`}
         </p>
+        <div className="flex items-center gap-1 bg-white dark:bg-carbon-900 border border-carbon-200 dark:border-carbon-800 rounded-lg p-1">
+          <button
+            onClick={() => setView('grid')}
+            aria-label="Vue grille"
+            className={`p-1.5 rounded-md transition-colors ${view === 'grid' ? 'bg-gold-500 text-white' : 'text-carbon-400 dark:text-carbon-500 hover:text-carbon-950 dark:hover:text-white'}`}
+          >
+            <LayoutGrid size={15} />
+          </button>
+          <button
+            onClick={() => setView('list')}
+            aria-label="Vue liste"
+            className={`p-1.5 rounded-md transition-colors ${view === 'list' ? 'bg-gold-500 text-white' : 'text-carbon-400 dark:text-carbon-500 hover:text-carbon-950 dark:hover:text-white'}`}
+          >
+            <List size={15} />
+          </button>
+        </div>
       </div>
 
       {loading ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className={view === 'grid' ? 'grid sm:grid-cols-2 lg:grid-cols-3 gap-6' : 'flex flex-col gap-4'}>
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-72 rounded-2xl bg-carbon-200 dark:bg-carbon-800" />
+            <Skeleton key={i} className={`rounded-2xl bg-carbon-200 dark:bg-carbon-800 ${view === 'grid' ? 'h-72' : 'h-32'}`} />
           ))}
         </div>
       ) : cars.length === 0 ? (
@@ -144,9 +162,13 @@ export default function CatalogueClient() {
             </button>
           )}
         </div>
-      ) : (
+      ) : view === 'grid' ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cars.map(car => <VoitureCard key={car.id} car={car} />)}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-4">
+          {cars.map(car => <VoitureListItem key={car.id} car={car} />)}
         </div>
       )}
 
