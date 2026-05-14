@@ -77,7 +77,7 @@ export default async function HomePage() {
           />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
           <div className="max-w-3xl">
             <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-4 animate-fadeUp-1">
               {settings.hero_tagline}
@@ -124,7 +124,7 @@ export default async function HomePage() {
 
       {/* Véhicules en vedette */}
       {vedettes.length > 0 && (
-        <section className="py-24 bg-carbon-100/60 dark:bg-carbon-900/40">
+        <section className="py-12 bg-carbon-100/60 dark:bg-carbon-900/40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-end justify-between mb-10">
               <div>
@@ -162,7 +162,7 @@ export default async function HomePage() {
       <BrandMarquee />
 
       {/* Features */}
-      <section className="py-24">
+      <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-3">
@@ -195,7 +195,7 @@ export default async function HomePage() {
 
       {/* Google Reviews */}
       {settings.google_review_url && (
-        <section className="pt-20 pb-10 bg-carbon-100/60 dark:bg-carbon-900/40">
+        <section className="py-10 bg-carbon-100/60 dark:bg-carbon-900/40">
           <div className="max-w-2xl mx-auto px-4 text-center">
             <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-3">
               Avis clients
