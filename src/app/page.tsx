@@ -173,8 +173,7 @@ export default async function HomePage() {
             {features.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="rounded-2xl p-8 transition-all"
-                style={{ background: 'linear-gradient(135deg, #d4921a, #ecc44b, #d4921a)' }}
+                className="rounded-2xl p-8 transition-all bg-gradient-to-r from-gold-700 to-gold-500"
               >
                 <div className="w-11 h-11 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center mb-5">
                   <Icon size={20} className="text-white" />
