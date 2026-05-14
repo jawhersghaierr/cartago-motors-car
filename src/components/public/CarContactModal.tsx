@@ -21,11 +21,23 @@ export default function CarContactModal({ brand, model, year }: CarContactModalP
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
-    toast.success('Message envoyé ! Nous vous répondrons sous 24h.')
-    setOpen(false)
-    ;(e.target as HTMLFormElement).reset()
-    setLoading(false)
+    const form = e.target as HTMLFormElement
+    const data = Object.fromEntries(new FormData(form))
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, vehicule: `${brand} ${model} (${year})` }),
+      })
+      if (!res.ok) throw new Error()
+      toast.success('Message envoyé ! Nous vous répondrons sous 24h.')
+      setOpen(false)
+      form.reset()
+    } catch {
+      toast.error('Erreur lors de l\'envoi. Réessayez.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
