@@ -74,18 +74,16 @@ export default async function VoiturePage({ params }: { params: { id: string } }
               {(c.price_ttc || c.price_ht || c.price) && (
                 <div className="mt-4 mb-6">
                   {(c.price_ht || c.price_ttc) ? (
-                    <div className="flex items-end gap-8 flex-wrap">
+                    <div className="flex items-baseline gap-6 flex-wrap">
                       {c.price_ht && (
-                        <div>
-                          <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-1">Prix HT</p>
-                          <p className="text-3xl font-bold text-carbon-700 dark:text-carbon-200">{formatPrice(c.price_ht)}</p>
-                        </div>
+                        <p className="text-2xl font-bold text-carbon-700 dark:text-carbon-200">
+                          {formatPrice(c.price_ht)}<span className="text-sm font-semibold text-carbon-400 dark:text-carbon-500 ml-1.5">HT</span>
+                        </p>
                       )}
                       {c.price_ttc && (
-                        <div>
-                          <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-1">Prix TTC</p>
-                          <p className="text-3xl font-bold text-gold-gradient">{formatPrice(c.price_ttc)}</p>
-                        </div>
+                        <p className="text-3xl font-bold text-gold-gradient">
+                          {formatPrice(c.price_ttc)}<span className="text-sm font-semibold text-carbon-400 dark:text-carbon-500 ml-1.5">TTC</span>
+                        </p>
                       )}
                     </div>
                   ) : c.price ? (

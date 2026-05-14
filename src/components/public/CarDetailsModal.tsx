@@ -87,22 +87,20 @@ export default function CarDetailsModal({ car }: Props) {
             <div className="p-6 space-y-6">
               {/* Prix */}
               {(car.price_ttc || car.price_ht || car.price) && (
-                <div className="flex items-end gap-8 flex-wrap">
+                <div>
                   {(car.price_ht || car.price_ttc) ? (
-                    <>
+                    <div className="flex items-baseline gap-6 flex-wrap">
                       {car.price_ht && (
-                        <div>
-                          <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-1">Prix HT</p>
-                          <p className="text-3xl font-bold text-carbon-700 dark:text-carbon-200">{formatPrice(car.price_ht)}</p>
-                        </div>
+                        <p className="text-2xl font-bold text-carbon-700 dark:text-carbon-200">
+                          {formatPrice(car.price_ht)}<span className="text-sm font-semibold text-carbon-400 dark:text-carbon-500 ml-1.5">HT</span>
+                        </p>
                       )}
                       {car.price_ttc && (
-                        <div>
-                          <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-1">Prix TTC</p>
-                          <p className="text-3xl font-bold text-gold-gradient">{formatPrice(car.price_ttc)}</p>
-                        </div>
+                        <p className="text-3xl font-bold text-gold-gradient">
+                          {formatPrice(car.price_ttc)}<span className="text-sm font-semibold text-carbon-400 dark:text-carbon-500 ml-1.5">TTC</span>
+                        </p>
                       )}
-                    </>
+                    </div>
                   ) : car.price ? (
                     <p className="text-3xl font-bold text-gold-gradient">{formatPrice(car.price)}</p>
                   ) : null}
