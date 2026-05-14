@@ -51,6 +51,12 @@ export default async function VoiturePage({ params }: { params: { id: string } }
             {/* Photos */}
             <div>
               <ImageGallery images={c.images} alt={`${c.brand} ${c.model}`} />
+              {c.description && (
+                <div className="mt-5 bg-white dark:bg-carbon-900 rounded-xl border border-carbon-200 dark:border-white/5 p-5">
+                  <h2 className="text-carbon-950 dark:text-white font-semibold mb-2">Description</h2>
+                  <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">{c.description}</p>
+                </div>
+              )}
             </div>
 
             {/* Infos */}
@@ -126,12 +132,6 @@ export default async function VoiturePage({ params }: { params: { id: string } }
                 </Link>
               </div>
 
-              {c.description && (
-                <div className="mt-6 bg-white dark:bg-carbon-900 rounded-xl border border-carbon-200 dark:border-white/5 p-5">
-                  <h2 className="text-carbon-950 dark:text-white font-semibold mb-2">Description</h2>
-                  <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">{c.description}</p>
-                </div>
-              )}
               <p className="text-carbon-400 dark:text-carbon-600 text-xs text-center mt-3">
                 Ajouté le {formatDate(c.created_at)}
               </p>
