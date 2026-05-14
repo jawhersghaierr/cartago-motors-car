@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Search, SlidersHorizontal, X } from 'lucide-react'
+import { Search, SlidersHorizontal, X, ChevronDown } from 'lucide-react'
 import { supabaseClient } from '@/lib/supabase-client'
 import type { Car } from '@/types/car'
 import { FUEL_TYPES, TRANSMISSION_TYPES, CAR_BRANDS } from '@/types/car'
@@ -20,6 +20,7 @@ export default function CatalogueClient() {
   const [maxPrice, setMaxPrice] = useState('')
   const [status, setStatus] = useState('')
   const [page, setPage] = useState(1)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const limit = 12
 
   const fetchCars = useCallback(async () => {
