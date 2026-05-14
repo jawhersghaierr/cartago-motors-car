@@ -130,23 +130,6 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* ── Stats ── */}
-      <section className="py-12 bg-carbon-100/60 dark:bg-carbon-900/40 border-y border-carbon-200/60 dark:border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map(({ value, label, icon: Icon }) => (
-              <div key={label} className="flex flex-col items-center text-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gold-700/10 dark:bg-gold-500/10 border border-gold-700/20 dark:border-gold-500/20 flex items-center justify-center">
-                  <Icon size={20} className="text-gold-700 dark:text-gold-500" />
-                </div>
-                <p className="text-4xl font-bold text-gold-gradient">{value}</p>
-                <p className="text-carbon-500 dark:text-carbon-400 text-sm">{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── Notre histoire ── */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -298,6 +281,23 @@ export default async function AboutPage() {
                 <span className="text-5xl mb-4 block">{flag}</span>
                 <h3 className="font-bold text-carbon-950 dark:text-white text-lg mb-2">{name}</h3>
                 <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Stats ── */}
+      <section className="py-12 bg-carbon-100/60 dark:bg-carbon-900/40 border-y border-carbon-200/60 dark:border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map(({ value, label, icon: Icon }) => (
+              <div key={label} className="flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gold-700/10 dark:bg-gold-500/10 border border-gold-700/20 dark:border-gold-500/20 flex items-center justify-center">
+                  <Icon size={20} className="text-gold-700 dark:text-gold-500" />
+                </div>
+                <p className="text-4xl font-bold text-gold-gradient">{value}</p>
+                <p className="text-carbon-500 dark:text-carbon-400 text-sm">{label}</p>
               </div>
             ))}
           </div>
