@@ -15,7 +15,7 @@ export default async function Footer() {
           <div className="flex flex-col items-center md:items-start gap-3 shrink-0">
             <Link href="/" className="flex items-center gap-2.5">
               {settings.logo_url ? (
-                <Image src={settings.logo_url} alt={settings.company_name} width={120} height={40} className="h-14 w-auto object-contain" />
+                <Image src={settings.logo_url} alt={settings.company_name} width={120} height={40} className="h-20 w-auto object-contain" />
               ) : (
                 <>
                   <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
