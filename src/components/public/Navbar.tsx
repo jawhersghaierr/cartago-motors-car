@@ -49,7 +49,7 @@ export default function Navbar({ logoUrl, companyName = 'Cartago Motors' }: Navb
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5">
             {logoUrl ? (
-              <Image src={logoUrl} alt={companyName} width={120} height={40} className="h-10 w-auto object-contain" />
+              <Image src={logoUrl} alt={companyName} width={120} height={40} className="h-14 w-auto object-contain" />
             ) : (
               <>
                 <div className="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
