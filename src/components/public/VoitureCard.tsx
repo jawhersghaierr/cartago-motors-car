@@ -100,13 +100,19 @@ export default function VoitureCard({ car }: VoitureCardProps) {
       <Link href={`/voiture/${car.id}`} className="block">
         <div className="relative aspect-video bg-carbon-100 dark:bg-carbon-800 overflow-hidden">
           {car.images[0] ? (
-            <Image
-              src={car.images[0]}
-              alt={`${car.brand} ${car.model}`}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
+            <>
+              <Image
+                src={car.images[0]}
+                alt={`${car.brand} ${car.model}`}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+              <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-full pointer-events-none select-none">
+                <span className="text-gold-400 text-[10px]">✦</span>
+                <span className="text-white text-[10px] font-semibold tracking-wide">Cartago Motors</span>
+              </div>
+            </>
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
               <Car size={40} className="text-carbon-300 dark:text-carbon-700" />

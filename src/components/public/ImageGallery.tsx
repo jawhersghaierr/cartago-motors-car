@@ -58,6 +58,11 @@ export default function ImageGallery({ images, alt }: Props) {
             sizes="(max-width: 1024px) 100vw, 50vw"
             priority
           />
+          {/* Watermark */}
+          <div className="absolute bottom-3 left-3 z-10 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full pointer-events-none select-none">
+            <span className="text-gold-400 text-xs">✦</span>
+            <span className="text-white text-xs font-semibold tracking-wide">Cartago Motors</span>
+          </div>
           {/* Overlay hover */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
             <ZoomIn size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" />
@@ -150,6 +155,10 @@ export default function ImageGallery({ images, alt }: Props) {
               sizes="100vw"
               priority
             />
+            <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full pointer-events-none select-none">
+              <span className="text-gold-400 text-xs">✦</span>
+              <span className="text-white text-xs font-semibold tracking-wide">Cartago Motors</span>
+            </div>
           </div>
 
           {/* Flèches lightbox */}
