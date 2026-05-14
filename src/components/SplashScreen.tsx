@@ -11,49 +11,81 @@ interface Props {
 export default function SplashScreen({ logoUrl, companyName = 'Cartago Motors' }: Props) {
   const [visible, setVisible] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(false)
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1400)
-    const hideTimer = setTimeout(() => setVisible(false), 2000)
+    const delay = imgLoaded ? 1200 : 1600
+    const fadeTimer = setTimeout(() => setFadeOut(true), delay)
+    const hideTimer = setTimeout(() => setVisible(false), delay + 600)
     return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer) }
-  }, [])
+  }, [imgLoaded])
 
   if (!visible) return null
 
   return (
     <div
-      className="fixed inset-0 z-[999] flex items-center justify-center bg-carbon-950 transition-opacity duration-500"
-      style={{ opacity: fadeOut ? 0 : 1 }}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffffff',
+        opacity: fadeOut ? 0 : 1,
+        transition: 'opacity 0.5s ease',
+        pointerEvents: fadeOut ? 'none' : 'auto',
+      }}
     >
-      <div
-        className="flex flex-col items-center gap-4 transition-transform duration-500"
-        style={{ transform: fadeOut ? 'scale(1.05)' : 'scale(1)' }}
-      >
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
         {logoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={logoUrl}
             alt={companyName}
-            style={{ width: 220, height: 'auto', objectFit: 'contain' }}
+            onLoad={() => setImgLoaded(true)}
+            style={{
+              maxWidth: 260,
+              maxHeight: 160,
+              width: 'auto',
+              height: 'auto',
+              objectFit: 'contain',
+              display: 'block',
+            }}
           />
         ) : (
-          <>
-            <div className="w-20 h-20 rounded-2xl bg-gold-500/20 border border-gold-500/30 flex items-center justify-center">
-              <Car size={36} className="text-gold-400" />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+            <div style={{
+              width: 72, height: 72, borderRadius: 16,
+              background: 'rgba(212,146,26,0.15)', border: '1px solid rgba(212,146,26,0.3)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}>
+              <Car size={32} color="#b97015" />
             </div>
-            <p className="text-white font-bold text-2xl tracking-tight">{companyName}</p>
-          </>
+            <p style={{ fontWeight: 700, fontSize: 22, color: '#111111', margin: 0 }}>{companyName}</p>
+          </div>
         )}
-        <div className="flex gap-1.5 mt-2">
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
           {[0, 1, 2].map(i => (
             <span
               key={i}
-              className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-bounce"
-              style={{ animationDelay: `${i * 0.15}s` }}
+              style={{
+                width: 8, height: 8, borderRadius: '50%',
+                background: '#d4921a',
+                display: 'inline-block',
+                animation: 'bounce 0.8s infinite',
+                animationDelay: `${i * 0.15}s`,
+              }}
             />
           ))}
         </div>
       </div>
+      <style>{`
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+      `}</style>
     </div>
   )
 }
