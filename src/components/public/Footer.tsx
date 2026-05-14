@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Car, Phone, MessageCircle, Mail, MapPin } from "lucide-react";
 import { getSettings } from "@/services/settings";
+import FlagText from "@/components/FlagText";
 
 export default async function Footer() {
   const settings = await getSettings();
@@ -69,7 +70,7 @@ export default async function Footer() {
                     size={13}
                     className="text-gold-700/70 dark:text-gold-500/70"
                   />
-                  {settings.address}
+                  <FlagText text={settings.address} />
                 </span>
               )}
             </div>
