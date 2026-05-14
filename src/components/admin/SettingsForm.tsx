@@ -147,6 +147,34 @@ export default function SettingsForm({ initial }: Props) {
         </div>
       </section>
 
+      {/* Section Statistiques */}
+      <section className="bg-white rounded-xl border border-slate-200 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 mb-5 pb-3 border-b border-slate-100">
+          Statistiques (page d'accueil)
+        </h2>
+        <p className="text-xs text-slate-400 mb-4">Les véhicules disponibles et exportés sont calculés automatiquement. Renseignez les deux autres ici.</p>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className={labelCls}>Pays desservis</label>
+            <input
+              className={inputCls}
+              value={values.stat_pays ?? ''}
+              onChange={e => set('stat_pays', e.target.value)}
+              placeholder="ex : 3"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Clients satisfaits</label>
+            <input
+              className={inputCls}
+              value={values.stat_clients ?? ''}
+              onChange={e => set('stat_clients', e.target.value)}
+              placeholder="ex : 200+"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Section Réseaux sociaux */}
       <section className="bg-white rounded-xl border border-slate-200 p-6">
         <h2 className="text-sm font-semibold text-slate-900 mb-5 pb-3 border-b border-slate-100">
