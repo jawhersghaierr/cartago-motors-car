@@ -105,22 +105,16 @@ export default async function HomePage() {
           </div>
 
           {/* Stats */}
-          <div className="mt-20 grid grid-cols-2 sm:grid-cols-3 gap-8 max-w-lg">
+          <div className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-2xl">
             {[
-              { value: nbDispo.toString(), label: "Véhicules disponibles" },
-              {
-                value: nbVendus > 0 ? `${nbVendus}+` : "0",
-                label: "Véhicules vendus",
-              },
-              { value: "3", label: "Pays desservis" },
+              { value: nbDispo.toString(), label: 'Véhicules disponibles' },
+              { value: nbVendus > 0 ? `${nbVendus}+` : '0', label: 'Véhicules exportés' },
+              { value: settings.stat_pays ?? '3', label: 'Pays desservis' },
+              { value: settings.stat_clients ?? '200+', label: 'Clients satisfaits' },
             ].map((s) => (
               <div key={s.label}>
-                <p className="text-4xl font-bold text-gold-gradient">
-                  {s.value}
-                </p>
-                <p className="text-carbon-500 dark:text-carbon-400 text-sm mt-1">
-                  {s.label}
-                </p>
+                <p className="text-4xl font-bold text-gold-gradient">{s.value}</p>
+                <p className="text-carbon-500 dark:text-carbon-400 text-sm mt-1">{s.label}</p>
               </div>
             ))}
           </div>
