@@ -76,7 +76,7 @@ export default async function HomePage() {
           />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
           <div className="max-w-3xl">
             <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-4 animate-fadeUp-1">
               {settings.hero_tagline}
@@ -173,18 +173,16 @@ export default async function HomePage() {
             {features.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="glass rounded-2xl p-8 hover:border-gold-500/20 transition-all"
+                className="rounded-2xl p-8 transition-all"
+                style={{ background: 'linear-gradient(135deg, #d4921a, #ecc44b, #d4921a)' }}
               >
-                <div className="w-11 h-11 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-5">
-                  <Icon
-                    size={20}
-                    className="text-gold-600 dark:text-gold-400"
-                  />
+                <div className="w-11 h-11 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center mb-5">
+                  <Icon size={20} className="text-white" />
                 </div>
-                <h3 className="text-carbon-950 dark:text-white font-semibold text-lg mb-3">
+                <h3 className="text-white font-semibold text-lg mb-3">
                   {title}
                 </h3>
-                <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">
+                <p className="text-white/80 text-sm leading-relaxed">
                   {desc}
                 </p>
               </div>
