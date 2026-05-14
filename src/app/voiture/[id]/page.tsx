@@ -25,7 +25,8 @@ export default async function VoiturePage({ params }: { params: { id: string } }
 
   const c = car as CarType
 
-  const specs = [
+  type Spec = { icon: React.ElementType; label: string; value: string }
+  const specsRaw: (Spec | null)[] = [
     { icon: Fuel, label: 'Carburant', value: c.fuel },
     { icon: Settings, label: 'Transmission', value: c.transmission },
     c.mileage ? { icon: FileText, label: 'Kilométrage', value: `${c.mileage.toLocaleString('fr-FR')} km` } : null,
@@ -34,7 +35,8 @@ export default async function VoiturePage({ params }: { params: { id: string } }
     c.color ? { icon: Palette, label: 'Couleur', value: c.color } : null,
     c.vin ? { icon: Hash, label: 'VIN', value: c.vin } : null,
     c.plate_number ? { icon: FileText, label: 'Immatriculation', value: c.plate_number } : null,
-  ].filter(Boolean) as { icon: React.ElementType; label: string; value: string }[]
+  ]
+  const specs = specsRaw.filter((s): s is Spec => s !== null)
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-carbon-950 text-carbon-950 dark:text-white">
