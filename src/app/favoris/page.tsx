@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Heart, ArrowRight } from 'lucide-react'
+import { Heart, ArrowRight, ChevronLeft } from 'lucide-react'
 import { useFavorites } from '@/context/FavoritesContext'
 import { supabaseClient } from '@/lib/supabase-client'
 import type { Car } from '@/types/car'
 import VoitureCard from '@/components/public/VoitureCard'
 import { Skeleton } from '@/components/ui/skeleton'
+import Navbar from '@/components/public/Navbar'
 
 export default function FavorisPage() {
   const { favorites, clear } = useFavorites()
@@ -29,7 +30,15 @@ export default function FavorisPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-carbon-950 text-carbon-950 dark:text-white">
+      <Navbar logoUrl={null} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
+        <Link
+          href="/catalogue"
+          className="inline-flex items-center gap-1.5 text-carbon-500 hover:text-carbon-950 dark:text-carbon-400 dark:hover:text-white text-sm transition-colors mb-8"
+        >
+          <ChevronLeft size={15} />
+          Retour au catalogue
+        </Link>
         <div className="flex items-center justify-between mb-10">
           <div>
             <p className="text-gold-700 dark:text-gold-500 text-sm uppercase tracking-widest font-medium mb-1">
