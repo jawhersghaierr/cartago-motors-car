@@ -93,7 +93,7 @@ export async function decodeVin(vin: string): Promise<VincarioResult> {
   const controlSum = buildControlSum(cleanVin, apiKey, secretKey)
   const url = `${API_BASE}/${apiKey}/${controlSum}/${OPERATION}/${cleanVin}.json`
 
-  const res = await fetch(url, { next: { revalidate: 3600 } })
+  const res = await fetch(url, { cache: 'no-store' })
 
   if (!res.ok) {
     if (res.status === 402) throw new Error('Quota Vincario épuisé')
