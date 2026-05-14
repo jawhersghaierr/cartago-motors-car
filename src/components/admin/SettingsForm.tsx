@@ -37,7 +37,7 @@ export default function SettingsForm({ initial }: Props) {
     }
   }
 
-  const inputCls = 'w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+  const inputCls = 'w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
   const textareaCls = `${inputCls} resize-none`
   const labelCls = 'block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5'
 

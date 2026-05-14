@@ -29,7 +29,8 @@
 
 @layer base {
   * { @apply border-border; }
-  body { @apply antialiased; }
+  body { @apply bg-background text-foreground antialiased; }
+  input, textarea, select { color-scheme: light; }
 }
 
 /* ── Vitrine publique ── */
