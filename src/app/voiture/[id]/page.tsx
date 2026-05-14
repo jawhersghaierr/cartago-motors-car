@@ -73,19 +73,24 @@ export default async function VoiturePage({ params }: { params: { id: string } }
 
               {(c.price_ttc || c.price_ht || c.price) && (
                 <div className="mt-4 mb-6">
-                  {c.price_ttc ? (
-                    <div className="flex items-baseline gap-3 flex-wrap">
-                      <p className="text-4xl font-bold text-gold-gradient">{formatPrice(c.price_ttc)}</p>
-                      <span className="text-sm font-medium text-carbon-400 dark:text-carbon-500">TTC</span>
+                  {(c.price_ht || c.price_ttc) ? (
+                    <div className="flex items-end gap-8 flex-wrap">
+                      {c.price_ht && (
+                        <div>
+                          <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-1">Prix HT</p>
+                          <p className="text-3xl font-bold text-carbon-700 dark:text-carbon-200">{formatPrice(c.price_ht)}</p>
+                        </div>
+                      )}
+                      {c.price_ttc && (
+                        <div>
+                          <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-1">Prix TTC</p>
+                          <p className="text-3xl font-bold text-gold-gradient">{formatPrice(c.price_ttc)}</p>
+                        </div>
+                      )}
                     </div>
                   ) : c.price ? (
                     <p className="text-4xl font-bold text-gold-gradient">{formatPrice(c.price)}</p>
                   ) : null}
-                  {c.price_ht && (
-                    <p className="text-sm text-carbon-500 dark:text-carbon-400 mt-1">
-                      {formatPrice(c.price_ht)} <span className="text-carbon-400 dark:text-carbon-500">HT</span>
-                    </p>
-                  )}
                 </div>
               )}
 

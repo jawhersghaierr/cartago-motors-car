@@ -16,6 +16,7 @@ export default function CatalogueClient() {
   const [fuel, setFuel] = useState('')
   const [transmission, setTransmission] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
+  const [status, setStatus] = useState('')
   const [page, setPage] = useState(1)
   const limit = 12
 
@@ -25,12 +26,12 @@ export default function CatalogueClient() {
       let query = supabaseClient
         .from('cars')
         .select('*', { count: 'exact' })
-        .eq('status', 'available')
 
       if (search) query = query.or(`brand.ilike.%${search}%,model.ilike.%${search}%`)
       if (fuel) query = query.eq('fuel', fuel)
       if (transmission) query = query.eq('transmission', transmission)
-      if (maxPrice) query = query.lte('price', Number(maxPrice))
+      if (status) query = query.eq('status', status)
+      if (maxPrice) query = query.or(`price_ttc.lte.${Number(maxPrice)},and(price_ttc.is.null,price.lte.${Number(maxPrice)})`)
 
       const from = (page - 1) * limit
       const { data, count, error } = await query
@@ -43,14 +44,14 @@ export default function CatalogueClient() {
     } finally {
       setLoading(false)
     }
-  }, [search, fuel, transmission, maxPrice, page])
+  }, [search, fuel, transmission, maxPrice, status, page])
 
   useEffect(() => { fetchCars() }, [fetchCars])
-  useEffect(() => { setPage(1) }, [search, fuel, transmission, maxPrice])
+  useEffect(() => { setPage(1) }, [search, fuel, transmission, maxPrice, status])
 
-  const hasFilters = search || fuel || transmission || maxPrice
+  const hasFilters = search || fuel || transmission || maxPrice || status
   function clearFilters() {
-    setSearch(''); setFuel(''); setTransmission(''); setMaxPrice('')
+    setSearch(''); setFuel(''); setTransmission(''); setMaxPrice(''); setStatus('')
   }
 
   const totalPages = Math.ceil(total / limit)
@@ -69,7 +70,7 @@ export default function CatalogueClient() {
             </button>
           )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-carbon-400 dark:text-carbon-600" />
             <input
@@ -86,6 +87,12 @@ export default function CatalogueClient() {
           <select value={transmission} onChange={e => setTransmission(e.target.value)} className={`${inputClass} w-full`}>
             <option value="">Toutes transmissions</option>
             {TRANSMISSION_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+          <select value={status} onChange={e => setStatus(e.target.value)} className={`${inputClass} w-full`}>
+            <option value="">Tous statuts</option>
+            <option value="available">Disponible</option>
+            <option value="reserved">Réservé</option>
+            <option value="sold">Vendu</option>
           </select>
           <input
             type="number"

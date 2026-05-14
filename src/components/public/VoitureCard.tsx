@@ -71,20 +71,25 @@ export default function VoitureCard({ car }: VoitureCardProps) {
         </div>
 
         <div>
-          {(car.price_ttc || car.price) ? (
-            <div>
-              <div className="flex items-baseline gap-1.5">
-                <p className="text-gold-700 dark:text-gold-400 font-bold text-xl">
-                  {formatPrice(car.price_ttc ?? car.price!)}
-                </p>
-                {car.price_ttc && <span className="text-xs text-carbon-400 dark:text-carbon-500">TTC</span>}
+          {(car.price_ttc || car.price_ht || car.price) ? (
+            (car.price_ht || car.price_ttc) ? (
+              <div className="flex items-end gap-5">
+                {car.price_ht && (
+                  <div>
+                    <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-0.5">HT</p>
+                    <p className="text-lg font-bold text-carbon-700 dark:text-carbon-300">{formatPrice(car.price_ht)}</p>
+                  </div>
+                )}
+                {car.price_ttc && (
+                  <div>
+                    <p className="text-xs text-carbon-400 dark:text-carbon-500 mb-0.5">TTC</p>
+                    <p className="text-lg font-bold text-gold-700 dark:text-gold-400">{formatPrice(car.price_ttc)}</p>
+                  </div>
+                )}
               </div>
-              {car.price_ht && (
-                <p className="text-xs text-carbon-400 dark:text-carbon-500 mt-0.5">
-                  {formatPrice(car.price_ht)} HT
-                </p>
-              )}
-            </div>
+            ) : (
+              <p className="text-gold-700 dark:text-gold-400 font-bold text-xl">{formatPrice(car.price!)}</p>
+            )
           ) : (
             <p className="text-carbon-400 text-sm italic">Prix sur demande</p>
           )}
