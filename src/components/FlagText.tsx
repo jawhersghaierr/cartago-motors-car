@@ -5,19 +5,29 @@ interface Part {
   content: string
 }
 
+// Regional Indicator Symbols in UTF-16 surrogate pairs: 🇦–🇿
+const FLAG_REGEX = /(\uD83C[\uDDE6-\uDDFF]){2}/g
+
+function surrogateToLetter(low: number): string {
+  // low surrogate \uDDE6 = 'A', \uDDE7 = 'B', etc.
+  return String.fromCharCode(low - 0xDDE6 + 65)
+}
+
 function parse(text: string): Part[] {
   const parts: Part[] = []
-  // Regional Indicator Symbols: U+1F1E6–U+1F1FF (pairs = country flags)
-  const flagRegex = /[\u{1F1E6}-\u{1F1FF}]{2}/gu
+  FLAG_REGEX.lastIndex = 0
   let lastIndex = 0
   let match: RegExpExecArray | null
 
-  while ((match = flagRegex.exec(text)) !== null) {
+  while ((match = FLAG_REGEX.exec(text)) !== null) {
     if (match.index > lastIndex) {
       parts.push({ type: 'text', content: text.slice(lastIndex, match.index) })
     }
-    const codePoints = [...match[0]].map(c => (c.codePointAt(0) ?? 0) - 0x1F1E6 + 65)
-    const code = codePoints.map(cp => String.fromCharCode(cp)).join('').toLowerCase()
+    // Each flag = 4 chars (2 surrogate pairs). Extract low surrogates at pos 1 and 3.
+    const code = (
+      surrogateToLetter(match[0].charCodeAt(1)) +
+      surrogateToLetter(match[0].charCodeAt(3))
+    ).toLowerCase()
     parts.push({ type: 'flag', content: code })
     lastIndex = match.index + match[0].length
   }
