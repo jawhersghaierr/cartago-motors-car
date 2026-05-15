@@ -93,7 +93,7 @@ export default function DomTranslator() {
       try {
         sessionStorage.setItem(
           STORE_KEY,
-          JSON.stringify([...cacheRef.current.entries()])
+          JSON.stringify(Array.from(cacheRef.current.entries()))
         )
       } catch { /* quota exceeded – ignore */ }
     }
