@@ -58,8 +58,7 @@ function LanguageSwitcher() {
               : 'text-carbon-500 hover:text-carbon-950 dark:text-carbon-400 dark:hover:text-white hover:bg-carbon-100 dark:hover:bg-white/5'
           }`}
         >
-          <span className="text-sm leading-none">{flag}</span>
-          <span>{label}</span>
+          <span className="text-base leading-none">{flag}</span>
         </Link>
       ))}
     </div>
