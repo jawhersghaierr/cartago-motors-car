@@ -100,7 +100,7 @@ export default function DomTranslator() {
 
     // ── Flush: translate everything in pendingRef ──────────────────────────
     async function flush() {
-      const nodes = [...pendingRef.current]
+      const nodes = Array.from(pendingRef.current)
       pendingRef.current.clear()
 
       // Deduplicate by trimmed text, skip cached / in-flight
