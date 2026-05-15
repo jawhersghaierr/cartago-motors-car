@@ -67,43 +67,54 @@ export default async function VoiturePage({ params }: { params: { id: string } }
 
             {/* Infos */}
             <div>
-              <div className="flex items-start justify-between mb-2">
-                <div>
-                  <h1 className="text-3xl font-bold text-carbon-950 dark:text-white">{c.brand} {c.model}</h1>
-                  <p className="text-carbon-500 dark:text-carbon-400 mt-1">{c.year}</p>
-                </div>
-                <div className="flex items-center gap-2">
+              {/* Titre + actions */}
+              <div className="flex items-start justify-between gap-3 mb-1">
+                <h1 className="text-2xl sm:text-3xl font-bold text-carbon-950 dark:text-white leading-tight">
+                  {c.brand} {c.model}
+                </h1>
+                <div className="flex items-center gap-1.5 shrink-0 mt-1">
                   <FavoriteButton carId={c.id} />
                   <ShareButton brand={c.brand} model={c.model} year={c.year} />
-                  <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${
-                    c.status === 'available'
-                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
-                      : c.status === 'reserved'
-                      ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-                      : 'bg-red-500/20 text-red-400 border-red-500/30'
-                  }`}>
-                    {STATUS_LABELS[c.status]}
-                  </span>
                 </div>
               </div>
 
+              {/* Année + statut */}
+              <div className="flex items-center gap-2.5 mb-5">
+                <p className="text-carbon-500 dark:text-carbon-400 text-sm">{c.year}</p>
+                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
+                  c.status === 'available'
+                    ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                    : c.status === 'reserved'
+                    ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+                    : 'bg-red-500/20 text-red-400 border-red-500/30'
+                }`}>
+                  {STATUS_LABELS[c.status]}
+                </span>
+              </div>
+
+              {/* Prix */}
               {(c.price_ttc || c.price_ht || c.price) && (
-                <div className="mt-4 mb-6">
+                <div className="flex flex-wrap gap-4 mb-6 pb-5 border-b border-carbon-100 dark:border-white/5">
                   {(c.price_ht || c.price_ttc) ? (
-                    <div className="flex items-baseline gap-6 flex-wrap">
+                    <>
                       {c.price_ht && (
-                        <p className="text-3xl font-bold text-gold-gradient">
-                          {formatPrice(c.price_ht)}<span className="text-sm font-semibold text-carbon-400 dark:text-carbon-500 ml-1.5">HT</span>
-                        </p>
+                        <div>
+                          <p className="text-xs text-carbon-400 dark:text-carbon-500 uppercase tracking-wider mb-1">Prix HT</p>
+                          <p className="text-2xl font-bold text-gold-gradient">{formatPrice(c.price_ht)}</p>
+                        </div>
                       )}
                       {c.price_ttc && (
-                        <p className="text-3xl font-bold text-gold-gradient">
-                          {formatPrice(c.price_ttc)}<span className="text-sm font-semibold text-carbon-400 dark:text-carbon-500 ml-1.5">TTC</span>
-                        </p>
+                        <div>
+                          <p className="text-xs text-carbon-400 dark:text-carbon-500 uppercase tracking-wider mb-1">Prix TTC</p>
+                          <p className="text-2xl font-bold text-gold-gradient">{formatPrice(c.price_ttc)}</p>
+                        </div>
                       )}
-                    </div>
+                    </>
                   ) : c.price ? (
-                    <p className="text-4xl font-bold text-gold-gradient">{formatPrice(c.price)}</p>
+                    <div>
+                      <p className="text-xs text-carbon-400 dark:text-carbon-500 uppercase tracking-wider mb-1">Prix</p>
+                      <p className="text-2xl font-bold text-gold-gradient">{formatPrice(c.price)}</p>
+                    </div>
                   ) : null}
                 </div>
               )}
