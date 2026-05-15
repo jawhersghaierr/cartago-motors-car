@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "catalogue": "Catalogue",
+    "catalogue": "Catalog",
     "about": "About",
     "contact": "Contact",
     "favourites": "Favourites"
@@ -36,7 +36,7 @@
     "feat3Desc": "Customs clearance, homologation, registration transfer. We handle everything A to Z."
   },
   "catalogue": {
-    "title": "Catalogue",
+    "title": "Catalog",
     "filters": "Filters",
     "clear": "Clear",
     "clearFilters": "Clear filters",
@@ -92,7 +92,7 @@
     "name": "Name",
     "country": "Country",
     "phone": "Phone",
-    "email": "Email",
+    "email": "E-mail",
     "message": "Your message",
     "namePlaceholder": "Your name",
     "countryPlaceholder": "Tunisia, Algeria…",

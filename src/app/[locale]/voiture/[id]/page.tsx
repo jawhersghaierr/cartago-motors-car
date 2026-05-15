@@ -14,10 +14,13 @@ import { supabase } from '@/lib/supabase'
 import { getSettings } from '@/services/settings'
 import type { Car as CarType } from '@/types/car'
 import { formatPrice, formatDate } from '@/lib/utils'
+import { translateText, FUEL_LABELS, TRANSMISSION_LABELS } from '@/lib/translate'
 
 export const revalidate = 60
 
 export default async function VoiturePage({ params }: { params: { locale: string; id: string } }) {
+  const locale = params.locale
+
   const [{ data: car, error }, settings, t, ts] = await Promise.all([
     supabase.from('cars').select('*').eq('id', params.id).single(),
     getSettings(),
@@ -28,18 +31,27 @@ export default async function VoiturePage({ params }: { params: { locale: string
   if (error || !car) notFound()
 
   const c = car as CarType
-  const prefix = params.locale === 'fr' ? '' : `/${params.locale}`
+  const prefix = locale === 'fr' ? '' : `/${locale}`
+
+  // Translate free-form text fields for non-French locales
+  const description = c.description && locale !== 'fr'
+    ? await translateText(c.description, locale)
+    : c.description
+
+  // Translate fixed-vocabulary fields using local mapping (no API call)
+  const fuelLabel = FUEL_LABELS[locale]?.[c.fuel] ?? c.fuel
+  const transmissionLabel = TRANSMISSION_LABELS[locale]?.[c.transmission] ?? c.transmission
 
   type Spec = { icon: React.ElementType; label: string; value: string }
   const specsRaw: (Spec | null)[] = [
-    { icon: Fuel,     label: t('fuel'),         value: c.fuel },
-    { icon: Settings, label: t('transmission'), value: c.transmission },
-    c.mileage     ? { icon: FileText, label: t('mileage'),      value: `${c.mileage.toLocaleString('fr-FR')} km` } : null,
-    c.horsepower  ? { icon: Zap,      label: t('power'),        value: `${c.horsepower} ch` } : null,
-    c.engine      ? { icon: Car,      label: t('engine'),       value: c.engine } : null,
-    c.color       ? { icon: Palette,  label: t('color'),        value: c.color } : null,
-    c.vin         ? { icon: Hash,     label: t('vin'),          value: c.vin } : null,
-    c.plate_number ? { icon: FileText, label: t('plate'),       value: c.plate_number } : null,
+    { icon: Fuel,     label: t('fuel'),         value: fuelLabel },
+    { icon: Settings, label: t('transmission'), value: transmissionLabel },
+    c.mileage      ? { icon: FileText, label: t('mileage'), value: `${c.mileage.toLocaleString('fr-FR')} km` } : null,
+    c.horsepower   ? { icon: Zap,      label: t('power'),   value: `${c.horsepower} ch` } : null,
+    c.engine       ? { icon: Car,      label: t('engine'),  value: c.engine } : null,
+    c.color        ? { icon: Palette,  label: t('color'),   value: c.color } : null,
+    c.vin          ? { icon: Hash,     label: t('vin'),     value: c.vin } : null,
+    c.plate_number ? { icon: FileText, label: t('plate'),   value: c.plate_number } : null,
   ]
   const specs = specsRaw.filter((s): s is Spec => s !== null)
 
@@ -62,10 +74,10 @@ export default async function VoiturePage({ params }: { params: { locale: string
             {/* Photos */}
             <div>
               <ImageGallery images={c.images} alt={`${c.brand} ${c.model}`} />
-              {c.description && (
+              {description && (
                 <div className="mt-5 bg-white dark:bg-carbon-900 rounded-xl border border-carbon-200 dark:border-white/5 p-5">
                   <h2 className="text-carbon-950 dark:text-white font-semibold mb-2">{t('description')}</h2>
-                  <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">{c.description}</p>
+                  <p className="text-carbon-500 dark:text-carbon-400 text-sm leading-relaxed">{description}</p>
                 </div>
               )}
             </div>
