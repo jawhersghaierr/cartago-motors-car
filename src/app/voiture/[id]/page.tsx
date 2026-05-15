@@ -67,29 +67,29 @@ export default async function VoiturePage({ params }: { params: { id: string } }
 
             {/* Infos */}
             <div>
-              {/* Titre + actions */}
-              <div className="flex items-start justify-between gap-3 mb-1">
-                <h1 className="text-2xl sm:text-3xl font-bold text-carbon-950 dark:text-white leading-tight">
-                  {c.brand} {c.model}
-                </h1>
-                <div className="flex items-center gap-1.5 shrink-0 mt-1">
+              {/* Titre */}
+              <h1 className="text-2xl sm:text-3xl font-bold text-carbon-950 dark:text-white leading-tight mb-3">
+                {c.brand} {c.model}
+              </h1>
+
+              {/* Année + statut + actions */}
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-2.5">
+                  <p className="text-carbon-500 dark:text-carbon-400 text-sm">{c.year}</p>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
+                    c.status === 'available'
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                      : c.status === 'reserved'
+                      ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+                      : 'bg-red-500/20 text-red-400 border-red-500/30'
+                  }`}>
+                    {STATUS_LABELS[c.status]}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
                   <FavoriteButton carId={c.id} />
                   <ShareButton brand={c.brand} model={c.model} year={c.year} />
                 </div>
-              </div>
-
-              {/* Année + statut */}
-              <div className="flex items-center gap-2.5 mb-5">
-                <p className="text-carbon-500 dark:text-carbon-400 text-sm">{c.year}</p>
-                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
-                  c.status === 'available'
-                    ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
-                    : c.status === 'reserved'
-                    ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-                    : 'bg-red-500/20 text-red-400 border-red-500/30'
-                }`}>
-                  {STATUS_LABELS[c.status]}
-                </span>
               </div>
 
               {/* Prix */}
