@@ -6,15 +6,14 @@ import { useEffect, useRef } from 'react'
 // ── Config ────────────────────────────────────────────────────────────────────
 
 const SOURCE_LANG = 'fr'
-const BATCH_SIZE  = 20      // strings per API call
-const DEBOUNCE_MS = 250     // wait before flushing new mutations
+const BATCH_SIZE  = 20
+const DEBOUNCE_MS = 250
 
-const SKIP_TAGS = new Set([
-  'SCRIPT', 'STYLE', 'CODE', 'PRE', 'KBD', 'SAMP',
-  'NOSCRIPT', 'TEXTAREA', 'OPTION',
-])
+const SKIP_TAGS: Record<string, boolean> = {
+  SCRIPT: true, STYLE: true, CODE: true, PRE: true,
+  KBD: true, SAMP: true, NOSCRIPT: true, TEXTAREA: true, OPTION: true,
+}
 
-// Mark elements whose text-children are already translated
 const DONE_ATTR = 'data-dtl'
 
 // ── Google Translate (free, no key) ──────────────────────────────────────────
@@ -29,8 +28,6 @@ async function gtBatch(texts: string[], lang: string): Promise<string[]> {
   if (!res.ok) return texts
 
   const data = await res.json()
-
-  // Response: single string | array of strings | array of [string, …]
   if (typeof data === 'string') return [data]
   return (data as unknown[]).map((d) =>
     Array.isArray(d) ? (d[0] as string) : (d as string)
@@ -44,13 +41,13 @@ function collectTextNodes(root: Node): Text[] {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
       const el = node.parentElement
-      if (!el)                              return NodeFilter.FILTER_REJECT
-      if (SKIP_TAGS.has(el.tagName))        return NodeFilter.FILTER_REJECT
-      if (el.closest(`[${DONE_ATTR}]`))     return NodeFilter.FILTER_REJECT
-      if (el.isContentEditable)             return NodeFilter.FILTER_REJECT
+      if (!el)                         return NodeFilter.FILTER_REJECT
+      if (SKIP_TAGS[el.tagName])       return NodeFilter.FILTER_REJECT
+      if (el.closest(`[${DONE_ATTR}]`)) return NodeFilter.FILTER_REJECT
+      if (el.isContentEditable)        return NodeFilter.FILTER_REJECT
       const text = (node.textContent ?? '').trim()
-      if (text.length < 2)                  return NodeFilter.FILTER_REJECT
-      if (!/[a-zA-ZÀ-ÿ]/.test(text))       return NodeFilter.FILTER_REJECT
+      if (text.length < 2)             return NodeFilter.FILTER_REJECT
+      if (!/[a-zA-ZÀ-ÿ]/.test(text))  return NodeFilter.FILTER_REJECT
       return NodeFilter.FILTER_ACCEPT
     },
   })
@@ -61,10 +58,11 @@ function collectTextNodes(root: Node): Text[] {
 
 function applyTranslation(node: Text, original: string, translated: string) {
   if (!node.isConnected || translated === original) return
-  const raw = node.textContent ?? ''
-  const leading  = raw.slice(0, raw.indexOf(original))
-  const trailing = raw.slice(raw.indexOf(original) + original.length)
-  node.textContent = leading + translated + trailing
+  const raw      = node.textContent ?? ''
+  const idx      = raw.indexOf(original)
+  if (idx === -1) return
+  node.textContent =
+    raw.slice(0, idx) + translated + raw.slice(idx + original.length)
   node.parentElement?.setAttribute(DONE_ATTR, '1')
 }
 
@@ -73,107 +71,98 @@ function applyTranslation(node: Text, original: string, translated: string) {
 export default function DomTranslator() {
   const locale = useLocale()
 
-  // Stable refs so the effect closure never goes stale
-  const pendingRef = useRef<Set<Text>>(new Set())
+  const pendingRef = useRef<Text[]>([])
   const timerRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const cacheRef   = useRef<Map<string, string>>(new Map())
-  const inflight   = useRef<Set<string>>(new Set())
+  // cache: plain object for compat (no Map iterator needed)
+  const cacheRef   = useRef<Record<string, string>>({})
+  const inflightRef = useRef<Record<string, boolean>>({})
 
   useEffect(() => {
-    if (locale === SOURCE_LANG) return   // nothing to do for the default locale
+    if (locale === SOURCE_LANG) return
 
-    // ── Hydrate cache from sessionStorage ─────────────────────────────────
     const STORE_KEY = `dtl_${locale}`
+
+    // ── Hydrate cache ──────────────────────────────────────────────────────
     try {
       const raw = sessionStorage.getItem(STORE_KEY)
-      if (raw) cacheRef.current = new Map(JSON.parse(raw) as [string, string][])
+      if (raw) cacheRef.current = JSON.parse(raw) as Record<string, string>
     } catch { /* ignore */ }
 
     function persistCache() {
       try {
-        sessionStorage.setItem(
-          STORE_KEY,
-          JSON.stringify(Array.from(cacheRef.current.entries()))
-        )
-      } catch { /* quota exceeded – ignore */ }
+        sessionStorage.setItem(STORE_KEY, JSON.stringify(cacheRef.current))
+      } catch { /* quota */ }
     }
 
-    // ── Flush: translate everything in pendingRef ──────────────────────────
+    // ── Flush ──────────────────────────────────────────────────────────────
     async function flush() {
-      const nodes = Array.from(pendingRef.current)
-      pendingRef.current.clear()
+      const nodes = pendingRef.current.slice()
+      pendingRef.current = []
 
-      // Deduplicate by trimmed text, skip cached / in-flight
-      const todo   = new Map<string, Text[]>()   // original → nodes
-      const cached = new Map<string, string>()   // original → translation
+      // Collect unique uncached texts
+      const todoMap: Record<string, Text[]> = {}  // text → nodes
+      const toTranslate: string[] = []
 
-      for (const node of nodes) {
+      nodes.forEach(node => {
         const text = (node.textContent ?? '').trim()
-        if (!text || text.length < 2) continue
+        if (!text || text.length < 2) return
 
-        if (cacheRef.current.has(text)) {
-          cached.set(text, cacheRef.current.get(text)!)
-        } else if (!inflight.current.has(text)) {
-          if (!todo.has(text)) todo.set(text, [])
-          todo.get(text)!.push(node)
+        if (cacheRef.current[text] !== undefined) {
+          // apply immediately from cache
+          applyTranslation(node, text, cacheRef.current[text])
+        } else if (!inflightRef.current[text]) {
+          if (!todoMap[text]) {
+            todoMap[text] = []
+            toTranslate.push(text)
+          }
+          todoMap[text].push(node)
         }
-      }
+      })
 
-      // Apply cached translations immediately (no flicker for known strings)
-      for (const node of nodes) {
-        const text = (node.textContent ?? '').trim()
-        const tr = cached.get(text)
-        if (tr) applyTranslation(node, text, tr)
-      }
+      if (!toTranslate.length) return
 
-      if (todo.size === 0) return
+      toTranslate.forEach(t => { inflightRef.current[t] = true })
 
-      // Mark all as in-flight
-      Array.from(todo.keys()).forEach(text => inflight.current.add(text))
-
-      // Translate in batches
-      const originals = Array.from(todo.keys())
-      for (let i = 0; i < originals.length; i += BATCH_SIZE) {
-        const batch = originals.slice(i, i + BATCH_SIZE)
+      for (let i = 0; i < toTranslate.length; i += BATCH_SIZE) {
+        const batch = toTranslate.slice(i, i + BATCH_SIZE)
         try {
           const translations = await gtBatch(batch, locale)
           batch.forEach((orig, idx) => {
             const tr = translations[idx] ?? orig
-            cacheRef.current.set(orig, tr)
-            inflight.current.delete(orig)
-            for (const node of todo.get(orig) ?? []) {
-              applyTranslation(node, orig, tr)
-            }
+            cacheRef.current[orig] = tr
+            delete inflightRef.current[orig]
+            const affected = todoMap[orig] ?? []
+            affected.forEach(node => applyTranslation(node, orig, tr))
           })
           persistCache()
         } catch {
-          batch.forEach(t => inflight.current.delete(t))
+          batch.forEach(t => { delete inflightRef.current[t] })
         }
       }
     }
 
-    // ── Schedule: debounce rapid DOM bursts ────────────────────────────────
+    // ── Schedule (debounce) ────────────────────────────────────────────────
     function schedule(nodes: Text[]) {
-      for (const n of nodes) pendingRef.current.add(n)
+      nodes.forEach(n => pendingRef.current.push(n))
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = setTimeout(flush, DEBOUNCE_MS)
     }
 
-    // ── Initial pass on the already-rendered DOM ───────────────────────────
+    // ── Initial pass ───────────────────────────────────────────────────────
     schedule(collectTextNodes(document.body))
 
-    // ── Watch future mutations (dynamic content, client navigation) ─────────
+    // ── MutationObserver ───────────────────────────────────────────────────
     const observer = new MutationObserver((mutations) => {
       const fresh: Text[] = []
-      for (const m of mutations) {
-        for (const added of m.addedNodes) {
+      mutations.forEach(m => {
+        Array.from(m.addedNodes).forEach(added => {
           if (added.nodeType === Node.TEXT_NODE) {
             fresh.push(added as Text)
           } else if (added.nodeType === Node.ELEMENT_NODE) {
             fresh.push(...collectTextNodes(added))
           }
-        }
-      }
+        })
+      })
       if (fresh.length) schedule(fresh)
     })
 
