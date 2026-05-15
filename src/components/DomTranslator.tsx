@@ -132,7 +132,7 @@ export default function DomTranslator() {
       for (const text of todo.keys()) inflight.current.add(text)
 
       // Translate in batches
-      const originals = [...todo.keys()]
+      const originals = Array.from(todo.keys())
       for (let i = 0; i < originals.length; i += BATCH_SIZE) {
         const batch = originals.slice(i, i + BATCH_SIZE)
         try {
