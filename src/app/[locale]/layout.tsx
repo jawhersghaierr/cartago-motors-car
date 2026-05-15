@@ -9,6 +9,7 @@ import { CompareProvider } from '@/context/CompareContext'
 import CompareBar from '@/components/public/CompareBar'
 import { FavoritesProvider } from '@/context/FavoritesContext'
 import HtmlAttributes from '@/components/HtmlAttributes'
+import DomTranslator from '@/components/DomTranslator'
 
 export default async function LocaleLayout({
   children,
@@ -23,6 +24,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider messages={messages}>
       <HtmlAttributes locale={locale} />
+      <DomTranslator />
       <ThemeProvider>
         <FavoritesProvider>
           <CompareProvider>
