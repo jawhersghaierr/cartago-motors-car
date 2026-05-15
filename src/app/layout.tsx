@@ -1,15 +1,9 @@
 export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import './globals.css'
-import { Toaster } from 'sonner'
-import { ThemeProvider } from '@/components/ThemeProvider'
-import FloatingWhatsApp from '@/components/public/FloatingWhatsApp'
-import { getSettings } from '@/services/settings'
-import { CompareProvider } from '@/context/CompareContext'
-import CompareBar from '@/components/public/CompareBar'
-import { FavoritesProvider } from '@/context/FavoritesContext'
 
 export async function generateMetadata(): Promise<Metadata> {
+  const { getSettings } = await import('@/services/settings')
   const settings = await getSettings()
   return {
     title: `${settings.company_name} — Voitures Premium Export`,
@@ -21,21 +15,11 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const settings = await getSettings()
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className="antialiased">
-        <ThemeProvider>
-          <FavoritesProvider>
-            <CompareProvider>
-              {children}
-              <Toaster position="top-right" richColors closeButton />
-              <FloatingWhatsApp number={settings.whatsapp} />
-              <CompareBar />
-            </CompareProvider>
-          </FavoritesProvider>
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   )

@@ -1,3 +1,4 @@
+import { Toaster } from 'sonner'
 import Sidebar from '@/components/admin/Sidebar'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -7,6 +8,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <main className="flex-1 lg:overflow-y-auto pt-14 lg:pt-0">
         {children}
       </main>
+      <Toaster position="top-right" richColors closeButton />
     </div>
   )
 }
