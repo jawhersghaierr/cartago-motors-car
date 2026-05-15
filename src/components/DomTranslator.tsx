@@ -129,7 +129,7 @@ export default function DomTranslator() {
       if (todo.size === 0) return
 
       // Mark all as in-flight
-      for (const text of todo.keys()) inflight.current.add(text)
+      Array.from(todo.keys()).forEach(text => inflight.current.add(text))
 
       // Translate in batches
       const originals = Array.from(todo.keys())
