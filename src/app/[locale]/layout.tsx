@@ -10,6 +10,7 @@ import CompareBar from '@/components/public/CompareBar'
 import { FavoritesProvider } from '@/context/FavoritesContext'
 import HtmlAttributes from '@/components/HtmlAttributes'
 import DomTranslator from '@/components/DomTranslator'
+import ChatBot from '@/components/public/ChatBot'
 
 export default async function LocaleLayout({
   children,
@@ -31,6 +32,7 @@ export default async function LocaleLayout({
             {children}
             <Toaster position="top-right" richColors closeButton />
             <FloatingWhatsApp number={settings.whatsapp} />
+            <ChatBot />
             <CompareBar />
           </CompareProvider>
         </FavoritesProvider>
