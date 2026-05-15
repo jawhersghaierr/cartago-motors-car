@@ -27,10 +27,9 @@ export default function ShareButton({ brand, model, year }: Props) {
     <div className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-2 text-carbon-500 dark:text-carbon-400 hover:text-carbon-950 dark:hover:text-white text-sm transition-colors px-3 py-2 rounded-lg hover:bg-carbon-100 dark:hover:bg-white/5"
+        className="p-2 rounded-lg text-carbon-500 dark:text-carbon-400 hover:text-carbon-950 dark:hover:text-white transition-colors hover:bg-carbon-100 dark:hover:bg-white/5"
       >
-        <Share2 size={16} />
-        Partager
+        <Share2 size={18} />
       </button>
 
       {open && (

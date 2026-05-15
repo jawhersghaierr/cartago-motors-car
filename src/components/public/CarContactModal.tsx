@@ -29,12 +29,14 @@ export default function CarContactModal({ brand, model, year }: CarContactModalP
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, vehicule: `${brand} ${model} (${year})` }),
       })
-      if (!res.ok) throw new Error()
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error ?? 'Erreur inconnue')
       toast.success('Message envoyé ! Nous vous répondrons sous 24h.')
       setOpen(false)
       form.reset()
-    } catch {
-      toast.error('Erreur lors de l\'envoi. Réessayez.')
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Erreur lors de l\'envoi.'
+      toast.error(msg)
     } finally {
       setLoading(false)
     }

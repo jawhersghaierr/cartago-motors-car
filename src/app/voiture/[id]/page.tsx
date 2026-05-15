@@ -68,7 +68,7 @@ export default async function VoiturePage({ params }: { params: { id: string } }
             {/* Infos */}
             <div>
               {/* Titre */}
-              <h1 className="text-2xl sm:text-3xl font-bold text-carbon-950 dark:text-white leading-tight mb-3">
+              <h1 className="text-2xl font-bold text-carbon-950 dark:text-white leading-tight mb-3">
                 {c.brand} {c.model}
               </h1>
 
