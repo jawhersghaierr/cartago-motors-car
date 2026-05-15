@@ -78,11 +78,20 @@ export default function DomTranslator() {
   const inflightRef = useRef<Record<string, boolean>>({})
 
   useEffect(() => {
+    // Reset stale state from previous locale
+    pendingRef.current = []
+    inflightRef.current = {}
+
     if (locale === SOURCE_LANG) return
+
+    // Guard: any async op checks this before touching the DOM.
+    // Set to false in cleanup so stale fetches don't apply after locale change.
+    let active = true
 
     const STORE_KEY = `dtl_${locale}`
 
     // ── Hydrate cache ──────────────────────────────────────────────────────
+    cacheRef.current = {}
     try {
       const raw = sessionStorage.getItem(STORE_KEY)
       if (raw) cacheRef.current = JSON.parse(raw) as Record<string, string>
@@ -96,11 +105,12 @@ export default function DomTranslator() {
 
     // ── Flush ──────────────────────────────────────────────────────────────
     async function flush() {
+      if (!active) return
+
       const nodes = pendingRef.current.slice()
       pendingRef.current = []
 
-      // Collect unique uncached texts
-      const todoMap: Record<string, Text[]> = {}  // text → nodes
+      const todoMap: Record<string, Text[]> = {}
       const toTranslate: string[] = []
 
       nodes.forEach(node => {
@@ -108,7 +118,6 @@ export default function DomTranslator() {
         if (!text || text.length < 2) return
 
         if (cacheRef.current[text] !== undefined) {
-          // apply immediately from cache
           applyTranslation(node, text, cacheRef.current[text])
         } else if (!inflightRef.current[text]) {
           if (!todoMap[text]) {
@@ -124,9 +133,14 @@ export default function DomTranslator() {
       toTranslate.forEach(t => { inflightRef.current[t] = true })
 
       for (let i = 0; i < toTranslate.length; i += BATCH_SIZE) {
+        if (!active) break  // locale changed mid-flight → abort
+
         const batch = toTranslate.slice(i, i + BATCH_SIZE)
         try {
           const translations = await gtBatch(batch, locale)
+
+          if (!active) break  // locale changed while awaiting response
+
           batch.forEach((orig, idx) => {
             const tr = translations[idx] ?? orig
             cacheRef.current[orig] = tr
@@ -153,6 +167,7 @@ export default function DomTranslator() {
 
     // ── MutationObserver ───────────────────────────────────────────────────
     const observer = new MutationObserver((mutations) => {
+      if (!active) return
       const fresh: Text[] = []
       mutations.forEach(m => {
         Array.from(m.addedNodes).forEach(added => {
@@ -169,6 +184,9 @@ export default function DomTranslator() {
     observer.observe(document.body, { childList: true, subtree: true })
 
     return () => {
+      active = false                // abort all pending async ops
+      pendingRef.current = []
+      inflightRef.current = {}
       observer.disconnect()
       if (timerRef.current) clearTimeout(timerRef.current)
     }
