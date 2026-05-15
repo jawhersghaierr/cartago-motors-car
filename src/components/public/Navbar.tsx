@@ -40,25 +40,32 @@ function LanguageSwitcher() {
   }
 
   const locales = [
-    { code: 'fr', flag: '🇫🇷', label: 'FR' },
-    { code: 'en', flag: '🇬🇧', label: 'EN' },
-    { code: 'ar', flag: '🇸🇦', label: 'AR' },
+    { code: 'fr', country: 'fr', label: 'Français' },
+    { code: 'en', country: 'gb', label: 'English' },
+    { code: 'ar', country: 'sa', label: 'العربية' },
   ]
 
   return (
     <div className="flex items-center border border-carbon-200 dark:border-carbon-800 rounded-lg overflow-hidden">
-      {locales.map(({ code, flag, label }) => (
+      {locales.map(({ code, country, label }) => (
         <Link
           key={code}
           href={getLocalePath(code)}
           title={label}
-          className={`flex items-center gap-1 px-2 py-1 text-xs font-medium transition-colors ${
+          className={`flex items-center px-2 py-1.5 transition-colors ${
             locale === code
-              ? 'bg-gold-500 text-black'
-              : 'text-carbon-500 hover:text-carbon-950 dark:text-carbon-400 dark:hover:text-white hover:bg-carbon-100 dark:hover:bg-white/5'
+              ? 'bg-gold-500'
+              : 'hover:bg-carbon-100 dark:hover:bg-white/5'
           }`}
         >
-          <span className="text-base leading-none">{flag}</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`https://flagcdn.com/20x15/${country}.png`}
+            width={20}
+            height={15}
+            alt={label}
+            className="rounded-sm"
+          />
         </Link>
       ))}
     </div>
