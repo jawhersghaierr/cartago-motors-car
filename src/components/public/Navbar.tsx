@@ -40,24 +40,26 @@ function LanguageSwitcher() {
   }
 
   const locales = [
-    { code: 'fr', label: 'FR' },
-    { code: 'en', label: 'EN' },
-    { code: 'ar', label: 'ع' },
+    { code: 'fr', flag: '🇫🇷', label: 'FR' },
+    { code: 'en', flag: '🇬🇧', label: 'EN' },
+    { code: 'ar', flag: '🇸🇦', label: 'AR' },
   ]
 
   return (
     <div className="flex items-center border border-carbon-200 dark:border-carbon-800 rounded-lg overflow-hidden">
-      {locales.map(({ code, label }) => (
+      {locales.map(({ code, flag, label }) => (
         <Link
           key={code}
           href={getLocalePath(code)}
-          className={`px-2 py-1 text-xs font-medium transition-colors ${
+          title={label}
+          className={`flex items-center gap-1 px-2 py-1 text-xs font-medium transition-colors ${
             locale === code
               ? 'bg-gold-500 text-black'
               : 'text-carbon-500 hover:text-carbon-950 dark:text-carbon-400 dark:hover:text-white hover:bg-carbon-100 dark:hover:bg-white/5'
           }`}
         >
-          {label}
+          <span className="text-sm leading-none">{flag}</span>
+          <span>{label}</span>
         </Link>
       ))}
     </div>
