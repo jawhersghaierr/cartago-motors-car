@@ -1,14 +1,13 @@
 import { getRequestConfig } from 'next-intl/server'
-import { notFound } from 'next/navigation'
+import { routing } from './routing'
 
-export const locales = ['fr', 'en', 'ar'] as const
-export type Locale = (typeof locales)[number]
-export const defaultLocale: Locale = 'fr'
-
-export default getRequestConfig(async ({ locale }) => {
-  if (!locales.includes(locale as Locale)) notFound()
+export default getRequestConfig(async ({ requestLocale }) => {
+  let locale = await requestLocale
+  if (!locale || !routing.locales.includes(locale as typeof routing.locales[number])) {
+    locale = routing.defaultLocale
+  }
   return {
-    locale: locale!,
+    locale,
     messages: (await import(`./messages/${locale}.json`)).default,
   }
 })

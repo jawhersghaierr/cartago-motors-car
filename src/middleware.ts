@@ -1,18 +1,14 @@
 import createMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken, COOKIE_NAME } from '@/lib/auth'
-import { locales, defaultLocale } from './i18n'
+import { routing } from './routing'
 
-const intlMiddleware = createMiddleware({
-  locales,
-  defaultLocale,
-  localePrefix: 'as-needed',
-})
+const intlMiddleware = createMiddleware(routing)
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Admin routes — existing JWT auth, bypass intl
+  // Admin routes — JWT auth, bypass intl
   if (pathname.startsWith('/admin')) {
     if (pathname === '/admin/login') {
       const token = request.cookies.get(COOKIE_NAME)?.value
