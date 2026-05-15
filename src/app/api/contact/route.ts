@@ -1,20 +1,31 @@
 import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import { getSettings } from '@/services/settings'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST ?? 'smtp.gmail.com',
+  port: Number(process.env.SMTP_PORT ?? 465),
+  secure: true,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+})
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
     const { nom, telephone, message, vehicule } = body
 
-    const settings = await getSettings()
-    const to = settings.email
-    if (!to) return NextResponse.json({ error: 'Aucun email configuré dans les paramètres.' }, { status: 400 })
+    let to = process.env.CONTACT_EMAIL ?? null
+    if (!to) {
+      const settings = await getSettings()
+      to = settings.email
+    }
+    if (!to) return NextResponse.json({ error: 'Aucun email destinataire configuré.' }, { status: 400 })
 
-    const { data, error: resendError } = await resend.emails.send({
-      from: 'Cartago Motors <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `"Cartago Motors" <${process.env.SMTP_USER}>`,
       to,
       subject: vehicule ? `Demande d'info — ${vehicule}` : 'Nouveau message de contact',
       html: `
@@ -28,12 +39,6 @@ export async function POST(req: Request) {
       `,
     })
 
-    if (resendError) {
-      console.error('Resend error:', resendError)
-      return NextResponse.json({ error: resendError.message }, { status: 500 })
-    }
-
-    console.log('Email sent:', data)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('Contact route error:', err)
