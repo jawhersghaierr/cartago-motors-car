@@ -4,12 +4,10 @@ import { useState, useRef, useEffect, FormEvent } from 'react'
 import { MessageCircle, X, Send, RotateCcw, Loader2 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
-type Role = 'user' | 'assistant'
+type Role    = 'user' | 'assistant'
 type Message = { role: Role; content: string }
 
-const WELCOME = 'Bonjour 👋 Je suis l\'assistant Cartago Motors. Posez-moi vos questions sur nos véhicules, l\'export, les délais ou les prix !'
+const WELCOME = "Bonjour 👋 Je suis l'assistant Cartago Motors. Posez-moi vos questions sur nos véhicules, l'export, les délais ou les prix !"
 
 const SUGGESTIONS = [
   'Comment passer commande ?',
@@ -18,73 +16,99 @@ const SUGGESTIONS = [
   'Comment se passe le dédouanement ?',
 ]
 
-// ── Component ─────────────────────────────────────────────────────────────────
+// ── Button / window base offsets (px) ────────────────────────────────────────
+const BTN_BOTTOM  = 96   // bottom-24
+const WIN_BOTTOM  = 160  // above button (btn_bottom + btn_height + gap)
+const RIGHT       = 24   // right-6
 
 export default function ChatBot() {
-  const pathname = usePathname()
+  const pathname                = usePathname()
   const [open, setOpen]         = useState(false)
   const [input, setInput]       = useState('')
   const [loading, setLoading]   = useState(false)
   const [history, setHistory]   = useState<Message[]>([])
+  const [kbOffset, setKbOffset] = useState(0)   // keyboard height in px
   const bottomRef               = useRef<HTMLDivElement>(null)
   const inputRef                = useRef<HTMLInputElement>(null)
 
-  if (pathname.startsWith('/admin')) return null
+  // ── Track virtual keyboard via visualViewport ─────────────────────────────
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!vv) return
+    function update() {
+      const kh = Math.max(0, window.innerHeight - vv!.height - vv!.offsetTop)
+      setKbOffset(kh)
+    }
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+    }
+  }, [])
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // ── Auto-scroll to last message ───────────────────────────────────────────
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [history, loading])
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // ── Focus input when chat opens ───────────────────────────────────────────
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 150)
   }, [open])
 
+  // All hooks above — safe to early-return now
+  if (pathname.startsWith('/admin')) return null
+
+  // ── Dynamic positioning (lifts above keyboard) ────────────────────────────
+  const btnStyle  = { bottom: BTN_BOTTOM + kbOffset, right: RIGHT }
+  const winBottom = WIN_BOTTOM + kbOffset
+  const winStyle  = {
+    bottom:    winBottom,
+    right:     RIGHT,
+    maxHeight: `calc(100dvh - ${winBottom + 16}px)`,
+  }
+
+  // ── Handlers ──────────────────────────────────────────────────────────────
   async function send(text: string) {
     if (!text.trim() || loading) return
-
     const userMsg: Message = { role: 'user', content: text.trim() }
     const next = [...history, userMsg]
     setHistory(next)
     setInput('')
     setLoading(true)
-
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
+      const res  = await fetch('/api/chat', {
+        method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: next }),
+        body:    JSON.stringify({ messages: next }),
       })
       const data = await res.json()
-      const reply = data.content ?? 'Désolé, une erreur est survenue. Contactez-nous sur WhatsApp.'
-      setHistory(prev => [...prev, { role: 'assistant', content: reply }])
+      setHistory(prev => [...prev, {
+        role:    'assistant',
+        content: data.content ?? "Désolé, une erreur est survenue. Contactez-nous sur WhatsApp.",
+      }])
     } catch {
-      setHistory(prev => [
-        ...prev,
-        { role: 'assistant', content: 'Erreur de connexion. Veuillez réessayer ou nous contacter sur WhatsApp.' },
-      ])
+      setHistory(prev => [...prev, {
+        role:    'assistant',
+        content: 'Erreur de connexion. Veuillez réessayer ou nous contacter sur WhatsApp.',
+      }])
     } finally {
       setLoading(false)
     }
   }
 
-  function onSubmit(e: FormEvent) {
-    e.preventDefault()
-    send(input)
-  }
+  function onSubmit(e: FormEvent) { e.preventDefault(); send(input) }
+  function reset() { setHistory([]); setInput('') }
 
-  function reset() {
-    setHistory([])
-    setInput('')
-  }
-
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <>
-      {/* ── Chat window ─────────────────────────────────────────────────── */}
+      {/* Chat window */}
       {open && (
-        <div className="fixed bottom-28 right-6 z-50 w-80 flex flex-col rounded-2xl shadow-2xl shadow-black/30 overflow-hidden border border-carbon-200 dark:border-white/10 bg-white dark:bg-carbon-950"
-          style={{ maxHeight: '70vh' }}
+        <div
+          className="fixed z-50 flex flex-col rounded-2xl shadow-2xl shadow-black/30 overflow-hidden border border-carbon-200 dark:border-white/10 bg-white dark:bg-carbon-950 transition-[bottom] duration-200 w-[calc(100vw-3rem)] sm:w-80"
+          style={winStyle}
         >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-gold-500 flex-shrink-0">
@@ -114,10 +138,7 @@ export default function ChatBot() {
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-3 space-y-3 min-h-0">
-            {/* Welcome */}
             <BotBubble text={WELCOME} />
-
-            {/* Suggestion chips (only when no history) */}
             {history.length === 0 && (
               <div className="flex flex-col gap-1.5">
                 {SUGGESTIONS.map(s => (
@@ -128,15 +149,11 @@ export default function ChatBot() {
                 ))}
               </div>
             )}
-
-            {/* Conversation */}
             {history.map((msg, i) =>
               msg.role === 'user'
                 ? <UserBubble key={i} text={msg.content} />
-                : <BotBubble key={i} text={msg.content} />
+                : <BotBubble   key={i} text={msg.content} />
             )}
-
-            {/* Typing indicator */}
             {loading && (
               <div className="flex gap-2 items-center">
                 <div className="w-6 h-6 rounded-full bg-gold-500/20 border border-gold-500/30 flex-shrink-0 flex items-center justify-center">
@@ -147,11 +164,10 @@ export default function ChatBot() {
                 </div>
               </div>
             )}
-
             <div ref={bottomRef} />
           </div>
 
-          {/* Input */}
+          {/* Input — stays visible above keyboard */}
           <form onSubmit={onSubmit}
             className="flex items-center gap-2 px-3 py-2.5 border-t border-carbon-100 dark:border-white/5 bg-carbon-50 dark:bg-white/5 flex-shrink-0">
             <input
@@ -160,6 +176,7 @@ export default function ChatBot() {
               onChange={e => setInput(e.target.value)}
               placeholder="Votre question…"
               disabled={loading}
+              enterKeyHint="send"
               className="flex-1 text-sm bg-transparent outline-none text-carbon-900 dark:text-white placeholder:text-carbon-400 disabled:opacity-50"
             />
             <button type="submit" disabled={loading || !input.trim()}
@@ -170,17 +187,17 @@ export default function ChatBot() {
         </div>
       )}
 
-      {/* ── Floating button ──────────────────────────────────────────────── */}
+      {/* Floating button */}
       <button
         onClick={() => setOpen(o => !o)}
         aria-label="Ouvrir le chatbot"
-        className="fixed bottom-24 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-xl shadow-black/30 transition-transform hover:scale-110 active:scale-95 bg-carbon-900 dark:bg-white"
+        style={btnStyle}
+        className="fixed z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-xl shadow-black/30 transition-[bottom] duration-200 hover:scale-110 active:scale-95 bg-carbon-900 dark:bg-white"
       >
         {open
           ? <X size={22} className="text-white dark:text-carbon-900" />
           : <MessageCircle size={22} className="text-white dark:text-carbon-900" />
         }
-        {/* Unread dot when closed */}
         {!open && (
           <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-gold-500 rounded-full border-2 border-white dark:border-carbon-950" />
         )}
@@ -188,8 +205,6 @@ export default function ChatBot() {
     </>
   )
 }
-
-// ── Sub-components ────────────────────────────────────────────────────────────
 
 function BotBubble({ text }: { text: string }) {
   return (
