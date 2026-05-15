@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "translate": "node scripts/translate.mjs"
+    "translate": "node scripts/translate.mjs",
+    "extract": "node scripts/auto-extract.mjs",
+    "extract:dry": "node scripts/auto-extract.mjs --dry-run"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
