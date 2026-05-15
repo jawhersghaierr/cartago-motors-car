@@ -33,17 +33,19 @@ export default function ChatBot() {
 
   // ── Track virtual keyboard via visualViewport ─────────────────────────────
   useEffect(() => {
-    const vv = window.visualViewport
-    if (!vv) return
     function update() {
-      const kh = Math.max(0, window.innerHeight - vv!.height - vv!.offsetTop)
+      const vv = window.visualViewport
+      if (!vv) return
+      // keyboard height = difference between layout viewport and visual viewport
+      const kh = Math.max(0, window.innerHeight - vv.height)
       setKbOffset(kh)
     }
-    vv.addEventListener('resize', update)
-    vv.addEventListener('scroll', update)
+    window.visualViewport?.addEventListener('resize', update)
+    // Also fire on focus/blur as fallback for some Android browsers
+    window.addEventListener('resize', update)
     return () => {
-      vv.removeEventListener('resize', update)
-      vv.removeEventListener('scroll', update)
+      window.visualViewport?.removeEventListener('resize', update)
+      window.removeEventListener('resize', update)
     }
   }, [])
 
@@ -60,13 +62,14 @@ export default function ChatBot() {
   // All hooks above — safe to early-return now
   if (pathname.startsWith('/admin')) return null
 
-  // ── Dynamic positioning (lifts above keyboard) ────────────────────────────
-  const btnStyle  = { bottom: BTN_BOTTOM + kbOffset, right: RIGHT }
-  const winBottom = WIN_BOTTOM + kbOffset
+  // ── Dynamic positioning — translateY lifts both elements above the keyboard ─
+  const lift      = kbOffset > 0 ? kbOffset : 0
+  const btnStyle  = { bottom: BTN_BOTTOM, right: RIGHT, transform: `translateY(-${lift}px)` }
   const winStyle  = {
-    bottom:    winBottom,
+    bottom:    WIN_BOTTOM,
     right:     RIGHT,
-    maxHeight: `calc(100dvh - ${winBottom + 16}px)`,
+    maxHeight: `calc(100dvh - ${WIN_BOTTOM + lift + 16}px)`,
+    transform: `translateY(-${lift}px)`,
   }
 
   // ── Handlers ──────────────────────────────────────────────────────────────
@@ -107,7 +110,7 @@ export default function ChatBot() {
       {/* Chat window */}
       {open && (
         <div
-          className="fixed z-50 flex flex-col rounded-2xl shadow-2xl shadow-black/30 overflow-hidden border border-carbon-200 dark:border-white/10 bg-white dark:bg-carbon-950 transition-[bottom] duration-200 w-[calc(100vw-3rem)] sm:w-80"
+          className="fixed z-50 flex flex-col rounded-2xl shadow-2xl shadow-black/30 overflow-hidden border border-carbon-200 dark:border-white/10 bg-white dark:bg-carbon-950 transition-transform duration-200 ease-out w-[calc(100vw-3rem)] sm:w-80"
           style={winStyle}
         >
           {/* Header */}
@@ -192,7 +195,7 @@ export default function ChatBot() {
         onClick={() => setOpen(o => !o)}
         aria-label="Ouvrir le chatbot"
         style={btnStyle}
-        className="fixed z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-xl shadow-black/30 transition-[bottom] duration-200 hover:scale-110 active:scale-95 bg-carbon-900 dark:bg-white"
+        className="fixed z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-xl shadow-black/30 transition-transform duration-200 ease-out hover:scale-110 active:scale-95 bg-carbon-900 dark:bg-white"
       >
         {open
           ? <X size={22} className="text-white dark:text-carbon-900" />
