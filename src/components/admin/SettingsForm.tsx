@@ -223,46 +223,6 @@ export default function SettingsForm({ initial }: Props) {
             </div>
           </div>
 
-          <p className="text-xs text-slate-400 pt-2">Copiez vos 3 meilleurs avis Google ci-dessous pour les afficher sur la page d'accueil.</p>
-
-          {([1, 2, 3] as const).map(n => (
-            <div key={n} className="border border-slate-100 rounded-lg p-4 space-y-3">
-              <p className="text-xs font-semibold text-slate-600">Avis {n}</p>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="col-span-2">
-                  <label className={labelCls}>Nom de l'auteur</label>
-                  <input
-                    className={inputCls}
-                    value={values[`google_review_${n}_author` as keyof typeof values] as string ?? ''}
-                    onChange={e => set(`google_review_${n}_author` as keyof typeof values, e.target.value)}
-                    placeholder="Mohamed B."
-                  />
-                </div>
-                <div>
-                  <label className={labelCls}>Note (1-5)</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="5"
-                    className={inputCls}
-                    value={values[`google_review_${n}_rating` as keyof typeof values] as string ?? ''}
-                    onChange={e => set(`google_review_${n}_rating` as keyof typeof values, e.target.value)}
-                    placeholder="5"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className={labelCls}>Texte de l'avis</label>
-                <textarea
-                  className={textareaCls}
-                  rows={2}
-                  value={values[`google_review_${n}_text` as keyof typeof values] as string ?? ''}
-                  onChange={e => set(`google_review_${n}_text` as keyof typeof values, e.target.value)}
-                  placeholder="Excellent service, équipe professionnelle et véhicule conforme à la description..."
-                />
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
