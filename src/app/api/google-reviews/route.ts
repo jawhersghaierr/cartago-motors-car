@@ -1,32 +1,82 @@
 import { NextResponse } from 'next/server'
 
-// Identifiant extrait directement depuis l'URL Google Maps de la fiche
-const PLACE_FTID = '0x47e675000724595f:0x2a45f1d26d4a4ef1'
+const BUSINESS_NAME = 'CARTAGO MOTORS'
+const LAT = 48.7555309
+const LNG = 2.3699635
+
+interface NewReview {
+  relativePublishTimeDescription: string
+  rating: number
+  text?: { text: string }
+  authorAttribution: { displayName: string; photoUri: string }
+  publishTime: string
+}
+
+async function searchPlaceId(apiKey: string): Promise<string | null> {
+  const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': apiKey,
+      'X-Goog-FieldMask': 'places.id',
+    },
+    body: JSON.stringify({
+      textQuery: BUSINESS_NAME,
+      languageCode: 'fr',
+      locationBias: {
+        circle: {
+          center: { latitude: LAT, longitude: LNG },
+          radius: 500.0,
+        },
+      },
+    }),
+    next: { revalidate: 86400 },
+  })
+  const data = await res.json()
+  return data.places?.[0]?.id ?? null
+}
 
 export async function GET() {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY
-
   if (!apiKey) {
     return NextResponse.json({ error: 'Missing API key' }, { status: 500 })
   }
 
-  const placeId = process.env.GOOGLE_PLACE_ID || PLACE_FTID
-
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,rating,user_ratings_total&language=fr&key=${apiKey}`
-  const res = await fetch(url, { next: { revalidate: 3600 } })
-  const data = await res.json()
-
-  if (data.status !== 'OK') {
-    return NextResponse.json({ error: data.status, message: data.error_message ?? null }, { status: 500 })
+  const placeId = process.env.GOOGLE_PLACE_ID ?? await searchPlaceId(apiKey)
+  if (!placeId) {
+    return NextResponse.json({ error: 'Business not found' }, { status: 500 })
   }
 
-  const reviews = (data.result.reviews ?? [])
-    .sort((a: { time: number }, b: { time: number }) => b.time - a.time)
+  const res = await fetch(
+    `https://places.googleapis.com/v1/places/${placeId}?languageCode=fr`,
+    {
+      headers: {
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-FieldMask': 'reviews,rating,userRatingCount',
+      },
+      next: { revalidate: 3600 },
+    }
+  )
+  const data = await res.json()
+
+  if (!data.reviews) {
+    return NextResponse.json({ error: 'No reviews', detail: data }, { status: 500 })
+  }
+
+  const reviews = [...(data.reviews as NewReview[])]
+    .sort((a, b) => new Date(b.publishTime).getTime() - new Date(a.publishTime).getTime())
     .slice(0, 3)
+    .map(r => ({
+      author_name: r.authorAttribution.displayName,
+      rating: r.rating,
+      text: r.text?.text ?? '',
+      profile_photo_url: r.authorAttribution.photoUri,
+      relative_time_description: r.relativePublishTimeDescription,
+    }))
 
   return NextResponse.json({
     reviews,
-    rating: data.result.rating,
-    total: data.result.user_ratings_total,
+    rating: data.rating,
+    total: data.userRatingCount,
   })
 }
