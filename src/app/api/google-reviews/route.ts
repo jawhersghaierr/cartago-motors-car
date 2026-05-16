@@ -48,11 +48,12 @@ export async function GET() {
   }
 
   const res = await fetch(
-    `https://places.googleapis.com/v1/places/${placeId}?languageCode=fr`,
+    `https://places.googleapis.com/v1/places/${placeId}`,
     {
       headers: {
         'X-Goog-Api-Key': apiKey,
         'X-Goog-FieldMask': 'reviews,rating,userRatingCount',
+        'Accept-Language': 'fr',
       },
       next: { revalidate: 3600 },
     }
