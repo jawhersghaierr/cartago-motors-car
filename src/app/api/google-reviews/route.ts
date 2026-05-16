@@ -59,11 +59,7 @@ export async function GET() {
   )
   const data = await res.json()
 
-  if (!data.reviews) {
-    return NextResponse.json({ error: 'No reviews', detail: data }, { status: 500 })
-  }
-
-  const reviews = [...(data.reviews as NewReview[])]
+  const reviews = [...((data.reviews ?? []) as NewReview[])]
     .sort((a, b) => new Date(b.publishTime).getTime() - new Date(a.publishTime).getTime())
     .slice(0, 3)
     .map(r => ({

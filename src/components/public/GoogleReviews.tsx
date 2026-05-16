@@ -35,7 +35,7 @@ export default function GoogleReviews({ reviewUrl }: { reviewUrl: string }) {
   useEffect(() => {
     fetch('/api/google-reviews')
       .then(r => r.json())
-      .then(d => { if (d.reviews) setData(d) })
+      .then(d => { if (d.rating) setData(d) })
       .catch(() => null)
   }, [])
 
