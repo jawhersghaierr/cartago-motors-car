@@ -17,6 +17,15 @@ export interface SiteSettings {
   google_review_url: string | null
   google_rating: string | null
   google_review_count: string | null
+  google_review_1_author: string | null
+  google_review_1_text: string | null
+  google_review_1_rating: string | null
+  google_review_2_author: string | null
+  google_review_2_text: string | null
+  google_review_2_rating: string | null
+  google_review_3_author: string | null
+  google_review_3_text: string | null
+  google_review_3_rating: string | null
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
@@ -38,4 +47,13 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   google_review_url: null,
   google_rating: null,
   google_review_count: null,
+  google_review_1_author: null,
+  google_review_1_text: null,
+  google_review_1_rating: null,
+  google_review_2_author: null,
+  google_review_2_text: null,
+  google_review_2_rating: null,
+  google_review_3_author: null,
+  google_review_3_text: null,
+  google_review_3_rating: null,
 }
