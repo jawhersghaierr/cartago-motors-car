@@ -62,7 +62,7 @@ export async function GET() {
 
   const reviews = [...((data.reviews ?? []) as NewReview[])]
     .sort((a, b) => new Date(b.publishTime).getTime() - new Date(a.publishTime).getTime())
-    .slice(0, 3)
+    .slice(0, 5)
     .map(r => ({
       author_name: r.authorAttribution.displayName,
       rating: r.rating,
