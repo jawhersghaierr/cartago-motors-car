@@ -30,7 +30,7 @@ async function searchPlaceId(apiKey: string): Promise<string | null> {
         },
       },
     }),
-    next: { revalidate: 86400 },
+    cache: 'no-store',
   })
   const data = await res.json()
   return data.places?.[0]?.id ?? null
