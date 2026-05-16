@@ -55,7 +55,7 @@ export async function GET() {
         'X-Goog-FieldMask': 'reviews,rating,userRatingCount',
         'Accept-Language': 'fr',
       },
-      next: { revalidate: 3600 },
+      cache: 'no-store',
     }
   )
   const data = await res.json()
