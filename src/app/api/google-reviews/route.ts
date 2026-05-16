@@ -17,7 +17,7 @@ export async function GET() {
   const data = await res.json()
 
   if (data.status !== 'OK') {
-    return NextResponse.json({ error: data.status }, { status: 500 })
+    return NextResponse.json({ error: data.status, message: data.error_message ?? null }, { status: 500 })
   }
 
   const reviews = (data.result.reviews ?? [])
