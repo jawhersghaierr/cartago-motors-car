@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devis – Cartago Motors</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      font-size: 13px;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: #fff;
+      padding: 0;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #0f0f0f;
+      padding: 36px 48px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .header-left .logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .header-left .logo-sub {
+      font-size: 11px;
+      color: #F59E0B;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 3px;
+    }
+    .header-right {
+      text-align: right;
+    }
+    .header-right .devis-label {
+      font-size: 28px;
+      font-weight: 800;
+      color: #F59E0B;
+      letter-spacing: -1px;
+    }
+    .header-right .devis-num {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* ── Gold bar ── */
+    .gold-bar {
+      height: 4px;
+      background: linear-gradient(90deg, #F59E0B 0%, #FCD34D 50%, #F59E0B 100%);
+    }
+
+    /* ── Info section ── */
+    .info-section {
+      display: flex;
+      gap: 0;
+      padding: 32px 48px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .info-block {
+      flex: 1;
+    }
+    .info-block + .info-block {
+      border-left: 1px solid #f0f0f0;
+      padding-left: 40px;
+    }
+    .info-block h3 {
+      font-size: 10px;
+      font-weight: 700;
+      color: #F59E0B;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+    .info-block p {
+      font-size: 13px;
+      color: #333;
+      line-height: 1.8;
+    }
+    .info-block .name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f0f0f;
+      margin-bottom: 4px;
+    }
+    .info-block .date-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 8px;
+    }
+    .info-block .date-item span {
+      display: block;
+    }
+    .info-block .date-item .label {
+      font-size: 10px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .info-block .date-item .value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-top: 2px;
+    }
+
+    /* ── Table ── */
+    .table-section {
+      padding: 0 48px 32px;
+    }
+    .table-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 24px 0 12px;
+      border-bottom: 2px solid #0f0f0f;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead th {
+      font-size: 10px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 8px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    thead th:last-child { text-align: right; }
+    thead th:nth-child(3) { text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid #f5f5f5;
+    }
+    tbody tr:hover { background: #fafafa; }
+    tbody td {
+      padding: 10px 8px;
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      font-weight: 600;
+      color: #1a1a1a;
+      width: 42%;
+    }
+    tbody td:nth-child(2) {
+      color: #666;
+      font-size: 12px;
+      width: 30%;
+    }
+    tbody td:nth-child(3) {
+      text-align: right;
+      color: #888;
+      width: 10%;
+    }
+    tbody td:last-child {
+      text-align: right;
+      font-weight: 600;
+      color: #1a1a1a;
+      width: 18%;
+    }
+    tr.category-row td {
+      padding-top: 18px;
+      padding-bottom: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #F59E0B;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border-bottom: none;
+    }
+
+    /* ── Totals ── */
+    .totals {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 48px 32px;
+    }
+    .totals-box {
+      width: 280px;
+    }
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+    }
+    .totals-row .t-label { color: #666; }
+    .totals-row .t-value { font-weight: 600; color: #1a1a1a; }
+    .totals-row.total-ht {
+      border-top: 2px solid #0f0f0f;
+      border-bottom: none;
+      margin-top: 4px;
+      padding-top: 12px;
+    }
+    .totals-row.total-ht .t-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f0f0f;
+    }
+    .totals-row.total-ht .t-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: #F59E0B;
+    }
+
+    /* ── Maintenance section ── */
+    .maintenance-section {
+      margin: 0 48px 32px;
+      background: #fafafa;
+      border: 1px solid #f0f0f0;
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+    .maintenance-section h3 {
+      font-size: 11px;
+      font-weight: 700;
+      color: #F59E0B;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+    .maint-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .maint-item {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .maint-item .m-label {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+    .maint-item .m-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f0f0f;
+    }
+    .maint-item .m-unit {
+      font-size: 11px;
+      color: #999;
+      font-weight: 400;
+    }
+
+    /* ── Conditions ── */
+    .conditions {
+      margin: 0 48px 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .cond-block {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .cond-block h4 {
+      font-size: 10px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+    .cond-block p {
+      font-size: 12px;
+      color: #444;
+      line-height: 1.7;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: #0f0f0f;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+    .footer p {
+      font-size: 11px;
+      color: #555;
+    }
+    .footer .footer-brand {
+      font-size: 12px;
+      font-weight: 700;
+      color: #F59E0B;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .page { margin: 0; box-shadow: none; width: 100%; }
+      @page { margin: 0; size: A4; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-text">⬡ Cartago Motors</div>
+      <div class="logo-sub">Export Automobile Premium</div>
+    </div>
+    <div class="header-right">
+      <div class="devis-label">DEVIS</div>
+      <div class="devis-num">N° CM-2025-001 &nbsp;|&nbsp; Tous les prix sont en HT</div>
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+
+  <!-- Info -->
+  <div class="info-section">
+    <div class="info-block">
+      <h3>Client</h3>
+      <p class="name">Cartago Motors</p>
+      <p>Export automobile – Europe → Maghreb<br>
+         Tunisie · Algérie · Maroc</p>
+    </div>
+    <div class="info-block">
+      <h3>Prestataire</h3>
+      <p class="name"><!-- TON NOM / SOCIÉTÉ --></p>
+      <p><!-- Email --><br><!-- Téléphone --><br><!-- Adresse --></p>
+    </div>
+    <div class="info-block">
+      <h3>Informations</h3>
+      <div class="date-row">
+        <div class="date-item">
+          <span class="label">Date</span>
+          <span class="value">15 / 05 / 2025</span>
+        </div>
+        <div class="date-item">
+          <span class="label">Validité</span>
+          <span class="value">30 jours</span>
+        </div>
+        <div class="date-item">
+          <span class="label">Devise</span>
+          <span class="value">EUR (€ HT)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-section">
+    <div class="table-title">Détail des prestations</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Prestation</th>
+          <th>Description</th>
+          <th>Jours</th>
+          <th>Prix HT</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- INFRASTRUCTURE -->
+        <tr class="category-row"><td colspan="4">⬡ Infrastructure & Déploiement</td></tr>
+        <tr>
+          <td>Setup projet</td>
+          <td>Next.js 14, TypeScript, Tailwind, Supabase, Vercel</td>
+          <td>0,5j</td>
+          <td>200 €</td>
+        </tr>
+        <tr>
+          <td>Déploiement</td>
+          <td>Mise en production Vercel + Supabase, variables d'env, CI</td>
+          <td>0,5j</td>
+          <td>200 €</td>
+        </tr>
+        <tr>
+          <td>Configuration domaine</td>
+          <td>Achat domaine, DNS, SSL, redirection www</td>
+          <td>0,25j</td>
+          <td>50 €</td>
+        </tr>
+
+        <!-- BACK-OFFICE -->
+        <tr class="category-row"><td colspan="4">⬡ Back-office Admin</td></tr>
+        <tr>
+          <td>Authentification JWT</td>
+          <td>Login sécurisé, sessions, routes protégées, middleware</td>
+          <td>1j</td>
+          <td>400 €</td>
+        </tr>
+        <tr>
+          <td>Gestion des véhicules</td>
+          <td>CRUD complet : ajout, édition, suppression, upload photos, VIN decoder</td>
+          <td>2,25j</td>
+          <td>900 €</td>
+        </tr>
+        <tr>
+          <td>Paramètres admin</td>
+          <td>Logo, numéro WhatsApp, infos contact modifiables depuis l'admin</td>
+          <td>0,375j</td>
+          <td>150 €</td>
+        </tr>
+
+        <!-- CATALOGUE PUBLIC -->
+        <tr class="category-row"><td colspan="4">⬡ Catalogue & Fiches véhicules</td></tr>
+        <tr>
+          <td>Catalogue public</td>
+          <td>Filtres (marque, carburant, prix, statut), recherche, tri, pagination</td>
+          <td>1,75j</td>
+          <td>700 €</td>
+        </tr>
+        <tr>
+          <td>Fiche véhicule</td>
+          <td>Galerie photos, caractéristiques complètes, demande de contact</td>
+          <td>0,875j</td>
+          <td>350 €</td>
+        </tr>
+        <tr>
+          <td>Système favoris</td>
+          <td>Ajout/suppression favoris, persistance localStorage, page dédiée</td>
+          <td>0,5j</td>
+          <td>200 €</td>
+        </tr>
+        <tr>
+          <td>Comparaison de véhicules</td>
+          <td>Sélection 2 véhicules, tableau comparatif côte à côte, barre flottante</td>
+          <td>0,875j</td>
+          <td>350 €</td>
+        </tr>
+
+        <!-- PAGES -->
+        <tr class="category-row"><td colspan="4">⬡ Pages & Contenu</td></tr>
+        <tr>
+          <td>Page d'accueil</td>
+          <td>Hero, statistiques, véhicules en vedette, avis clients, CTA</td>
+          <td>1,25j</td>
+          <td>500 €</td>
+        </tr>
+        <tr>
+          <td>Page À propos</td>
+          <td>Histoire, valeurs, processus d'export, pays desservis</td>
+          <td>0,75j</td>
+          <td>300 €</td>
+        </tr>
+        <tr>
+          <td>Page Contact</td>
+          <td>Formulaire de devis, envoi email automatique (Resend), validation</td>
+          <td>0,75j</td>
+          <td>300 €</td>
+        </tr>
+        <tr>
+          <td>Google Reviews</td>
+          <td>Intégration et affichage des avis Google en temps réel</td>
+          <td>0,5j</td>
+          <td>200 €</td>
+        </tr>
+
+        <!-- FONCTIONNALITÉS AVANCÉES -->
+        <tr class="category-row"><td colspan="4">⬡ Fonctionnalités Avancées</td></tr>
+        <tr>
+          <td>Internationalisation (i18n)</td>
+          <td>3 langues : Français, Anglais, Arabe (RTL) — routing next-intl</td>
+          <td>1,125j</td>
+          <td>450 €</td>
+        </tr>
+        <tr>
+          <td>Traduction automatique DOM</td>
+          <td>Composant custom : traduit tout le site via Google Translate sans code manuel</td>
+          <td>0,875j</td>
+          <td>350 €</td>
+        </tr>
+        <tr>
+          <td>Chatbot IA (Groq / Llama 3)</td>
+          <td>Assistant IA connecté au stock réel Supabase en temps réel, multilingue</td>
+          <td>1,5j</td>
+          <td>600 €</td>
+        </tr>
+        <tr>
+          <td>Bouton WhatsApp flottant</td>
+          <td>Bouton persistant sur toutes les pages avec lien direct WhatsApp</td>
+          <td>0,35j</td>
+          <td>140 €</td>
+        </tr>
+
+        <!-- QUALITÉ -->
+        <tr class="category-row"><td colspan="4">⬡ Qualité & Finitions</td></tr>
+        <tr>
+          <td>Design responsive</td>
+          <td>Adapté mobile, tablette et desktop — testé sur iOS et Android</td>
+          <td>0,875j</td>
+          <td>350 €</td>
+        </tr>
+        <tr>
+          <td>Mode sombre / clair</td>
+          <td>Thème dark/light avec persistance du choix utilisateur</td>
+          <td>0,375j</td>
+          <td>150 €</td>
+        </tr>
+        <tr>
+          <td>SEO & Métadonnées</td>
+          <td>Balises Open Graph, titres dynamiques, sitemap, performance Lighthouse</td>
+          <td>0,5j</td>
+          <td>200 €</td>
+        </tr>
+        <tr>
+          <td>Tests & Debugging</td>
+          <td>Recette complète, corrections bugs, polish général</td>
+          <td>0,875j</td>
+          <td>350 €</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Totals -->
+  <div class="totals">
+    <div class="totals-box">
+      <div class="totals-row">
+        <span class="t-label">Sous-total développement</span>
+        <span class="t-value">7 340 €</span>
+      </div>
+      <div class="totals-row">
+        <span class="t-label">Configuration domaine (one-time)</span>
+        <span class="t-value">50 €</span>
+      </div>
+      <div class="totals-row total-ht">
+        <span class="t-label">TOTAL HT</span>
+        <span class="t-value">7 390 €</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Maintenance -->
+  <div class="maintenance-section">
+    <h3>⬡ Prestations récurrentes (optionnelles)</h3>
+    <div class="maint-grid">
+      <div class="maint-item">
+        <div class="m-label">Maintenance mensuelle</div>
+        <div class="m-price">200 € <span class="m-unit">HT / mois</span></div>
+      </div>
+      <div class="maint-item">
+        <div class="m-label">Hébergement Vercel Pro</div>
+        <div class="m-price">20 € <span class="m-unit">HT / mois</span></div>
+      </div>
+      <div class="maint-item">
+        <div class="m-label">Base de données Supabase</div>
+        <div class="m-price">25 € <span class="m-unit">HT / mois</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conditions -->
+  <div class="conditions">
+    <div class="cond-block">
+      <h4>Modalités de paiement</h4>
+      <p>
+        <strong>50%</strong> à la signature du devis (acompte)<br>
+        <strong>25%</strong> à mi-parcours (livraison maquettes)<br>
+        <strong>25%</strong> à la livraison finale
+      </p>
+    </div>
+    <div class="cond-block">
+      <h4>Délai de réalisation</h4>
+      <p>
+        Développement estimé à <strong>4 à 6 semaines</strong><br>
+        selon les retours et validations client.<br>
+        Démarrage sous 5 jours après signature.
+      </p>
+    </div>
+    <div class="cond-block">
+      <h4>Ce qui est inclus</h4>
+      <p>
+        Code source complet · Documentation<br>
+        Mise en production · Formation admin<br>
+        Support 30 jours post-livraison
+      </p>
+    </div>
+    <div class="cond-block">
+      <h4>Ce qui est exclu</h4>
+      <p>
+        Contenu rédactionnel · Photos véhicules<br>
+        Coût domaine (≈ 15€/an) · TVA<br>
+        Développements hors périmètre
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Ce devis est valable 30 jours à compter de sa date d'émission.</p>
+    <p class="footer-brand">⬡ Cartago Motors — Devis N° CM-2025-001</p>
+    <p>Page 1/1</p>
+  </div>
+
+</div>
+</body>
+</html>
